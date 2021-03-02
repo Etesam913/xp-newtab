@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {motion} from 'framer-motion'
 export const DarkModeButton = styled(motion.button)`
-  border: none;
-  background-color: transparent;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 `;

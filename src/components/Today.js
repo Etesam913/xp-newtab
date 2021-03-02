@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { Header2 } from '../styles/Headers';
 
 function Today() {
