@@ -7,6 +7,7 @@ import 'xp.css/dist/XP.css';
 import SettingsWindow from "./components/SettingsWindow";
 import {getDefaultValue} from "./functions/helpers";
 
+
 function App() {
     const mainWrapper = useRef(null);
     const [isSettingsShowing, setIsSettingsShowing] = useState(false);
@@ -61,6 +62,7 @@ const GlobalStyle = createGlobalStyle`
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-size: cover;
+    cursor: url('https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/CursorsXP.cur'), auto;
   }
 
   .window {
@@ -72,7 +74,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button {
-    cursor: pointer;
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/Cursor_15.cur"), pointer;
   }
 `
 
@@ -84,6 +86,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: url('https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/CursorsXP.cur'), auto;
 `;
 
 const ShowMenuButton = styled.button`

@@ -20,7 +20,7 @@ function Menu({ isMenuShowing, setIsMenuShowing, windowData, setWindowData }) {
   });
   return (
     <MenuWrapper className='tree-view' show={isMenuShowing}>
-      <div style={{ overflowY: 'scroll', marginBottom: '0.5rem' }}>
+      <div style={{ overflowY: 'auto', marginBottom: '0.5rem' }}>
         <MenuHeader>Items</MenuHeader>
         Windows
         <ul>
