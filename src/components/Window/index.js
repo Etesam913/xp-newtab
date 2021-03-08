@@ -48,10 +48,13 @@ function Window({width, wrapperRef, title}) {
     );
 }
 
+
 const WindowContainer = styled(motion.div)`
   width: ${(props) => (props.width ? props.width : '18.75rem')};
   min-width: 15rem;
   min-height: 4rem;
+  max-width: 60rem;
+  max-height: 40rem;
   resize: both;
   font-family: 'Pixelated MS Sans Serif', 'Arial';
   overflow: auto;

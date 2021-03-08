@@ -1,45 +1,37 @@
 import React, {useState, useRef} from 'react';
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
-import {lightTheme, darkTheme} from './styles/themeing';
-import {DarkModeButton} from './styles/Components';
-import {Sun, Moon} from './components/SvgMaster';
 import {TopRight} from './styles/Layout';
 import 'xp.css/dist/XP.css';
+import SettingsWindow from "./components/SettingsWindow";
+import {getDefaultValue} from "./functions/helpers";
 
 function App() {
     const mainWrapper = useRef(null);
+    const [isSettingsShowing, setIsSettingsShowing] = useState(false);
+    const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
     const [isMenuShowing, setIsMenuShowing] = useState(false);
-
     const [windowData, setWindowData] = useState([
         {id: 0, windowTitle: 'Insert Title Here'},
         {id: 1, windowTitle: 'Wowza'},
     ]);
-    let darkModeDefaultValue = false;
-    if (window.localStorage.getItem('darkMode') !== null) {
-        darkModeDefaultValue = JSON.parse(
-            window.localStorage.getItem('darkMode').toLowerCase()
-        );
-    }
-
-    const [isDarkMode, setIsDarkMode] = useState(darkModeDefaultValue);
 
     return (
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <div>
+            <GlobalStyle background={backgroundColor}/>
             <TopRight>
-                <DarkModeButton
-                    whileTap={{scale: 0.9}}
-                    whileHover={{scale: 1.1}}
+                <button
                     onClick={() => {
-                        window.localStorage.setItem('darkMode', !isDarkMode);
-                        setIsDarkMode(!isDarkMode);
-                        console.log(window.localStorage.getItem('darkMode'));
+                        setIsSettingsShowing(true)
                     }}
                 >
-                    {!isDarkMode ? <Sun/> : <Moon/>}
-                </DarkModeButton>
+                    Settings
+                </button>
             </TopRight>
+            {isSettingsShowing &&
+            <SettingsWindow setIsSettingsShowing={setIsSettingsShowing} backgroundColor={backgroundColor}
+                            setBackgroundColor={setBackgroundColor}/>}
             <Wrapper ref={mainWrapper}>
                 <RenderWindows wrapperRef={mainWrapper} windowData={windowData}/>
 
@@ -57,13 +49,26 @@ function App() {
                     setWindowData={setWindowData}
                 />
             </Wrapper>
-        </ThemeProvider>
+        </div>
     );
 }
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: ${props => props.background};
+  }
+  .window{
+    font-size: 12px;
+  }
+  p{
+    margin: 0;
+  }
+  button{
+    cursor: pointer;
+  }
+`
+
 const Wrapper = styled.div`
-  background-color: ${(props) => props.theme.backgroundColor};
-  transition: background-color 150ms;
   height: 100vh;
   width: 100vw;
   display: flex;
