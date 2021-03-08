@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
 import {lightTheme, darkTheme} from './styles/themeing';
@@ -27,6 +27,7 @@ function App() {
 
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <GlobalStyle />
             <TopRight>
                 <DarkModeButton
                     whileTap={{scale: 0.9}}
@@ -60,6 +61,12 @@ function App() {
         </ThemeProvider>
     );
 }
+
+const GlobalStyle = createGlobalStyle`
+  body{
+    background: ${(props) => props.theme.backgroundColor};
+  }
+`
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.backgroundColor};
