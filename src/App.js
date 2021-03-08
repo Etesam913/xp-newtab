@@ -2,31 +2,20 @@ import React, {useState, useRef} from 'react';
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
-import {lightTheme, darkTheme} from './styles/themeing';
-import {Settings} from './styles/Components';
-import {Cog} from './components/SvgMaster';
 import {TopRight} from './styles/Layout';
 import 'xp.css/dist/XP.css';
 import SettingsWindow from "./components/SettingsWindow";
+import {getDefaultValue} from "./functions/helpers";
 
 function App() {
     const mainWrapper = useRef(null);
     const [isSettingsShowing, setIsSettingsShowing] = useState(false);
-    const [backgroundColor, setBackgroundColor] = useState('white');
+    const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState([
         {id: 0, windowTitle: 'Insert Title Here'},
         {id: 1, windowTitle: 'Wowza'},
     ]);
-
-    /*let darkModeDefaultValue = false;
-    if (window.localStorage.getItem('darkMode') !== null) {
-        darkModeDefaultValue = JSON.parse(
-            window.localStorage.getItem('darkMode').toLowerCase()
-        );
-    }*/
-
-    //const [isDarkMode, setIsDarkMode] = useState(darkModeDefaultValue);
 
     return (
         <div>
@@ -67,6 +56,15 @@ function App() {
 const GlobalStyle = createGlobalStyle`
   body {
     background: ${props => props.background};
+  }
+  .window{
+    font-size: 12px;
+  }
+  p{
+    margin: 0;
+  }
+  button{
+    cursor: pointer;
   }
 `
 
