@@ -1,7 +1,7 @@
 export function getDefaultValue(localStorageProperty){
     let defaultValue = false;
     if(localStorageProperty === 'backgroundColor')
-        defaultValue = "white"
+        defaultValue = "#ffffff"
 
     const propertyValue = window.localStorage.getItem(localStorageProperty)
     if(propertyValue !== null)

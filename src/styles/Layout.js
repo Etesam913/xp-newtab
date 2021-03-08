@@ -6,7 +6,7 @@ export const TopRight = styled.div`
   right: 1rem;
 `;
 
-export const FlewContainer = styled.div`
+export const FlexContainer = styled.div`
   display: flex;
   flex-direction: ${props => props.flexDirection ? props.flexDirection : 'row'};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "center"};
@@ -14,6 +14,7 @@ export const FlewContainer = styled.div`
   ${props=>props.tablet && css `
     @media only screen and (max-width: 768px){
      flex-direction: column;
+      align-items: flex-start !important;
     }
   `}
 `;

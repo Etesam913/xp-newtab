@@ -11,6 +11,7 @@ function App() {
     const mainWrapper = useRef(null);
     const [isSettingsShowing, setIsSettingsShowing] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
+    const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"))
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState([
         {id: 0, windowTitle: 'Insert Title Here'},
@@ -19,19 +20,20 @@ function App() {
 
     return (
         <div>
-            <GlobalStyle background={backgroundColor}/>
+            <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage}/>
             <TopRight>
                 <button
                     onClick={() => {
                         setIsSettingsShowing(true)
-                    }}
-                >
+                    }}>
                     Settings
                 </button>
             </TopRight>
             {isSettingsShowing &&
             <SettingsWindow setIsSettingsShowing={setIsSettingsShowing} backgroundColor={backgroundColor}
-                            setBackgroundColor={setBackgroundColor}/>}
+                            setBackgroundColor={setBackgroundColor} backgroundImage={backgroundImage}
+                            setBackgroundImage={setBackgroundImage}
+            />}
             <Wrapper ref={mainWrapper}>
                 <RenderWindows wrapperRef={mainWrapper} windowData={windowData}/>
 
@@ -56,14 +58,20 @@ function App() {
 const GlobalStyle = createGlobalStyle`
   body {
     background: ${props => props.background};
+    background-image: url(${props => props.backgroundImage});
+    background-repeat: no-repeat;
+    background-size: cover;
   }
-  .window{
+
+  .window {
     font-size: 12px;
   }
-  p{
+
+  p {
     margin: 0;
   }
-  button{
+
+  button {
     cursor: pointer;
   }
 `
