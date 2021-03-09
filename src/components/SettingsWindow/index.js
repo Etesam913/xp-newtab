@@ -67,7 +67,7 @@ function SettingsWindow({
                     <article role="tabpanel">
                         <Header1 margin={'1rem 0 1rem'}>Change Background Image</Header1>
                         <FlexContainer justifyContent={'flex-start'} alignItems={"center"} tablet>
-                            <TabInput ref={imageInput} placeholder={"Enter Image Url"} width={"70%"} onKeyDown={(e) => {
+                            <TabInput ref={imageInput} defaultValue={backgroundImage} placeholder={"Enter Image Url"} width={"70%"} onKeyDown={(e) => {
                                 handleImageInputEnter(e)
                             }}/>
                             <button onClick={() => {

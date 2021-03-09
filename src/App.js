@@ -1,5 +1,5 @@
-import React, {useState, useRef} from 'react';
-import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
+import React, {useState, useRef, useEffect} from 'react';
+import styled, {createGlobalStyle} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
 import {TopRight} from './styles/Layout';
@@ -14,10 +14,11 @@ function App() {
     const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
     const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"))
     const [isMenuShowing, setIsMenuShowing] = useState(false);
-    const [windowData, setWindowData] = useState([
-        {id: 0, windowTitle: 'Insert Title Here'},
-        {id: 1, windowTitle: 'Wowza'},
-    ]);
+    const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
+
+    useEffect(()=>{
+        localStorage.setItem("windowData", JSON.stringify(windowData));
+    }, [windowData])
 
     return (
         <div>
@@ -36,8 +37,7 @@ function App() {
                             setBackgroundImage={setBackgroundImage}
             />}
             <Wrapper ref={mainWrapper}>
-                <RenderWindows wrapperRef={mainWrapper} windowData={windowData}/>
-
+                <RenderWindows wrapperRef={mainWrapper} windowData={windowData} setWindowData={setWindowData}/>
                 <ShowMenuButton
                     onClick={() => {
                         setIsMenuShowing(true);
@@ -62,7 +62,7 @@ const GlobalStyle = createGlobalStyle`
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-size: cover;
-    cursor: url('https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/CursorsXP.cur'), auto;
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto;
   }
 
   .window {
@@ -73,8 +73,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  a {
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+  }
+
   button {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/Cursor_15.cur"), pointer;
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
   }
 `
 
@@ -86,7 +90,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  cursor: url('https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/CursorsXP.cur'), auto;
+
 `;
 
 const ShowMenuButton = styled.button`
