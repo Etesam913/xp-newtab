@@ -4,9 +4,13 @@
   "author": "Etesam Ansari",
   "version": "1",
   "description": "Etesam's Cool Startpage",
-  
+  "icons": {
+    "32": "favicon.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage"]
+  "permissions": [
+    "storage"
+  ]
 }

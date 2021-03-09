@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
@@ -9,14 +9,13 @@ import {getDefaultValue} from "./functions/helpers";
 
 
 function App() {
-    const mainWrapper = useRef(null);
     const [isSettingsShowing, setIsSettingsShowing] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
     const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"))
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
 
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.setItem("windowData", JSON.stringify(windowData));
     }, [windowData])
 
@@ -32,18 +31,25 @@ function App() {
                 </button>
             </TopRight>
             {isSettingsShowing &&
-            <SettingsWindow setIsSettingsShowing={setIsSettingsShowing} backgroundColor={backgroundColor}
-                            setBackgroundColor={setBackgroundColor} backgroundImage={backgroundImage}
-                            setBackgroundImage={setBackgroundImage}
+            <SettingsWindow
+                setIsSettingsShowing={setIsSettingsShowing}
+                backgroundColor={backgroundColor}
+                setBackgroundColor={setBackgroundColor}
+                backgroundImage={backgroundImage}
+                setBackgroundImage={setBackgroundImage}
             />}
-            <Wrapper ref={mainWrapper}>
-                <RenderWindows wrapperRef={mainWrapper} windowData={windowData} setWindowData={setWindowData}/>
+            <Wrapper>
+                <RenderWindows
+                    windowData={windowData}
+                    setWindowData={setWindowData}
+                    isMenuShowing={isMenuShowing}
+                />
                 <ShowMenuButton
                     onClick={() => {
                         setIsMenuShowing(true);
                     }}
                 >
-                    Show Menu
+                    Edit Mode
                 </ShowMenuButton>
                 <Menu
                     isMenuShowing={isMenuShowing}

@@ -6,8 +6,8 @@ export function getDefaultValue(localStorageProperty){
         defaultValue = ""
     else if(localStorageProperty === 'windowData'){
         defaultValue = [
-            {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0},
-            {id: 1, windowTitle: 'Wowza', xCoord: 0, yCoord: 0},
+            {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, items: []},
+            {id: 1, windowTitle: 'Wowza', xCoord: 0, yCoord: 0, items:[]},
         ];
     }
     let propertyValue = window.localStorage.getItem(localStorageProperty)

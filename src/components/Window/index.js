@@ -1,33 +1,21 @@
 import React, {useRef} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
-import {getTranslateXY} from "../../functions/helpers";
+import {getSelectedComponent, updatePosition} from "./helper";
 
-function Window({width, wrapperRef, windowItem, windowData, setWindowData}) {
+function Window({width, isMenuShowing, windowItem, windowData, setWindowData, windowId}) {
     const windowRef = useRef(null);
-
-    function updatePosition() {
-        const positions = getTranslateXY(windowRef.current)
-        const xPos = positions["translateX"];
-        const yPos = positions["translateY"];
-        let itemToInsert = {...windowItem};
-        itemToInsert["xCoord"] = xPos
-        itemToInsert["yCoord"] = yPos
-        let tempData = [...windowData];
-        const desired_id = windowItem["id"];
-        for (let i = 0; i < tempData.length; i++) {
-            if (tempData[i]["id"] === desired_id) {
-                tempData[i] = itemToInsert;
-            }
-        }
-        setWindowData(tempData)
-    }
+    const componentsPanel = useRef(null);
 
     return (
-        <Draggable handle='.title-bar' nodeRef={windowRef} bounds="body"
-                   defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}} onStop={() => {
-            updatePosition()
-        }}>
+        <Draggable
+            handle='.title-bar'
+            nodeRef={windowRef}
+            bounds="body"
+            defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
+            onStop={() => {
+                updatePosition(windowRef, windowItem, windowData, setWindowData)
+            }}>
             <WindowContainer
                 ref={windowRef}
                 width={width}
@@ -43,7 +31,31 @@ function Window({width, wrapperRef, windowItem, windowData, setWindowData}) {
                 </TitleBar>
 
                 <div className='window-body'>
-                    <p style={{textAlign: 'center'}}>Current count</p>
+                    <article style={{height: '100%'}} role="tabpanel">
+                        <p>test</p>
+
+                        {isMenuShowing &&
+                        <ComponentsPanel ref={componentsPanel}>
+                            <div className="field-row">Select one:</div>
+                            <div className="field-row">
+                                <input id={"header" + windowId} type="radio" name="radio-button"/>
+                                <label htmlFor={"header" + windowId}>Header</label>
+                            </div>
+                            <div className="field-row">
+                                <input id={"Link" + windowId} type="radio" name="radio-button"/>
+                                <label htmlFor={"Link" + windowId}>Link</label>
+                            </div>
+                            <AddComponent
+                                as={'button'}
+                                onClick={() => {
+                                    console.log(getSelectedComponent(componentsPanel))
+                                }}>
+                                Add Component
+                            </AddComponent>
+                        </ComponentsPanel>}
+
+
+                    </article>
                 </div>
             </WindowContainer>
         </Draggable>
@@ -56,7 +68,6 @@ const WindowContainer = styled.div`
   min-height: 4rem;
   max-width: 60rem;
   max-height: 40rem;
-  resize: both;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   overflow: auto;
   position: absolute;
@@ -66,5 +77,12 @@ const WindowContainer = styled.div`
 const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
 `
+
+const ComponentsPanel = styled.fieldset`
+  margin-top: 0.75rem;
+`;
+
+const AddComponent = styled(ComponentsPanel)`
+`;
 
 export default Window;
