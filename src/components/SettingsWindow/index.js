@@ -15,7 +15,7 @@ function SettingsWindow({
     const imageInput = useRef(null);
     const colorInput = useRef(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         imageInput.current.value = backgroundImage;
         colorInput.current.value = backgroundColor;
     }, [imageInput, colorInput])
@@ -67,9 +67,14 @@ function SettingsWindow({
                     <article role="tabpanel">
                         <Header1 margin={'1rem 0 1rem'}>Change Background Image</Header1>
                         <FlexContainer justifyContent={'flex-start'} alignItems={"center"} tablet>
-                            <TabInput ref={imageInput} defaultValue={backgroundImage} placeholder={"Enter Image Url"} width={"70%"} onKeyDown={(e) => {
-                                handleImageInputEnter(e)
-                            }}/>
+                            <TabInput
+                                ref={imageInput}
+                                defaultValue={backgroundImage}
+                                placeholder={"Enter Image Url"}
+                                width={"70%"}
+                                onKeyDown={(e) => {
+                                    handleImageInputEnter(e)
+                                }}/>
                             <button onClick={() => {
                                 setBackgroundImage(imageInput.current.value)
                             }}>
@@ -116,7 +121,6 @@ function SettingsWindow({
                             <a href={'https://github.com/Etesam913/windowsxp-newtab'}>
                                 https://github.com/Etesam913/windowsxp-newtab
                             </a>
-
                         </InfoGrid>
                     </article>}
                 </div>

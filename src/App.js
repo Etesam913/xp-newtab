@@ -1,9 +1,10 @@
+import 'xp.css/dist/XP.css';
 import React, {useState, useEffect} from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
 import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
 import {TopRight} from './styles/Layout';
-import 'xp.css/dist/XP.css';
+import {AppContext} from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import {getDefaultValue} from "./functions/helpers";
 
@@ -15,12 +16,18 @@ function App() {
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
 
+
     useEffect(() => {
+        // Clear local storage
+        /*setWindowData([
+            {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, items: []},
+            {id: 1, windowTitle: 'Wowza', xCoord: 0, yCoord: 0, items: []},
+        ])*/
         localStorage.setItem("windowData", JSON.stringify(windowData));
-    }, [windowData])
+    }, [windowData]);
 
     return (
-        <div>
+        <AppContext.Provider value={{isMenuShowing, windowData, setWindowData}}>
             <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage}/>
             <TopRight>
                 <button
@@ -58,7 +65,7 @@ function App() {
                     setWindowData={setWindowData}
                 />
             </Wrapper>
-        </div>
+        </AppContext.Provider>
     );
 }
 
@@ -73,6 +80,10 @@ const GlobalStyle = createGlobalStyle`
 
   .window {
     font-size: 12px;
+  }
+
+  input {
+    box-sizing: border-box;
   }
 
   p {

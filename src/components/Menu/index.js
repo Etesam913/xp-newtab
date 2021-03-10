@@ -64,6 +64,8 @@ const MenuWrapper = styled.ul`
   justify-content: space-between;
   padding: 0.35rem 0.65rem !important;
   box-sizing: border-box;
+  max-width: 14rem;
+  overflow-x: auto;
 `;
 
 export default Menu;

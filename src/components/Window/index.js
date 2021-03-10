@@ -1,11 +1,13 @@
-import React, {useRef} from 'react';
+import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
-import {getSelectedComponent, updatePosition} from "./helper";
+import {handleComponentCreation, updatePosition, renderComponents, updateWindowTitle} from "./helper";
+import {AppContext} from "../../Contexts";
 
-function Window({width, isMenuShowing, windowItem, windowData, setWindowData, windowId}) {
+function Window({width, windowItem, windowId}) {
     const windowRef = useRef(null);
     const componentsPanel = useRef(null);
+    const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
 
     return (
         <Draggable
@@ -15,16 +17,27 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
             onStop={() => {
                 updatePosition(windowRef, windowItem, windowData, setWindowData)
-            }}>
+            }}
+        >
             <WindowContainer
                 ref={windowRef}
                 width={width}
                 className='window'
             >
                 <TitleBar className='title-bar'>
-                    <div className='title-bar-text'>
-                        {windowItem ? windowItem['windowTitle'] : 'Insert Title Here'}
-                    </div>
+                    {isMenuShowing
+                        ?
+                        <TitleInput className='title-bar-text' defaultValue={windowItem['windowTitle']}
+                                    onChange={(e) => {
+                                        updateWindowTitle(e, windowData, setWindowData, windowItem)
+                                    }}
+                        />
+                        :
+                        <div className='title-bar-text'>
+                            {windowItem['windowTitle']}
+                        </div>
+                    }
+
                     <div className='title-bar-controls'>
                         <button aria-label='Close'/>
                     </div>
@@ -32,11 +45,11 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
 
                 <div className='window-body'>
                     <article style={{height: '100%'}} role="tabpanel">
-                        <p>test</p>
+                        {renderComponents(windowItem['items'], windowItem)}
 
                         {isMenuShowing &&
                         <ComponentsPanel ref={componentsPanel}>
-                            <div className="field-row">Select one:</div>
+                            <div className="field-row">Select one component to add:</div>
                             <div className="field-row">
                                 <input id={"header" + windowId} type="radio" name="radio-button"/>
                                 <label htmlFor={"header" + windowId}>Header</label>
@@ -48,13 +61,11 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
                             <AddComponent
                                 as={'button'}
                                 onClick={() => {
-                                    console.log(getSelectedComponent(componentsPanel))
+                                    handleComponentCreation(componentsPanel, windowData, setWindowData, windowItem);
                                 }}>
                                 Add Component
                             </AddComponent>
                         </ComponentsPanel>}
-
-
                     </article>
                 </div>
             </WindowContainer>
@@ -77,6 +88,13 @@ const WindowContainer = styled.div`
 const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
 `
+const TitleInput = styled.input`
+  color: black !important;
+  font-family: 'Trebuchet MS';
+  font-weight: 700;
+  font-size: 13px;
+  width: 100%;
+`;
 
 const ComponentsPanel = styled.fieldset`
   margin-top: 0.75rem;
@@ -86,3 +104,4 @@ const AddComponent = styled(ComponentsPanel)`
 `;
 
 export default Window;
+
