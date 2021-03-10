@@ -15,7 +15,7 @@ export function getDefaultValue(localStorageProperty) {
     // Has to be parsed if the property is an object
     if (localStorageProperty === 'windowData') {
         // If componentsArr is undefined uncomment localStorage.clear
-        //localStorage.clear()
+        //localStorage.clear();
         propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty))
     }
 
@@ -51,6 +51,7 @@ export function getDesiredItem(windowData, id){
     return null;
 }
 
+// Use this for centering text elements
 export function convertJustifyContentToTextAlign(valueToConvert){
     if(valueToConvert === 'flex-start'){
         return "left"
@@ -60,6 +61,18 @@ export function convertJustifyContentToTextAlign(valueToConvert){
     }
     else if(valueToConvert === 'flex-end'){
         return "right"
+    }
+}
+
+export function convertTextAlignToJustifyContent(valueToConvert){
+    if(valueToConvert === 'left'){
+        return "flex-start"
+    }
+    else if(valueToConvert === 'center'){
+        return "center"
+    }
+    else if(valueToConvert === 'right'){
+        return "flex-end"
     }
 }
 
