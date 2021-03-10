@@ -1,50 +1,50 @@
 import React from 'react';
 import styled from 'styled-components';
-import { createWindow } from './helper';
+import {createWindow} from './helper';
 import WindowTitleText from './WindowTitleText';
 import 'xp.css/dist/XP.css';
 
-function Menu({ isMenuShowing, setIsMenuShowing, windowData, setWindowData }) {
-  const windowListItems = windowData.map((item, index) => {
-    const windowTitle = item['windowTitle'];
-    const windowId = item['id'];
+function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
+    const windowListItems = windowData.map((item, index) => {
+        const windowTitle = item['windowTitle'];
+        const windowId = item['id'];
+        return (
+            <WindowTitleText
+                key={`window-title-${index}`}
+                text={windowTitle}
+                id={windowId}
+                windowData={windowData}
+                setWindowData={setWindowData}
+            />
+        );
+    });
     return (
-      <WindowTitleText
-        key={`window-title-${index}`}
-        text={windowTitle}
-        id={windowId}
-        windowData={windowData}
-        setWindowData={setWindowData}
-      />
-    );
-  });
-  return (
-    <MenuWrapper className='tree-view' show={isMenuShowing}>
-      <div style={{ overflowY: 'auto', marginBottom: '0.5rem' }}>
-        <MenuHeader>Items</MenuHeader>
-        Windows
-        <ul>
-          {windowListItems}
-          <li>
-            <button
-              onClick={() => {
-                createWindow(windowData, setWindowData);
-              }}
+        <MenuWrapper className='tree-view' show={isMenuShowing}>
+            <div style={{overflowY: 'auto', marginBottom: '0.5rem'}}>
+                <MenuHeader>Items</MenuHeader>
+                Windows
+                <ul>
+                    {windowListItems}
+                    <li>
+                        <button
+                            onClick={() => {
+                                createWindow(windowData, setWindowData);
+                            }}
+                        >
+                            Create Window
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <CloseButton
+                onClick={() => {
+                    setIsMenuShowing(false);
+                }}
             >
-              Create Window
-            </button>
-          </li>
-        </ul>
-      </div>
-      <CloseButton
-        onClick={() => {
-          setIsMenuShowing(false);
-        }}
-      >
-        Close
-      </CloseButton>
-    </MenuWrapper>
-  );
+                Close
+            </CloseButton>
+        </MenuWrapper>
+    );
 }
 
 const MenuHeader = styled.li`
