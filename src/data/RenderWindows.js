@@ -3,7 +3,7 @@ import Window from '../components/Window/index';
 import {AppContext} from "../Contexts";
 
 function RenderWindows() {
-    const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
+    const {windowData} = useContext(AppContext)
     const windows = windowData.map((item, index) => {
         return (
             <Window

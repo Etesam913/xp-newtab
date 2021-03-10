@@ -8,6 +8,7 @@ export const TopRight = styled.div`
 
 export const FlexContainer = styled.div`
   display: flex;
+  margin: ${props=>props.margin};
   flex-direction: ${props => props.flexDirection ? props.flexDirection : 'row'};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "center"};
   align-items: ${props => props.alignItems ? props.alignItems : "center"};

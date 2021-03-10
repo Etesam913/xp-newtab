@@ -6,7 +6,6 @@ import 'xp.css/dist/XP.css';
 
 function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
     const windowListItems = windowData.map((item, index) => {
-        console.log(windowData)
         const windowTitle = item['windowTitle'];
         const windowId = item['id'];
         return (
@@ -44,7 +43,7 @@ function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
                     setIsMenuShowing(false);
                 }}
             >
-                Close
+                Exit Edit Mode
             </CloseButton>
         </MenuWrapper>
     );

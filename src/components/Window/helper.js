@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from "../Header";
-import {getTranslateXY, replaceDesiredWindowItem} from "../../functions/helpers";
+import {getDesiredItem, getTranslateXY, replaceDesiredWindowItem} from "../../functions/helpers";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -18,11 +18,11 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
             maxId = newItem['items'][i]['id']
     }
     if (componentToAdd === "Header") {
-        newItem['items'].push({id: maxId + 1, componentName: "Header", text: "Header Text"});
+        newItem['items'].push({id: maxId + 1, componentName: "Header", text: "Header Text", justifyContent: 'flex-start'});
         replaceDesiredWindowItem(tempData, newItem);
         setWindowData(tempData)
+        console.log(tempData)
     }
-    console.log(tempData)
 }
 
 export function renderComponents(componentsArr, windowItem) {
@@ -39,6 +39,7 @@ export function renderComponents(componentsArr, windowItem) {
                 );
             }
         }
+
         return <ComponentItem>{getComponent()}</ComponentItem>
     })
     return <ComponentList>{components}</ComponentList>
@@ -52,6 +53,7 @@ const ComponentList = styled.ul`
 
 const ComponentItem = styled.li`
   margin: 0.5rem 0;
+
   :first-child {
     margin-top: 0;
   }
@@ -88,7 +90,7 @@ export function updatePosition(windowRef, windowItem, windowData, setWindowData)
     setWindowData(tempData)
 }
 
-export function updateWindowTitle(e, windowData, setWindowData, windowItem){
+export function updateWindowTitle(e, windowData, setWindowData, windowItem) {
     const currentText = e.target.value;
     const tempData = [...windowData];
     const itemToInsert = {...windowItem};
@@ -97,10 +99,24 @@ export function updateWindowTitle(e, windowData, setWindowData, windowItem){
     setWindowData(tempData);
 }
 
-export function setHidden(windowData, setWindowData, windowItem, valToSet){
+export function setHidden(windowData, setWindowData, windowItem, valToSet) {
     let tempData = [...windowData];
     let newWindowItem = {...windowItem};
     newWindowItem["hidden"] = valToSet;
     replaceDesiredWindowItem(tempData, newWindowItem);
     setWindowData(tempData);
+}
+
+export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue){
+    const windowId = windowItem["id"];
+    let newWindowData = [...windowData];
+    // Gets the current window
+    let desiredWindow = getDesiredItem(windowData, windowId);
+    const items = desiredWindow["items"];
+    // Gets the current item
+    let desiredItem = getDesiredItem(items, item["id"]);
+    desiredItem[propertyName] = propertyValue;
+    newWindowData['items'] = items;
+    setWindowData(newWindowData);
+    console.log(newWindowData)
 }

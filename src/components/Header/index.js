@@ -1,7 +1,11 @@
 import React, {useContext} from 'react'
 import {Header1} from "../../styles/Headers";
-import {getDesiredItem} from "../../functions/helpers";
+import {convertJustifyContentToTextAlign, getDesiredItem} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
+import {FlexContainer} from "../../styles/Layout";
+import {TextAlignOptions} from "../ComponentOptions";
+import {changeItemProperty} from "../Window/helper";
+
 
 function Header({windowItem, item}) {
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext);
@@ -22,18 +26,43 @@ function Header({windowItem, item}) {
     }
 
     return (
-        <Header1
-            margin={'0'}
-            value={item["text"]}
-            as={isMenuShowing ? 'input' : 'h1'}
-            width={'100%'}
-            onChange={(e) => {
-                handleChange(e)
-            }}
-        >
-            {isMenuShowing ? null : item["text"]}
-        </Header1>
-    );
+        <>
+            {isMenuShowing
+                ?
+                <div>
+                    <FlexContainer margin={'0 0 .5rem 0'}>
+                        <TextAlignOptions item={item} windowItem={windowItem}/>
+                    </FlexContainer>
+                    <Header1
+                        as={'input'}
+                        width={'100%'}
+                        value={item["text"]}
+                        textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+                        margin={'0'}
+                        onChange={(e) => {
+                            changeItemProperty(
+                                windowItem,
+                                windowData,
+                                setWindowData,
+                                item,
+                                "text",
+                                e.target.value
+                            )
+                        }}
+                    />
+                </div>
+
+                :
+                <Header1
+                    width={'100%'}
+                    margin={'0'}
+                    textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+                >
+                    {item["text"]}
+                </Header1>
+            }
+        </>
+    )
 }
 
 export default Header

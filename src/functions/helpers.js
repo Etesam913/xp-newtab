@@ -10,9 +10,12 @@ export function getDefaultValue(localStorageProperty) {
             {id: 1, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []},
         ];
     }
+
     let propertyValue = window.localStorage.getItem(localStorageProperty)
     // Has to be parsed if the property is an object
     if (localStorageProperty === 'windowData') {
+        // If componentsArr is undefined uncomment localStorage.clear
+        //localStorage.clear()
         propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty))
     }
 
@@ -47,3 +50,16 @@ export function getDesiredItem(windowData, id){
     console.error("DESIRED WINDOW ITEM NOT FOUND");
     return null;
 }
+
+export function convertJustifyContentToTextAlign(valueToConvert){
+    if(valueToConvert === 'flex-start'){
+        return "left"
+    }
+    else if(valueToConvert === 'center'){
+        return "center"
+    }
+    else if(valueToConvert === 'flex-end'){
+        return "right"
+    }
+}
+

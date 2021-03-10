@@ -1,8 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
-import {HexColorPicker} from "react-colorful";
-import {Header1} from "../../styles/Headers";
-import {FlexContainer} from "../../styles/Layout";
 import {ColorAndImageTab, InfoTab} from "./Tabs";
 
 function SettingsWindow({

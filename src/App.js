@@ -16,7 +16,6 @@ function App() {
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
 
-
     useEffect(() => {
         // Clear local storage
         /*setWindowData([
