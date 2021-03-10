@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {updateWindowTitle, handleEnter} from './helper';
+import {setHidden} from "../Window/helper";
 
-function WindowTitleText({text, id, windowData, setWindowData}) {
+function WindowTitleText({text, id, windowData, windowItem, disabled, setWindowData}) {
     const [isEditing, setIsEditing] = useState(false);
 
     return (
@@ -21,8 +22,10 @@ function WindowTitleText({text, id, windowData, setWindowData}) {
                 />
             ) : (
                 <WindowTitle
+                    disabled={disabled}
                     onClick={() => {
-                        setIsEditing(true);
+                        !disabled && setIsEditing(true);
+                        disabled && setHidden(windowData, setWindowData, windowItem, false)
                     }}
                 >
                     {text ? text : '*ERROR NO TEXT SHOWN*'}
@@ -33,8 +36,10 @@ function WindowTitleText({text, id, windowData, setWindowData}) {
 }
 
 const WindowTitle = styled.p`
-  cursor: text;
+  cursor: ${props=>props.disabled ? "pointer" : "text"};
   margin: 0.35rem 0 !important;
+  color: ${props => props.disabled ? 'gray' : 'black'};
+  font-size: 0.75rem;
 `;
 
 const WindowInput = styled.input`

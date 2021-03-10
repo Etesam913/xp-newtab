@@ -61,7 +61,6 @@ const ComponentItem = styled.li`
   }
 `
 
-
 export function getSelectedComponent(componentsParent) {
     const components = componentsParent.current.children;
     // Starts at 1 to skip the "Select One" text. Ends at components.length-1 to skip the add component button
@@ -95,5 +94,13 @@ export function updateWindowTitle(e, windowData, setWindowData, windowItem){
     const itemToInsert = {...windowItem};
     itemToInsert["windowTitle"] = currentText;
     replaceDesiredWindowItem(tempData, itemToInsert);
+    setWindowData(tempData);
+}
+
+export function setHidden(windowData, setWindowData, windowItem, valToSet){
+    let tempData = [...windowData];
+    let newWindowItem = {...windowItem};
+    newWindowItem["hidden"] = valToSet;
+    replaceDesiredWindowItem(tempData, newWindowItem);
     setWindowData(tempData);
 }

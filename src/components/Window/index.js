@@ -1,7 +1,7 @@
 import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
-import {handleComponentCreation, updatePosition, renderComponents, updateWindowTitle} from "./helper";
+import {handleComponentCreation, updatePosition, renderComponents, updateWindowTitle, setHidden} from "./helper";
 import {AppContext} from "../../Contexts";
 
 function Window({width, windowItem, windowId}) {
@@ -23,6 +23,7 @@ function Window({width, windowItem, windowId}) {
                 ref={windowRef}
                 width={width}
                 className='window'
+                hidden={windowItem["hidden"]}
             >
                 <TitleBar className='title-bar'>
                     {isMenuShowing
@@ -39,6 +40,9 @@ function Window({width, windowItem, windowId}) {
                     }
 
                     <div className='title-bar-controls'>
+                        <button aria-label='Minimize' onClick={() => {
+                            setHidden(windowData, setWindowData, windowItem, true)
+                        }}/>
                         <button aria-label='Close'/>
                     </div>
                 </TitleBar>
@@ -74,6 +78,7 @@ function Window({width, windowItem, windowId}) {
 }
 
 const WindowContainer = styled.div`
+  display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : '18.75rem')};
   min-width: 15rem;
   min-height: 4rem;

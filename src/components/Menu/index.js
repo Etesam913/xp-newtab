@@ -6,13 +6,16 @@ import 'xp.css/dist/XP.css';
 
 function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
     const windowListItems = windowData.map((item, index) => {
+        console.log(windowData)
         const windowTitle = item['windowTitle'];
         const windowId = item['id'];
         return (
             <WindowTitleText
                 key={`window-title-${index}`}
                 text={windowTitle}
+                windowItem={item}
                 id={windowId}
+                disabled={item["hidden"]}
                 windowData={windowData}
                 setWindowData={setWindowData}
             />
@@ -22,7 +25,7 @@ function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
         <MenuWrapper className='tree-view' show={isMenuShowing}>
             <div style={{overflowY: 'auto', marginBottom: '0.5rem'}}>
                 <MenuHeader>Items</MenuHeader>
-                Windows
+                <MenuSubtitle>Windows</MenuSubtitle>
                 <ul>
                     {windowListItems}
                     <li>
@@ -47,10 +50,19 @@ function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
     );
 }
 
-const MenuHeader = styled.li`
+const MenuHeader = styled.h1`
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 .5rem;
+  font-weight: normal;
 `;
+
+const MenuSubtitle = styled.h2`
+  font-size: 1rem;
+  margin: 0 0 .5rem;
+  font-weight: normal;
+`
+
+/*const MenuSubtitle = styled.*/
 
 const CloseButton = styled.button``;
 

@@ -4,6 +4,7 @@ import {FlexContainer} from "../../styles/Layout";
 import {HexColorPicker} from "react-colorful";
 import styled from "styled-components";
 
+
 export function ColorAndImageTab({
                                      imageInput,
                                      backgroundImage,
@@ -114,4 +115,8 @@ const InfoGrid = styled.div`
   }
 `;
 
+// Allows user to set settings such as grid, icon size
+export function MiscTab(){
+
+}
 
