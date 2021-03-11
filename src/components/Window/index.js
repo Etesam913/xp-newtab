@@ -8,7 +8,6 @@ function Window({width, windowItem, windowId}) {
     const windowRef = useRef(null);
     const componentsPanel = useRef(null);
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
-
     return (
         <Draggable
             handle='.title-bar'

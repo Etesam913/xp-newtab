@@ -14,17 +14,57 @@ function Header({windowItem, item}) {
 
     function createLink(e) {
         if (getSelectionText() !== "") {
-            setIsTextSelected(true)
-
+            const selection = window.getSelection();
+            const htmlToInsert = '<span class="selected">' + selection + '</span>';
+            const text = header.current.innerHTML;
+            console.log(text)
+            const range = selection.getRangeAt(0);
+            const parentTag = range.commonAncestorContainer.parentElement.tagName
+            console.log(parentTag)
+            // Selection styling should only occur when the selection is not already in an a tag.
+            // Should not be able to double select (selecting inside selected text)
+            if (parentTag !== "A" && parentTag !== "SPAN") {
+                header.current.innerHTML = text.replace(selection, htmlToInsert);
+                setIsTextSelected(true)
+            }
+            // We do not want to set it to false when double selecting. just want to do nothing in that case
+            else if (parentTag === "A") {
+                setIsTextSelected(false)
+            }
         } else {
-            setIsTextSelected(false)
+            setIsTextSelected(false);
+            // Removes the selection class
+            const paragraphText = header.current.firstChild;
+
+            const paragraphChildren = document.getElementsByClassName("selected")
+            let changesArr = []
+            const paragraphChildrenLength = paragraphChildren.length
+            for (let i = 0; i < paragraphChildrenLength; i++) {
+                console.log(i)
+                const parent = paragraphChildren[i].parentElement;
+                const text = paragraphChildren[i].textContent;
+                changesArr.push([parent, paragraphChildren[i]])
+                /*parent.replaceChild(document.createTextNode(text), paragraphChildren[i])*/
+            }
+            for (let i = 0; i < changesArr.length; i++) {
+                const parent = changesArr[i][0]
+                const child = changesArr[i][1]
+                parent.replaceChild(document.createTextNode(child.textContent), child)
+            }
+
+            /*for (let i = 0; i < paragraphChildren.length; i++) {
+                if (paragraphChildren[i].classList && paragraphChildren[i].classList.contains("selected")) {
+                    const text = paragraphChildren[i].textContent;
+                    paragraphText.replaceChild(document.createTextNode(text), paragraphChildren[i])
+                }
+            }*/
         }
     }
 
-    function handleOptions(){
-        if(isMenuShowing){
-            if(isTextSelected)
-                return <LinkOptions setIsTextSelected={setIsTextSelected}/>
+    function handleOptions() {
+        if (isMenuShowing) {
+            if (isTextSelected)
+                return <LinkOptions setIsTextSelected={setIsTextSelected} header={header}/>
             else
                 return <TextAlignOptions item={item} windowItem={windowItem}/>
         }
@@ -32,7 +72,7 @@ function Header({windowItem, item}) {
 
     return (
         <div>
-            <FlexContainer margin={'0 0 .5rem 0'}>
+            <FlexContainer margin={isMenuShowing ? '0 0 .5rem 0' : '0'}>
                 {handleOptions()}
             </FlexContainer>
             <Header1
@@ -45,18 +85,20 @@ function Header({windowItem, item}) {
                 onClick={(e) => {
                     createLink(e)
                 }}
-                onBlur={()=>{changeItemProperty(
-                    windowItem,
-                    windowData,
-                    setWindowData,
-                    item,
-                    "text",
-                    header.current.innerText
-                )}}
+                onBlur={() => {
+                    changeItemProperty(
+                        windowItem,
+                        windowData,
+                        setWindowData,
+                        item,
+                        "text",
+                        header.current.innerText
+                    )
+                }}
                 textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
                 margin={'0'}
                 suppressContentEditableWarning={true}
-            >{item["text"]}</Header1>
+            ><p>{item["text"]}</p></Header1>
         </div>
     )
 }

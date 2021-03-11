@@ -13,5 +13,11 @@ code {
     monospace;
 }
 
+.selected{
+    background: #2267cb;
+    color: white;
+    user-select: none;
+}
+
 
 
