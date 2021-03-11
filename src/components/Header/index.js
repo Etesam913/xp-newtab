@@ -1,67 +1,63 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useRef} from 'react'
 import {Header1} from "../../styles/Headers";
-import {convertJustifyContentToTextAlign, getDesiredItem} from "../../functions/helpers";
+import {convertJustifyContentToTextAlign, getSelectionText} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
 import {FlexContainer} from "../../styles/Layout";
-import {TextAlignOptions} from "../ComponentOptions";
+import {TextAlignOptions, LinkOptions} from "../ComponentOptions";
 import {changeItemProperty} from "../Window/helper";
 
 
 function Header({windowItem, item}) {
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext);
+    const [isTextSelected, setIsTextSelected] = useState(false);
+    const header = useRef(null);
 
-    function handleChange(e) {
-        const windowId = windowItem["id"];
-        const textValue = e.target.value;
-        let newWindowData = [...windowData];
-        // Gets the current window
-        let desiredWindow = getDesiredItem(windowData, windowId);
-        const items = desiredWindow["items"];
-        // Gets the current item
-        let desiredItem = getDesiredItem(items, item["id"]);
-        // Changes text of the item to match the new text
-        desiredItem["text"] = textValue;
-        newWindowData['items'] = items;
-        setWindowData(newWindowData);
+    function createLink(e) {
+        if (getSelectionText() !== "") {
+            setIsTextSelected(true)
+
+        } else {
+            setIsTextSelected(false)
+        }
+    }
+
+    function handleOptions(){
+        if(isMenuShowing){
+            if(isTextSelected)
+                return <LinkOptions setIsTextSelected={setIsTextSelected}/>
+            else
+                return <TextAlignOptions item={item} windowItem={windowItem}/>
+        }
     }
 
     return (
-        <>
-            {isMenuShowing
-                ?
-                <div>
-                    <FlexContainer margin={'0 0 .5rem 0'}>
-                        <TextAlignOptions item={item} windowItem={windowItem}/>
-                    </FlexContainer>
-                    <Header1
-                        as={'input'}
-                        width={'100%'}
-                        value={item["text"]}
-                        textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
-                        margin={'0'}
-                        onChange={(e) => {
-                            changeItemProperty(
-                                windowItem,
-                                windowData,
-                                setWindowData,
-                                item,
-                                "text",
-                                e.target.value
-                            )
-                        }}
-                    />
-                </div>
-
-                :
-                <Header1
-                    width={'100%'}
-                    margin={'0'}
-                    textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
-                >
-                    {item["text"]}
-                </Header1>
-            }
-        </>
+        <div>
+            <FlexContainer margin={'0 0 .5rem 0'}>
+                {handleOptions()}
+            </FlexContainer>
+            <Header1
+                ref={header}
+                tabIndex={0}
+                key={"header-" + windowItem["id"] + "-" + item["id"]}
+                as={'h1'}
+                contentEditable={isMenuShowing ? 'true' : 'false'}
+                width={'100%'}
+                onClick={(e) => {
+                    createLink(e)
+                }}
+                onBlur={()=>{changeItemProperty(
+                    windowItem,
+                    windowData,
+                    setWindowData,
+                    item,
+                    "text",
+                    header.current.innerText
+                )}}
+                textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+                margin={'0'}
+                suppressContentEditableWarning={true}
+            >{item["text"]}</Header1>
+        </div>
     )
 }
 

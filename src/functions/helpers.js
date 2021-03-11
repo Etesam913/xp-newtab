@@ -41,7 +41,7 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
     }
 }
 
-export function getDesiredItem(windowData, id){
+export function getDesiredItem(windowData, id) {
     for (let i = 0; i < windowData.length; i++) {
         if (windowData[i]["id"] === id) {
             return windowData[i];
@@ -52,27 +52,43 @@ export function getDesiredItem(windowData, id){
 }
 
 // Use this for centering text elements
-export function convertJustifyContentToTextAlign(valueToConvert){
-    if(valueToConvert === 'flex-start'){
+export function convertJustifyContentToTextAlign(valueToConvert) {
+    if (valueToConvert === 'flex-start') {
         return "left"
-    }
-    else if(valueToConvert === 'center'){
+    } else if (valueToConvert === 'center') {
         return "center"
-    }
-    else if(valueToConvert === 'flex-end'){
+    } else if (valueToConvert === 'flex-end') {
         return "right"
     }
 }
 
-export function convertTextAlignToJustifyContent(valueToConvert){
-    if(valueToConvert === 'left'){
+export function convertTextAlignToJustifyContent(valueToConvert) {
+    if (valueToConvert === 'left') {
         return "flex-start"
-    }
-    else if(valueToConvert === 'center'){
+    } else if (valueToConvert === 'center') {
         return "center"
-    }
-    else if(valueToConvert === 'right'){
+    } else if (valueToConvert === 'right') {
         return "flex-end"
     }
 }
+
+export function getSelectionText() {
+    if (window.getSelection) {
+        try {
+            let activeElement = document.activeElement;
+            if (activeElement && activeElement.value) {
+                // firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=85686
+                return activeElement.value.substring(activeElement.selectionStart, activeElement.selectionEnd);
+            } else {
+                return window.getSelection().toString();
+            }
+
+        } catch (e) {
+        }
+    } else if (document.selection && document.selection.type !== "Control") {
+        // For IE
+        return document.selection.createRange().text;
+    }
+}
+
 

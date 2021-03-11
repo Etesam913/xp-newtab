@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {AppContext} from "../../Contexts";
 import {changeItemProperty} from "../Window/helper";
 import {convertJustifyContentToTextAlign, convertTextAlignToJustifyContent} from "../../functions/helpers";
+import {FlexContainer} from "../../styles/Layout";
 
 
 export function TextAlignOptions({windowItem, item}) {
@@ -10,7 +11,7 @@ export function TextAlignOptions({windowItem, item}) {
 
     return (
         <div>
-            <OptionHeader>Text Align</OptionHeader>
+            <OptionTitle>Text Align: </OptionTitle>
             <select
                 onChange={(e) =>
                     changeItemProperty(
@@ -32,9 +33,21 @@ export function TextAlignOptions({windowItem, item}) {
     );
 }
 
-const OptionHeader = styled.h2`
-  font-weight: normal;
-  font-size: 0.75rem;
-  text-align: center;
-  margin: 0 0 0.25rem;
+const OptionTitle = styled.span`
+  margin-right: 0.25rem;
+  white-space: nowrap;
+  
+`;
+
+export function LinkOptions({setIsTextSelected}){
+    return(
+        <FlexContainer width={"100%"}>
+            <OptionTitle as={"label"} htmlFor={"linkInput"}>Create Link:</OptionTitle>
+            <LinkInput id={"linkInput"} onFocus={()=>{setIsTextSelected(true)}} placeholder={"Paste url to website here"}/>
+        </FlexContainer>
+    );
+}
+
+const LinkInput = styled.input`
+  width: 100%;
 `;

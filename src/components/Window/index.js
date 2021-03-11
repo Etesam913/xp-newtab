@@ -79,7 +79,7 @@ function Window({width, windowItem, windowId}) {
 
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
-  width: ${(props) => (props.width ? props.width : '18.75rem')};
+  width: ${(props) => (props.width ? props.width : '20rem')};
   min-width: 15rem;
   min-height: 4rem;
   max-width: 60rem;

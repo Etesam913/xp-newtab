@@ -23,21 +23,6 @@ function SettingsWindow({
         localStorage.setItem("backgroundImage", backgroundImage);
     }, [backgroundColor, backgroundImage]);
 
-    function handleColorInputEnter(e) {
-        if (e.keyCode === 13) setBackgroundColor(e.target.value)
-    }
-
-    function handleImageInputEnter(e) {
-        if (e.keyCode === 13) setBackgroundImage(e.target.value)
-    }
-
-    function handleKeyDown(e) {
-        // Do not allow open and closed parenthesis
-        if (e.which === 40 || e.which === 41) {
-            e.preventDefault();
-        }
-    }
-
     return (
         <div>
             <Window className={'window'}>

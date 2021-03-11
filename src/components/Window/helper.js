@@ -31,7 +31,6 @@ export function renderComponents(componentsArr, windowItem) {
             if (item["componentName"] === "Header") {
                 return (
                     <Header
-                        key={"header-" + windowItem['id'] + "-" + index}
                         windowItem={windowItem}
                         item={item}
                         itemId={item["id"]}
@@ -40,7 +39,7 @@ export function renderComponents(componentsArr, windowItem) {
             }
         }
 
-        return <ComponentItem>{getComponent()}</ComponentItem>
+        return <ComponentItem key={"item-" + windowItem['id'] + "-" + index}>{getComponent()}</ComponentItem>
     })
     return <ComponentList>{components}</ComponentList>
 }
