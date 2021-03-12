@@ -15,112 +15,50 @@ function Header({windowItem, item}) {
     const [selectionObj, setSelectionObj] = useState(null);
     const header = useRef(null);
 
-    // TODO: Pressing Enter in a header should make a new header with the content to the right of the cursor.
     function createLink(e) {
         // Can only select if nothing is currently selected.
         if (getSelectionText() !== "" && document.getElementsByClassName("selected").length === 0) {
             const selection = window.getSelection();
-            const htmlToInsert = '<span class="selected">' + selection + '</span>';
-            const text = header.current.innerHTML;
-
             const range = selection.getRangeAt(0);
             const parentTag = range.commonAncestorContainer.parentElement.tagName
+
             // Selection styling should only occur when the selection is not already in an a tag.
             if (parentTag !== "A") {
-                //header.current.innerHTML = text.replace(selection, htmlToInsert);
                 setIsTextSelected(true)
                 setSelectionObj(selection)
             } else {
                 setIsTextSelected(false)
                 setShowLinkInput(false)
             }
-            // WHen you click without selecting anything
         } else {
             setIsTextSelected(false);
-            setShowLinkInput(false)
-            // Removes the selection class
-            const paragraphText = header.current.firstChild;
-
-            const paragraphChildren = document.getElementsByClassName("selected")
-            let changesArr = []
-            const paragraphChildrenLength = paragraphChildren.length
-            for (let i = 0; i < paragraphChildrenLength; i++) {
-                console.log(i)
-                const parent = paragraphChildren[i].parentElement;
-                const text = paragraphChildren[i].textContent;
-                changesArr.push([parent, paragraphChildren[i]])
-                /*parent.replaceChild(document.createTextNode(text), paragraphChildren[i])*/
-            }
-            for (let i = 0; i < changesArr.length; i++) {
-                const parent = changesArr[i][0]
-                const child = changesArr[i][1]
-                parent.replaceChild(document.createTextNode(child.textContent), child);
-            }
-
-            /*for (let i = 0; i < paragraphChildren.length; i++) {
-                if (paragraphChildren[i].classList && paragraphChildren[i].classList.contains("selected")) {
-                    const text = paragraphChildren[i].textContent;
-                    paragraphText.replaceChild(document.createTextNode(text), paragraphChildren[i])
-                }
-            }*/
-        }
-    }
-
-    function replaceSelectionWithNode(node) {
-        let range, html;
-        if (window.getSelection && window.getSelection().getRangeAt) {
-            range = window.getSelection().getRangeAt(0);
-            range.deleteContents();
-            range.insertNode(node);
-        } else if (document.selection && document.selection.createRange) {
-            range = document.selection.createRange();
-            html = (node.nodeType === 3) ? node.data : node.outerHTML;
-            range.pasteHTML(html);
-        }
-    }
-
-    function highlightText(selection){
-        if(selection){
-            let elem = document.createElement("span");
-            elem.className = "selected";
-            elem.appendChild(document.createTextNode(selection))
-
-            /*const htmlToInsert = '<span class="selected">' + selection + '</span>';
-            const text = header.current.innerHTML;*/
-            const range = selection.getRangeAt(0);
-            const parent = range.commonAncestorContainer;
-            const grandParent = parent.parentElement;
-            if(grandParent.tagName !== "A"){
-                replaceSelectionWithNode(elem)
-                /*header.current.innerHTML = text.replace(selection, htmlToInsert);*/
+            setShowLinkInput(false);
+            // Removes the selection class if it exists
+            const selectedElem = document.getElementsByClassName("selected")[0]
+            if (selectedElem) {
+                const itemToReplaceWith = document.createTextNode(selectedElem.textContent);
+                const parent = selectedElem.parentNode;
+                parent.replaceChild(itemToReplaceWith, selectedElem);
             }
         }
     }
+
 
     function handleOptions() {
         if (isMenuShowing) {
-            if (isTextSelected && !showLinkInput) {
+            if (isTextSelected) {
                 return (
-                    <button onClick={() => {
-                        setShowLinkInput(true);
-                        highlightText(selectionObj)
-                    }}>
-                        Create Link
-                    </button>
-                )
-            } else if (isTextSelected && showLinkInput) {
-                return(
-                    <FlexContainer width={"100%"}>
-                        <LinkInput placeholder="Paste website url here" />
-                        <button> Done</button>
-                    </FlexContainer>
-                );
-
-            }
-
-            /*<LinkOptions setIsTextSelected={setIsTextSelected} header={header}/>*/
-            else
+                    <LinkOptions
+                        isTextSelected={isTextSelected}
+                        setIsTextSelected={setIsTextSelected}
+                        selectionObj={selectionObj}
+                        header={header}
+                        showLinkInput={showLinkInput}
+                        setShowLinkInput={setShowLinkInput}
+                    />)
+            } else {
                 return <TextAlignOptions item={item} windowItem={windowItem}/>
+            }
         }
     }
 
@@ -138,18 +76,8 @@ function Header({windowItem, item}) {
     function handleKeyDown(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            /*const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const parent = range.commonAncestorContainer.parentElement
-            if (parent.tagName !== 'A') {
-                const caretPos = getCaretPosition(parent, range.commonAncestorContainer, range.endOffset);
-                const textToRightOfCaret = parent.textContent.substring(caretPos, parent.textContent.length);
-                const textToLeftOfCaret = parent.textContent.substring(0, caretPos);
-                console.log(textToLeftOfCaret)
-                console.log(textToRightOfCaret)
-            }*/
-
-            /*console.log(range.endOffset,)*/
+        } else {
+            setIsTextSelected(false)
         }
     }
 
@@ -198,16 +126,11 @@ const HeaderComponent = styled.input`
   :hover {
     outline: ${props => !props.isMenuShowing && '0px'};
   }
+
   p::selection {
     background-color: #2267cb;
     color: white;
   }
 `;
-
-const LinkInput = styled.input`
-  margin-right: 0.25rem;
-  width: 100%;
-`
-
 
 export default Header

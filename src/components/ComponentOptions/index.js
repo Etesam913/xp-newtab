@@ -1,7 +1,7 @@
 import React, {useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {AppContext} from "../../Contexts";
-import {changeItemProperty} from "../Window/helper";
+import {changeItemProperty, highlightText} from "../Window/helper";
 import {convertJustifyContentToTextAlign, convertTextAlignToJustifyContent} from "../../functions/helpers";
 import {FlexContainer} from "../../styles/Layout";
 
@@ -39,44 +39,60 @@ const OptionTitle = styled.span`
 
 `;
 
-export function LinkOptions({setIsTextSelected, header}) {
+export function LinkOptions({
+                                isTextSelected,
+                                setIsTextSelected,
+                                selectionObj,
+                                showLinkInput,
+                                setShowLinkInput
+                            }) {
+
     const linkInput = useRef(null)
 
-    function handleClick() {
-        // TODO: Fix problem where selecting one characters that is present twice or more selects the first occurrence always
-        if (linkInput.current.value !== "") {
-            setIsTextSelected(false);
-            const paragraphText = header.current.firstChild;
-            const paragraphChildren = paragraphText.childNodes;
-            for (let i = 0; i < paragraphChildren.length; i++) {
-                if (paragraphChildren[i].classList && paragraphChildren[i].classList.contains("selected")) {
-                    const elementToReplace = document.createElement("a");
-                    elementToReplace.href = linkInput.current.value;
-                    elementToReplace.innerText = paragraphChildren[i].innerText;
-                    paragraphText.replaceChild(elementToReplace, paragraphChildren[i])
-                }
-            }
+    function convertSelectionToLink() {
+        if (linkInput.current.value.trim() !== "") {
+            const selectionElem = document.getElementsByClassName("selected")[0];
+            const parent = selectionElem.parentElement;
+            const childToReplaceWith = document.createElement('a');
+            childToReplaceWith.href = linkInput.current.value;
+            childToReplaceWith.innerText = selectionElem.innerText;
+            parent.replaceChild(childToReplaceWith, selectionElem);
         }
+    }
 
+    function renderOption() {
+        if (isTextSelected && !showLinkInput) {
+            return (
+                <button onClick={() => {
+                    setShowLinkInput(true);
+                    highlightText(selectionObj)
+                }}>
+                    Create Link
+                </button>
+            )
+        } else if (isTextSelected && showLinkInput) {
+            return (
+                <FlexContainer width={"100%"}>
+                    <LinkInput ref={linkInput} placeholder="Paste website url here"/>
+                    <button onClick={() => {
+                        setShowLinkInput(false);
+                        setIsTextSelected(false);
+                        convertSelectionToLink();
+                    }}>Done
+                    </button>
+                </FlexContainer>
+            );
+        }
     }
 
     return (
         <FlexContainer width={"100%"}>
-            <LinkInput
-                ref={linkInput}
-                placeholder={"Paste url to website here"}
-                id={"linkInput"}
-            />
-            <LinkButton onClick={handleClick}>Create Link</LinkButton>
+            {renderOption()}
         </FlexContainer>
     );
 }
 
 const LinkInput = styled.input`
   width: 100%;
+  margin-right: 0.25rem;
 `;
-
-const LinkButton = styled.button`
-  width: 110px;
-  margin-left: 0.35rem;
-`

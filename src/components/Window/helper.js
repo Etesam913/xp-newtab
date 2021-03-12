@@ -117,5 +117,35 @@ export function changeItemProperty(windowItem, windowData, setWindowData, item, 
     desiredItem[propertyName] = propertyValue;
     newWindowData['items'] = items;
     setWindowData(newWindowData);
-    console.log(newWindowData)
 }
+
+function replaceSelectionWithNode(node) {
+    let range, html;
+    if (window.getSelection && window.getSelection().getRangeAt) {
+        range = window.getSelection().getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(node);
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        html = (node.nodeType === 3) ? node.data : node.outerHTML;
+        range.pasteHTML(html);
+    }
+}
+
+export function highlightText(selection){
+    if(selection){
+        let elem = document.createElement("span");
+        elem.className = "selected";
+        elem.appendChild(document.createTextNode(selection))
+
+        /*const htmlToInsert = '<span class="selected">' + selection + '</span>';
+        const text = header.current.innerHTML;*/
+        const range = selection.getRangeAt(0);
+        const parent = range.commonAncestorContainer;
+        const grandParent = parent.parentElement;
+        if(grandParent.tagName !== "A"){
+            replaceSelectionWithNode(elem)
+        }
+    }
+}
+
