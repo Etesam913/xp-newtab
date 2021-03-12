@@ -8,7 +8,8 @@ export const Header1 = styled.h1`
   text-align: ${props => props.textAlign ? props.textAlign : 'left'};
   display: ${props => props.display};
   justify-content: ${props => props.justifyContent};
-
+  background: ${props=>props.background};
+  border: ${props=>props.border};
 `;
 
 export const Header2 = styled.h2`
