@@ -4,6 +4,7 @@ export const TopRight = styled.div`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 3;
 `;
 
 export const FlexContainer = styled.div`

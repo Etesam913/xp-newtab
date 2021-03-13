@@ -62,6 +62,8 @@ const ComponentItem = styled.li`
   }
 `
 
+
+// For radio buttons
 export function getSelectedComponent(componentsParent) {
     const components = componentsParent.current.children;
     // Starts at 1 to skip the "Select One" text. Ends at components.length-1 to skip the add component button
@@ -75,6 +77,15 @@ export function getSelectedComponent(componentsParent) {
         }
     }
     return null;
+}
+
+export function setWindowProperty(windowData, setWindowData, windowItem, propertyName, propertyValue){
+    const tempData = [...windowData];
+    const itemToInsert = {...windowItem};
+    itemToInsert[propertyName] = propertyValue;
+    replaceDesiredWindowItem(tempData, itemToInsert);
+    console.log(tempData);
+    setWindowData(tempData);
 }
 
 export function updatePosition(windowRef, windowItem, windowData, setWindowData) {
@@ -119,6 +130,7 @@ export function changeItemProperty(windowItem, windowData, setWindowData, item, 
     setWindowData(newWindowData);
 }
 
+// Good for adding selection class, bolding, underlining, etc..
 function replaceSelectionWithNode(node) {
     let range, html;
     if (window.getSelection && window.getSelection().getRangeAt) {

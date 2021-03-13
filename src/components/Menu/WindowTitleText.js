@@ -1,23 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
-import {updateWindowTitle, handleEnter} from './helper';
+import {handleEnter} from './helper';
 import {setHidden} from "../Window/helper";
+import {AppContext} from "../../Contexts";
 
-function WindowTitleText({text, id, windowData, windowItem, disabled, setWindowData}) {
+function WindowTitleText({windowItem, disabled}) {
     const [isEditing, setIsEditing] = useState(false);
+    const {windowData, setWindowData} = useContext(AppContext);
 
+    // TODO isEditing should be set to true on double click
     return (
         <li>
             {isEditing ? (
                 <WindowInput
-                    defaultValue={text}
+                    defaultValue={windowItem["windowTitle"]}
                     autoFocus
                     onKeyDown={(e) => {
-                        handleEnter(e, id, windowData, setWindowData, setIsEditing);
+                        handleEnter(
+                            e,
+                            windowData,
+                            setWindowData,
+                            windowItem,
+                            "windowTitle",
+                            e.target.value,
+                            setIsEditing
+                        );
+
                     }}
                     onBlur={(e) => {
                         setIsEditing(false);
-                        updateWindowTitle(e.target.value, id, windowData, setWindowData);
                     }}
                 />
             ) : (
@@ -28,7 +39,7 @@ function WindowTitleText({text, id, windowData, windowItem, disabled, setWindowD
                         disabled && setHidden(windowData, setWindowData, windowItem, false)
                     }}
                 >
-                    {text ? text : '*ERROR NO TEXT SHOWN*'}
+                    {windowItem["windowTitle"] === '' ? "*Empty*" : windowItem["windowTitle"]}
                 </WindowTitle>
             )}
         </li>
@@ -36,7 +47,7 @@ function WindowTitleText({text, id, windowData, windowItem, disabled, setWindowD
 }
 
 const WindowTitle = styled.p`
-  cursor: ${props=>props.disabled ? "pointer" : "text"};
+  cursor: ${props => props.disabled ? "pointer" : "text"};
   margin: 0.35rem 0 !important;
   color: ${props => props.disabled ? 'gray' : 'black'};
   font-size: 0.75rem;
@@ -45,7 +56,7 @@ const WindowTitle = styled.p`
 const WindowInput = styled.input`
   width: 5.5rem;
   height: 0.75rem;
-  margin-top: 0rem;
+  margin-top: 0;
 `;
 
 export default WindowTitleText;

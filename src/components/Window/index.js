@@ -1,7 +1,14 @@
 import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
-import {handleComponentCreation, updatePosition, renderComponents, updateWindowTitle, setHidden} from "./helper";
+import {
+    handleComponentCreation,
+    updatePosition,
+    renderComponents,
+    updateWindowTitle,
+    setHidden,
+    setWindowProperty
+} from "./helper";
 import {AppContext} from "../../Contexts";
 
 function Window({width, windowItem, windowId}) {
@@ -27,9 +34,15 @@ function Window({width, windowItem, windowId}) {
                 <TitleBar className='title-bar'>
                     {isMenuShowing
                         ?
-                        <TitleInput className='title-bar-text' defaultValue={windowItem['windowTitle']}
+                        <TitleInput className='title-bar-text' value={windowItem['windowTitle']}
                                     onChange={(e) => {
-                                        updateWindowTitle(e, windowData, setWindowData, windowItem)
+                                        setWindowProperty(
+                                            windowData,
+                                            setWindowData,
+                                            windowItem,
+                                            "windowTitle",
+                                            e.target.value
+                                        )
                                     }}
                         />
                         :
@@ -79,14 +92,9 @@ function Window({width, windowItem, windowId}) {
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : '20rem')};
-  min-width: 15rem;
-  min-height: 4rem;
-  max-width: 60rem;
-  max-height: 40rem;
+  min-width: 25rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
-  overflow: auto;
   position: absolute;
-  transform-origin: 0% 50%;
 `;
 
 const TitleBar = styled.div`

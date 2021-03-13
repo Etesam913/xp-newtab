@@ -1,7 +1,7 @@
 import React, {useContext, useState, useRef} from 'react'
 import styled from 'styled-components';
 import {Header1} from "../../styles/Headers";
-import {convertJustifyContentToTextAlign, getSelectionText} from "../../functions/helpers";
+import {convertJustifyContentToTextAlign, getSelectionText, getDesiredItem} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
 import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions, LinkOptions} from "../ComponentOptions";
@@ -81,43 +81,58 @@ function Header({windowItem, item}) {
         }
     }
 
+    function handleDelete(windowData, id) {
+        const currentWindow = getDesiredItem(windowData, id);
+        const tempItem = {...windowItem};
+        tempItem["items"] = tempItem["items"].filter(item => item.id !== id);
+
+
+    }
+
     return (
         <div>
             <FlexContainer margin={isMenuShowing ? '0 0 .5rem 0' : '0'}>
                 {handleOptions()}
             </FlexContainer>
-            <HeaderComponent
-                isMenuShowing={isMenuShowing}
-                ref={header}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                    handleKeyDown(e)
-                }}
-                key={"header-" + windowItem["id"] + "-" + item["id"]}
-                as={Header1}
-                contentEditable={isMenuShowing ? 'true' : 'false'}
-                width={'100%'}
-                background={isMenuShowing ? 'white' : 'transparent'}
-                border={isMenuShowing ? '1px solid #cccccc' : "0px"}
-                onClick={(e) => {
-                    createLink(e)
-                }}
-                onBlur={() => {
-                    changeItemProperty(
-                        windowItem,
-                        windowData,
-                        setWindowData,
-                        item,
-                        "text",
-                        header.current.innerText
-                    )
-                }}
-                textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
-                margin={'0'}
-                suppressContentEditableWarning={true}
-            >
-                <p>{item["text"]}</p>
-            </HeaderComponent>
+            <FlexContainer>
+                <HeaderComponent
+                    isMenuShowing={isMenuShowing}
+                    ref={header}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        handleKeyDown(e)
+                    }}
+                    key={"header-" + windowItem["id"] + "-" + item["id"]}
+                    as={Header1}
+                    contentEditable={isMenuShowing ? 'true' : 'false'}
+                    width={'100%'}
+                    background={isMenuShowing ? 'white' : 'transparent'}
+                    border={isMenuShowing ? '1px solid #cccccc' : "0px"}
+                    onClick={(e) => {
+                        createLink(e)
+                    }}
+                    onBlur={() => {
+                        changeItemProperty(
+                            windowItem,
+                            windowData,
+                            setWindowData,
+                            item,
+                            "text",
+                            header.current.innerText
+                        )
+                    }}
+                    textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+                    margin={'0'}
+                    suppressContentEditableWarning={true}
+                >
+                    <p>{item["text"]}</p>
+                </HeaderComponent>
+                {isMenuShowing && <DeleteButton onClick={() => {
+                    handleDelete(windowData, item["id"])
+                }}> Delete </DeleteButton>}
+
+            </FlexContainer>
+
         </div>
     )
 }
@@ -131,6 +146,16 @@ const HeaderComponent = styled.input`
     background-color: #2267cb;
     color: white;
   }
+
+  margin-right: 0.4rem;
+  word-wrap: break-word;
+  width: 81.8%;
+`;
+
+const DeleteButton = styled.button`
+  min-width: 55px;
+  padding: 0 6px;
+  text-align: center;
 `;
 
 export default Header

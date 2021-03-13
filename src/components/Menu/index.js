@@ -6,14 +6,10 @@ import 'xp.css/dist/XP.css';
 
 function Menu({isMenuShowing, setIsMenuShowing, windowData, setWindowData}) {
     const windowListItems = windowData.map((item, index) => {
-        const windowTitle = item['windowTitle'];
-        const windowId = item['id'];
         return (
             <WindowTitleText
                 key={`window-title-${index}`}
-                text={windowTitle}
                 windowItem={item}
-                id={windowId}
                 disabled={item["hidden"]}
                 windowData={windowData}
                 setWindowData={setWindowData}
@@ -68,7 +64,7 @@ const CloseButton = styled.button``;
 const MenuWrapper = styled.ul`
   position: absolute;
   left: 0;
-  z-index: 2;
+  z-index: 4;
   height: 100vh;
   display: ${(props) => (props.show ? 'flex !important' : 'none !important')};
   flex-direction: column;

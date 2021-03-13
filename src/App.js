@@ -23,6 +23,7 @@ function App() {
             {id: 1, windowTitle: 'Wowza', xCoord: 0, yCoord: 0, items: []},
         ])*/
         localStorage.setItem("windowData", JSON.stringify(windowData));
+        console.log(windowData)
     }, [windowData]);
 
     return (
@@ -113,6 +114,7 @@ const ShowMenuButton = styled.button`
   position: absolute;
   left: 0.75rem;
   top: 0.75rem;
+  z-index: 3;
 `;
 
 export default App;

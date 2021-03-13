@@ -41,6 +41,7 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
     }
 }
 
+// Gets window based off of id
 export function getDesiredItem(windowData, id) {
     for (let i = 0; i < windowData.length; i++) {
         if (windowData[i]["id"] === id) {
