@@ -3,10 +3,7 @@ import styled from 'styled-components';
 import Draggable from 'react-draggable'
 import {
     handleComponentCreation,
-    updatePosition,
     renderComponents,
-    updateWindowTitle,
-    setHidden,
     setWindowProperty
 } from "./helper";
 import {AppContext} from "../../Contexts";
@@ -22,7 +19,13 @@ function Window({width, windowItem, windowId}) {
             bounds="body"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
             onStop={() => {
-                updatePosition(windowRef, windowItem, windowData, setWindowData)
+                setWindowProperty(
+                    windowData,
+                    setWindowData,
+                    windowItem,
+                    "position",
+                    windowRef
+                )
             }}
         >
             <WindowContainer
@@ -52,9 +55,10 @@ function Window({width, windowItem, windowId}) {
                     }
 
                     <div className='title-bar-controls'>
-                        <button aria-label='Minimize' onClick={() => {
-                            setHidden(windowData, setWindowData, windowItem, true)
-                        }}/>
+                        <button aria-label='Minimize'
+                                onClick={() => {
+                                    setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
+                                }}/>
                         <button aria-label='Close'/>
                     </div>
                 </TitleBar>

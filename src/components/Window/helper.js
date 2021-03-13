@@ -18,7 +18,12 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
             maxId = newItem['items'][i]['id']
     }
     if (componentToAdd === "Header") {
-        newItem['items'].push({id: maxId + 1, componentName: "Header", text: "Header Text", justifyContent: 'flex-start'});
+        newItem['items'].push({
+            id: maxId + 1,
+            componentName: "Header",
+            text: "Header Text",
+            justifyContent: 'flex-start'
+        });
         replaceDesiredWindowItem(tempData, newItem);
         setWindowData(tempData)
         console.log(tempData)
@@ -79,45 +84,32 @@ export function getSelectedComponent(componentsParent) {
     return null;
 }
 
-export function setWindowProperty(windowData, setWindowData, windowItem, propertyName, propertyValue){
+export function setWindowProperty(
+    windowData,
+    setWindowData,
+    windowItem,
+    propertyName,
+    propertyValue,
+) {
     const tempData = [...windowData];
     const itemToInsert = {...windowItem};
-    itemToInsert[propertyName] = propertyValue;
+    if (propertyName === "position") {
+        // Property value is the window ref in this case
+        const positions = getTranslateXY(propertyValue.current)
+        const xPos = positions["translateX"];
+        const yPos = positions["translateY"];
+        itemToInsert["xCoord"] = xPos
+        itemToInsert["yCoord"] = yPos
+    } else {
+        itemToInsert[propertyName] = propertyValue;
+    }
+
     replaceDesiredWindowItem(tempData, itemToInsert);
     console.log(tempData);
     setWindowData(tempData);
 }
 
-export function updatePosition(windowRef, windowItem, windowData, setWindowData) {
-    const positions = getTranslateXY(windowRef.current)
-    const xPos = positions["translateX"];
-    const yPos = positions["translateY"];
-    let itemToInsert = {...windowItem};
-    itemToInsert["xCoord"] = xPos
-    itemToInsert["yCoord"] = yPos
-    let tempData = [...windowData];
-    replaceDesiredWindowItem(tempData, itemToInsert);
-    setWindowData(tempData)
-}
-
-export function updateWindowTitle(e, windowData, setWindowData, windowItem) {
-    const currentText = e.target.value;
-    const tempData = [...windowData];
-    const itemToInsert = {...windowItem};
-    itemToInsert["windowTitle"] = currentText;
-    replaceDesiredWindowItem(tempData, itemToInsert);
-    setWindowData(tempData);
-}
-
-export function setHidden(windowData, setWindowData, windowItem, valToSet) {
-    let tempData = [...windowData];
-    let newWindowItem = {...windowItem};
-    newWindowItem["hidden"] = valToSet;
-    replaceDesiredWindowItem(tempData, newWindowItem);
-    setWindowData(tempData);
-}
-
-export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue){
+export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue) {
     const windowId = windowItem["id"];
     let newWindowData = [...windowData];
     // Gets the current window
@@ -144,8 +136,8 @@ function replaceSelectionWithNode(node) {
     }
 }
 
-export function highlightText(selection){
-    if(selection){
+export function highlightText(selection) {
+    if (selection) {
         let elem = document.createElement("span");
         elem.className = "selected";
         elem.appendChild(document.createTextNode(selection))
@@ -155,7 +147,7 @@ export function highlightText(selection){
         const range = selection.getRangeAt(0);
         const parent = range.commonAncestorContainer;
         const grandParent = parent.parentElement;
-        if(grandParent.tagName !== "A"){
+        if (grandParent.tagName !== "A") {
             replaceSelectionWithNode(elem)
         }
     }
