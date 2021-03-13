@@ -15,6 +15,9 @@
     "web-vitals": "^1.0.1",
     "xp.css": "^0.2.4"
   },
+  "prettier": {
+    "bracketSpacing": true
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",

@@ -1,12 +1,17 @@
-import React, {useRef} from 'react';
+import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
-import {getSelectedComponent, updatePosition} from "./helper";
+import {
+    handleComponentCreation,
+    renderComponents,
+    setWindowProperty
+} from "./helper";
+import {AppContext} from "../../Contexts";
 
-function Window({width, isMenuShowing, windowItem, windowData, setWindowData, windowId}) {
+function Window({width, windowItem, windowId}) {
     const windowRef = useRef(null);
     const componentsPanel = useRef(null);
-
+    const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
     return (
         <Draggable
             handle='.title-bar'
@@ -14,29 +19,58 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
             bounds="body"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
             onStop={() => {
-                updatePosition(windowRef, windowItem, windowData, setWindowData)
-            }}>
+                setWindowProperty(
+                    windowData,
+                    setWindowData,
+                    windowItem,
+                    "position",
+                    windowRef
+                )
+            }}
+        >
             <WindowContainer
                 ref={windowRef}
                 width={width}
                 className='window'
+                hidden={windowItem["hidden"]}
             >
                 <TitleBar className='title-bar'>
-                    <div className='title-bar-text'>
-                        {windowItem ? windowItem['windowTitle'] : 'Insert Title Here'}
-                    </div>
+                    {isMenuShowing
+                        ?
+                        <TitleInput className='title-bar-text' value={windowItem['windowTitle']}
+                                    onChange={(e) => {
+                                        setWindowProperty(
+                                            windowData,
+                                            setWindowData,
+                                            windowItem,
+                                            "windowTitle",
+                                            e.target.value
+                                        )
+                                    }}
+                        />
+                        :
+                        <div className='title-bar-text'>
+                            {windowItem['windowTitle']}
+                        </div>
+                    }
+
                     <div className='title-bar-controls'>
+                        <button aria-label='Minimize'
+                                onClick={() => {
+                                    setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
+                                }}/>
+                        <button aria-label='Maximize'/>
                         <button aria-label='Close'/>
                     </div>
                 </TitleBar>
 
                 <div className='window-body'>
                     <article style={{height: '100%'}} role="tabpanel">
-                        <p>test</p>
+                        {renderComponents(windowItem['items'], windowItem)}
 
                         {isMenuShowing &&
                         <ComponentsPanel ref={componentsPanel}>
-                            <div className="field-row">Select one:</div>
+                            <div className="field-row">Select one component to add:</div>
                             <div className="field-row">
                                 <input id={"header" + windowId} type="radio" name="radio-button"/>
                                 <label htmlFor={"header" + windowId}>Header</label>
@@ -48,13 +82,11 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
                             <AddComponent
                                 as={'button'}
                                 onClick={() => {
-                                    console.log(getSelectedComponent(componentsPanel))
+                                    handleComponentCreation(componentsPanel, windowData, setWindowData, windowItem);
                                 }}>
                                 Add Component
                             </AddComponent>
                         </ComponentsPanel>}
-
-
                     </article>
                 </div>
             </WindowContainer>
@@ -63,20 +95,23 @@ function Window({width, isMenuShowing, windowItem, windowData, setWindowData, wi
 }
 
 const WindowContainer = styled.div`
-  width: ${(props) => (props.width ? props.width : '18.75rem')};
-  min-width: 15rem;
-  min-height: 4rem;
-  max-width: 60rem;
-  max-height: 40rem;
+  display: ${props => props.hidden && "none"};
+  width: ${(props) => (props.width ? props.width : '20rem')};
+  min-width: 25rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
-  overflow: auto;
   position: absolute;
-  transform-origin: 0% 50%;
 `;
 
 const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
 `
+const TitleInput = styled.input`
+  color: black !important;
+  font-family: 'Trebuchet MS';
+  font-weight: 700;
+  font-size: 13px;
+  width: 100%;
+`;
 
 const ComponentsPanel = styled.fieldset`
   margin-top: 0.75rem;
@@ -86,3 +121,4 @@ const AddComponent = styled(ComponentsPanel)`
 `;
 
 export default Window;
+

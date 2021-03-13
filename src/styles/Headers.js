@@ -4,6 +4,12 @@ export const Header1 = styled.h1`
   margin: ${(props) => (props.margin ? props.margin : '1rem 0')};
   font-size: 1.5em;
   font-weight: normal;
+  width: ${props => props.width};
+  text-align: ${props => props.textAlign ? props.textAlign : 'left'};
+  display: ${props => props.display};
+  justify-content: ${props => props.justifyContent};
+  background: ${props=>props.background};
+  border: ${props=>props.border};
 `;
 
 export const Header2 = styled.h2`
