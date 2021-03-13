@@ -44,9 +44,12 @@ export function LinkOptions({
                                 setIsTextSelected,
                                 selectionObj,
                                 showLinkInput,
-                                setShowLinkInput
+                                setShowLinkInput,
+                                windowItem,
+                                item,
+                                componentRef
                             }) {
-
+    const {windowData, setWindowData} = useContext(AppContext)
     const linkInput = useRef(null)
 
     function convertSelectionToLink() {
@@ -57,6 +60,22 @@ export function LinkOptions({
             childToReplaceWith.href = linkInput.current.value;
             childToReplaceWith.innerText = selectionElem.innerText;
             parent.replaceChild(childToReplaceWith, selectionElem);
+            changeItemProperty(
+                windowItem,
+                windowData,
+                setWindowData,
+                item,
+                "html",
+                componentRef.current.innerHTML
+            )
+        }
+    }
+
+    function handleEnter(e) {
+        if (e.keyCode === 13) {
+            setShowLinkInput(false);
+            setIsTextSelected(false);
+            convertSelectionToLink();
         }
     }
 
@@ -73,7 +92,7 @@ export function LinkOptions({
         } else if (isTextSelected && showLinkInput) {
             return (
                 <FlexContainer width={"100%"}>
-                    <LinkInput ref={linkInput} placeholder="Paste website url here"/>
+                    <LinkInput ref={linkInput} placeholder="Paste website url here" onKeyDown={handleEnter}/>
                     <button onClick={() => {
                         setShowLinkInput(false);
                         setIsTextSelected(false);

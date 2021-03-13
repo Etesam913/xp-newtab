@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 import styled from 'styled-components';
 import {Header1} from "../../styles/Headers";
 import {convertJustifyContentToTextAlign, getSelectionText, getDesiredItem} from "../../functions/helpers";
@@ -14,6 +14,10 @@ function Header({windowItem, item}) {
     const [showLinkInput, setShowLinkInput] = useState(false);
     const [selectionObj, setSelectionObj] = useState(null);
     const header = useRef(null);
+
+    useEffect(() => {
+        header.current.innerHTML = item["html"];
+    }, [header, item])
 
     function createLink(e) {
         // Can only select if nothing is currently selected.
@@ -52,9 +56,11 @@ function Header({windowItem, item}) {
                         isTextSelected={isTextSelected}
                         setIsTextSelected={setIsTextSelected}
                         selectionObj={selectionObj}
-                        header={header}
+                        componentRef={header}
                         showLinkInput={showLinkInput}
                         setShowLinkInput={setShowLinkInput}
+                        windowItem={windowItem}
+                        item={item}
                     />)
             } else {
                 return <TextAlignOptions item={item} windowItem={windowItem}/>
@@ -117,19 +123,22 @@ function Header({windowItem, item}) {
                             windowData,
                             setWindowData,
                             item,
-                            "text",
-                            header.current.innerText
+                            "html",
+                            header.current.innerHTML
                         )
                     }}
                     textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
                     margin={'0'}
                     suppressContentEditableWarning={true}
                 >
-                    <p>{item["text"]}</p>
                 </HeaderComponent>
-                {isMenuShowing && <DeleteButton onClick={() => {
-                    handleDelete(windowData, item["id"])
-                }}> Delete </DeleteButton>}
+                {isMenuShowing &&
+                <DeleteButton
+                    onClick={() => {
+                        handleDelete(windowData, item["id"])
+                    }}>
+                    Delete
+                </DeleteButton>}
 
             </FlexContainer>
 
@@ -149,7 +158,7 @@ const HeaderComponent = styled.input`
 
   margin-right: 0.4rem;
   word-wrap: break-word;
-  width: 81.8%;
+  width: ${props => props.isMenuShowing ? "81.8%" : "100%"};
 `;
 
 const DeleteButton = styled.button`

@@ -21,7 +21,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
         newItem['items'].push({
             id: maxId + 1,
             componentName: "Header",
-            text: "Header Text",
+            html: "<p>Header Text</p>",
             justifyContent: 'flex-start'
         });
         replaceDesiredWindowItem(tempData, newItem);
@@ -105,7 +105,6 @@ export function setWindowProperty(
     }
 
     replaceDesiredWindowItem(tempData, itemToInsert);
-    console.log(tempData);
     setWindowData(tempData);
 }
 

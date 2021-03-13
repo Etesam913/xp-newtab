@@ -59,6 +59,7 @@ function Window({width, windowItem, windowId}) {
                                 onClick={() => {
                                     setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
                                 }}/>
+                        <button aria-label='Maximize'/>
                         <button aria-label='Close'/>
                     </div>
                 </TitleBar>

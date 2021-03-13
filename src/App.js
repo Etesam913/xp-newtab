@@ -17,11 +17,6 @@ function App() {
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
 
     useEffect(() => {
-        // Clear local storage
-        /*setWindowData([
-            {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, items: []},
-            {id: 1, windowTitle: 'Wowza', xCoord: 0, yCoord: 0, items: []},
-        ])*/
         localStorage.setItem("windowData", JSON.stringify(windowData));
         console.log(windowData)
     }, [windowData]);
