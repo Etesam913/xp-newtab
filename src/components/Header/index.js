@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState, useRef} from 'react'
 import styled from 'styled-components';
 import {Header1} from "../../styles/Headers";
-import {convertJustifyContentToTextAlign, getSelectionText, getDesiredItem} from "../../functions/helpers";
+import {convertJustifyContentToTextAlign, getSelectionText} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
 import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions, LinkOptions} from "../ComponentOptions";
-import {changeItemProperty} from "../Window/helper";
+import {changeItemProperty, handleDelete} from "../Window/helper";
 
 
 function Header({windowItem, item}) {
@@ -87,14 +87,6 @@ function Header({windowItem, item}) {
         }
     }
 
-    function handleDelete(windowData, id) {
-        const currentWindow = getDesiredItem(windowData, id);
-        const tempItem = {...windowItem};
-        tempItem["items"] = tempItem["items"].filter(item => item.id !== id);
-
-
-    }
-
     return (
         <div>
             <FlexContainer margin={isMenuShowing ? '0 0 .5rem 0' : '0'}>
@@ -135,7 +127,7 @@ function Header({windowItem, item}) {
                 {isMenuShowing &&
                 <DeleteButton
                     onClick={() => {
-                        handleDelete(windowData, item["id"])
+                        handleDelete(windowData, setWindowData, windowItem, item["id"])
                     }}>
                     Delete
                 </DeleteButton>}

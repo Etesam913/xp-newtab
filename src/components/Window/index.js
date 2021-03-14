@@ -76,8 +76,8 @@ function Window({width, windowItem, windowId}) {
                                 <label htmlFor={"header" + windowId}>Header</label>
                             </div>
                             <div className="field-row">
-                                <input id={"Link" + windowId} type="radio" name="radio-button"/>
-                                <label htmlFor={"Link" + windowId}>Link</label>
+                                <input id={"Image" + windowId} type="radio" name="radio-button"/>
+                                <label htmlFor={"Image" + windowId}>Image</label>
                             </div>
                             <AddComponent
                                 as={'button'}

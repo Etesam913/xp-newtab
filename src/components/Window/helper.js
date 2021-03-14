@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from "../Header";
 import {getDesiredItem, getTranslateXY, replaceDesiredWindowItem} from "../../functions/helpers";
+import Image from "../Image";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -24,10 +25,16 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
             html: "<p>Header Text</p>",
             justifyContent: 'flex-start'
         });
-        replaceDesiredWindowItem(tempData, newItem);
-        setWindowData(tempData)
-        console.log(tempData)
+    } else if (componentToAdd === "Image") {
+        newItem['items'].push({
+            id: maxId + 1,
+            componentName: "Image",
+            src: "https://via.placeholder.com/300x175",
+            justifyContent: 'flex-start'
+        });
     }
+    replaceDesiredWindowItem(tempData, newItem);
+    setWindowData(tempData)
 }
 
 export function renderComponents(componentsArr, windowItem) {
@@ -35,11 +42,11 @@ export function renderComponents(componentsArr, windowItem) {
         function getComponent() {
             if (item["componentName"] === "Header") {
                 return (
-                    <Header
-                        windowItem={windowItem}
-                        item={item}
-                        itemId={item["id"]}
-                    />
+                    <Header windowItem={windowItem} item={item}/>
+                );
+            } else if (item["componentName"] === "Image") {
+                return (
+                    <Image windowItem={windowItem} item={item}/>
                 );
             }
         }
@@ -151,4 +158,12 @@ export function highlightText(selection) {
         }
     }
 }
+
+// For deleting an item
+export function handleDelete(windowData, setWindowData, windowItem, id) {
+    const tempItem = {...windowItem};
+    tempItem["items"] = tempItem["items"].filter(item => item.id !== id);
+    setWindowProperty(windowData, setWindowData, windowItem, "items", tempItem["items"]);
+}
+
 
