@@ -63,7 +63,7 @@ function Header({windowItem, item}) {
                         item={item}
                     />)
             } else {
-                return <TextAlignOptions item={item} windowItem={windowItem}/>
+                return <TextAlignOptions text item={item} windowItem={windowItem}/>
             }
         }
     }
@@ -151,6 +151,8 @@ const HeaderComponent = styled.input`
   margin-right: 0.4rem;
   word-wrap: break-word;
   width: ${props => props.isMenuShowing ? "81.8%" : "100%"};
+  -webkit-user-select: text;
+  user-select: text;
 `;
 
 const DeleteButton = styled.button`

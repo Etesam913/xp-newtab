@@ -97,7 +97,7 @@ function Window({width, windowItem, windowId}) {
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : '20rem')};
-  min-width: 25rem;
+  min-width: 30rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
 `;

@@ -6,12 +6,12 @@ import {convertJustifyContentToTextAlign, convertTextAlignToJustifyContent} from
 import {FlexContainer} from "../../styles/Layout";
 
 
-export function TextAlignOptions({windowItem, item}) {
+export function TextAlignOptions({windowItem, item, text}) {
     const {windowData, setWindowData} = useContext(AppContext)
 
     return (
         <div>
-            <OptionTitle>Text Align: </OptionTitle>
+            <OptionTitle>{text ? "Text Align:" : "Align"} </OptionTitle>
             <select
                 onChange={(e) =>
                     changeItemProperty(

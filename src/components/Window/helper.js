@@ -29,6 +29,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
         newItem['items'].push({
             id: maxId + 1,
             componentName: "Image",
+            href: null,
             src: "https://via.placeholder.com/300x175",
             justifyContent: 'flex-start'
         });

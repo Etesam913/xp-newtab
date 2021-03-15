@@ -91,6 +91,7 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+    color: black;
   }
 `
 
