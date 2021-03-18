@@ -6,8 +6,8 @@ import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions} from "../ComponentOptions";
 import {AppContext} from "../../Contexts";
 import {changeItemProperty, handleDelete} from "../Window/helper";
-import BackButton from "../BackButton";
-import {DeleteButton} from "../../styles/StyledComponents";
+import BackButton from "../BackButton/index";
+import {DeleteButton, OptionsButton} from "../../styles/StyledComponents";
 
 function Image({windowItem, item}) {
     const [imageWidth, setImageWidth] = useState(300);
@@ -19,7 +19,7 @@ function Image({windowItem, item}) {
     const redirectButton = useRef(null);
 
     const {isMenuShowing, windowData, setWindowData} = useContext(AppContext);
-    
+
     function onResize(e, {element, size, handle}) {
         setImageWidth(size.width)
         setImageHeight(size.height);
@@ -34,7 +34,7 @@ function Image({windowItem, item}) {
                     setWindowData,
                     item,
                     "src",
-                    srcInput.current.value
+                    srcInput.current.value.trim()
                 )
                 setIsImageFocused(false)
             }
@@ -143,7 +143,7 @@ function Image({windowItem, item}) {
     return (
         <FlexContainer flexDirection={"column"} alignItems="center">
             {isMenuShowing &&
-            <FlexContainer margin={'0 0 .5rem 0'}>
+            <FlexContainer margin={'0 0 .5rem 0'} width={"100%"}>
                 {handleOptions()}
             </FlexContainer>
             }
@@ -193,12 +193,6 @@ const ImageComponent = styled.img`
   :focus {
     border: 1px solid blue;
   }
-`;
-
-
-const OptionsButton = styled.button`
-  margin-left: 0.5rem;
-  width: ${props => props.width ? props.width : "117px"};
 `;
 
 const ImageWrapper = styled.a`

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from "styled-components";
 
 function BackButton({margin, onClick}) {
-
     function handleClick() {
         if (onClick)
             onClick();
@@ -27,8 +26,10 @@ const ImageButton = styled.button`
   box-shadow: none !important;
   min-width: 24px;
   min-height: 24px;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  margin: ${props => props.margin};
+  margin: ${props => props.margin ? props.margin : "0 0.25rem 0 0"};
 `;
 
 export default BackButton;

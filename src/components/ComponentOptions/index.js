@@ -4,7 +4,7 @@ import {AppContext} from "../../Contexts";
 import {changeItemProperty, highlightText} from "../Window/helper";
 import {convertJustifyContentToTextAlign, convertTextAlignToJustifyContent} from "../../functions/helpers";
 import {FlexContainer} from "../../styles/Layout";
-import BackButton from "../BackButton";
+import BackButton from "../BackButton/index";
 
 
 export function TextAlignOptions({windowItem, item, text}) {

@@ -4,6 +4,7 @@ import Header from "../Header";
 import {getDesiredItem, getTranslateXY, replaceDesiredWindowItem} from "../../functions/helpers";
 import Image from "../Image";
 import {AppContext} from "../../Contexts";
+import Video from "../Video";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -34,6 +35,12 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
             src: "https://via.placeholder.com/300x175",
             justifyContent: 'flex-start'
         });
+    } else if (componentToAdd === "Video") {
+        newItem['items'].push({
+            id: maxId + 1,
+            componentName: "Video",
+            src: "https://www.youtube.com/embed/5pzM_pFNWak"
+        })
     }
     replaceDesiredWindowItem(tempData, newItem);
     setWindowData(tempData)
@@ -41,6 +48,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
 
 export function RenderComponents(componentsArr, windowItem) {
     const {isMenuShowing} = useContext(AppContext);
+    const componentLength = componentsArr.length;
     const components = componentsArr.map((item, index) => {
         function getComponent() {
             if (item["componentName"] === "Header") {
@@ -51,10 +59,14 @@ export function RenderComponents(componentsArr, windowItem) {
                 return (
                     <Image windowItem={windowItem} item={item}/>
                 );
+            } else if (item["componentName"] === "Video") {
+                return (
+                    <Video item={item} windowItem={windowItem}/>
+                );
             }
         }
 
-        return <ComponentItem isMenuShowing={isMenuShowing}
+        return <ComponentItem isMenuShowing={isMenuShowing} componentLength={componentLength}
                               key={"item-" + windowItem['id'] + "-" + index}>{getComponent()}</ComponentItem>
     })
     return <ComponentList>{components}</ComponentList>
@@ -70,14 +82,15 @@ const ComponentItem = styled.li`
   padding: 0.8rem 0;
   border: ${props => !props.isMenuShowing ? "0px" : 'solid #b1afaf'} !important;
   border-width: 1px 0 1px 0 !important;
+
   :first-child {
     padding-top: 0;
-    border-width: 0 0 0.5px 0 !important;
+    border-width: ${props => props.componentLength === 1 ? "0px" : "0 0 0.5px 0"} !important;
   }
 
   :last-child {
     padding-bottom: 0;
-    border-width: 0.5px 0 0px 0 !important;
+    border-width: ${props => props.componentLength === 1 ? "0px" : "0.5px 0 0px 0"} !important;
   }
 `
 

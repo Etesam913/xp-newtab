@@ -15,7 +15,7 @@ function Window({width, windowItem, windowId}) {
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
     return (
         <Draggable
-            handle='.title-bar'
+            handle={isMenuShowing ? null : '.title-bar'}
             nodeRef={windowRef}
             bounds="body"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
@@ -79,6 +79,10 @@ function Window({width, windowItem, windowId}) {
                             <div className="field-row">
                                 <input id={"Image" + windowId} type="radio" name="radio-button"/>
                                 <label htmlFor={"Image" + windowId}>Image</label>
+                            </div>
+                            <div className="field-row">
+                                <input id={"video" + windowId} type="radio" name="radio-button"/>
+                                <label htmlFor={"video" + windowId}>Video</label>
                             </div>
                             <AddComponent
                                 as={'button'}
