@@ -15,7 +15,7 @@ function Window({width, windowItem, windowId}) {
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
     return (
         <Draggable
-            handle={isMenuShowing ? null : '.title-bar'}
+            handle={'.title-bar'}
             nodeRef={windowRef}
             bounds="body"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
