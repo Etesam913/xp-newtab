@@ -64,6 +64,17 @@ function App() {
     );
 }
 
+const Wrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+`;
+
 const GlobalStyle = createGlobalStyle`
   body {
     background: ${props => props.background};
@@ -91,19 +102,9 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+    color: black;
   }
 `
-
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-
-`;
 
 const ShowMenuButton = styled.button`
   position: absolute;

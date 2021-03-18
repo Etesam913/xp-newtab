@@ -1,9 +1,10 @@
 import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
+import "react-resizable/css/styles.css";
 import {
     handleComponentCreation,
-    renderComponents,
+    RenderComponents,
     setWindowProperty
 } from "./helper";
 import {AppContext} from "../../Contexts";
@@ -14,7 +15,7 @@ function Window({width, windowItem, windowId}) {
     const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
     return (
         <Draggable
-            handle='.title-bar'
+            handle={isMenuShowing ? null : '.title-bar'}
             nodeRef={windowRef}
             bounds="body"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
@@ -66,7 +67,7 @@ function Window({width, windowItem, windowId}) {
 
                 <div className='window-body'>
                     <article style={{height: '100%'}} role="tabpanel">
-                        {renderComponents(windowItem['items'], windowItem)}
+                        {RenderComponents(windowItem['items'], windowItem)}
 
                         {isMenuShowing &&
                         <ComponentsPanel ref={componentsPanel}>
@@ -78,6 +79,10 @@ function Window({width, windowItem, windowId}) {
                             <div className="field-row">
                                 <input id={"Image" + windowId} type="radio" name="radio-button"/>
                                 <label htmlFor={"Image" + windowId}>Image</label>
+                            </div>
+                            <div className="field-row">
+                                <input id={"video" + windowId} type="radio" name="radio-button"/>
+                                <label htmlFor={"video" + windowId}>Video</label>
                             </div>
                             <AddComponent
                                 as={'button'}
@@ -97,7 +102,7 @@ function Window({width, windowItem, windowId}) {
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : '20rem')};
-  min-width: 25rem;
+  min-width: 30rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
 `;

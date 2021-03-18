@@ -6,6 +6,7 @@ import {AppContext} from "../../Contexts";
 import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions, LinkOptions} from "../ComponentOptions";
 import {changeItemProperty, handleDelete} from "../Window/helper";
+import {DeleteButton} from "../../styles/StyledComponents";
 
 
 function Header({windowItem, item}) {
@@ -63,7 +64,7 @@ function Header({windowItem, item}) {
                         item={item}
                     />)
             } else {
-                return <TextAlignOptions item={item} windowItem={windowItem}/>
+                return <TextAlignOptions text item={item} windowItem={windowItem}/>
             }
         }
     }
@@ -131,9 +132,7 @@ function Header({windowItem, item}) {
                     }}>
                     Delete
                 </DeleteButton>}
-
             </FlexContainer>
-
         </div>
     )
 }
@@ -151,12 +150,8 @@ const HeaderComponent = styled.input`
   margin-right: 0.4rem;
   word-wrap: break-word;
   width: ${props => props.isMenuShowing ? "81.8%" : "100%"};
-`;
-
-const DeleteButton = styled.button`
-  min-width: 55px;
-  padding: 0 6px;
-  text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
 `;
 
 export default Header
