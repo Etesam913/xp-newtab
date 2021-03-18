@@ -5,7 +5,9 @@ import "react-resizable/css/styles.css";
 import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions} from "../ComponentOptions";
 import {AppContext} from "../../Contexts";
-import {changeItemProperty} from "../Window/helper";
+import {changeItemProperty, handleDelete} from "../Window/helper";
+import BackButton from "../BackButton";
+import {DeleteButton} from "../../styles/StyledComponents";
 
 function Image({windowItem, item}) {
     const [imageWidth, setImageWidth] = useState(300);
@@ -14,8 +16,10 @@ function Image({windowItem, item}) {
     const [isRedirectClicked, setIsRedirectClicked] = useState(false);
     const srcInput = useRef(null);
     const redirectInput = useRef(null);
-    const {isMenuShowing, windowData, setWindowData} = useContext(AppContext);
+    const redirectButton = useRef(null);
 
+    const {isMenuShowing, windowData, setWindowData} = useContext(AppContext);
+    
     function onResize(e, {element, size, handle}) {
         setImageWidth(size.width)
         setImageHeight(size.height);
@@ -47,6 +51,8 @@ function Image({windowItem, item}) {
                     redirectInput.current.value
                 )
                 setIsRedirectClicked(false)
+                console.log(imageWidth);
+                console.log(imageHeight);
             }
         }
 
@@ -81,11 +87,20 @@ function Image({windowItem, item}) {
         } else if (isRedirectClicked) {
             return (
                 <FlexContainer width={"100%"}>
-                    <input ref={redirectInput} style={{width: "100%"}}
+                    <BackButton
+                        margin={"0 0.25rem 0 0"}
+                        onClick={() => {
+                            setIsRedirectClicked(false)
+                        }}
+                    />
+                    <input ref={redirectInput} style={{width: "87%"}}
                            placeholder={"Enter website url to redirect to on image click"}
-                           defaultValue={item["href"] !== null ? item["href"] : ''}/>
+                           defaultValue={item["href"] !== null ? item["href"] : ''}
+                           onBlur={handleBlur}
+                    />
                     <OptionsButton
                         width={"125px"}
+                        ref={redirectButton}
                         onClick={setRedirectUrl}
                     >
                         Set Redirect Url
@@ -99,17 +114,34 @@ function Image({windowItem, item}) {
     function handleBlur() {
         // Timeout is needed to allow for enough time to check if the user clicked on the src input after the blur.
         // If they did, do not count that as removing image focus
+        let redirectButtonClicked = false;
+        if (redirectButton && redirectButton.current) {
+            redirectButton.current.addEventListener('click', function () {
+                redirectButtonClicked = true;
+            })
+        }
+
         setTimeout(function () {
-            if (srcInput.current !== document.activeElement) {
+            if (srcInput && srcInput.current !== document.activeElement) {
                 setIsImageFocused(false)
             }
-        }, 200)
+            if (!redirectButtonClicked) {
+                setIsRedirectClicked(false);
+            }
+
+        }, 200);
+        if (redirectButton && redirectButton.current) {
+            redirectButton.current.removeEventListener('click', function () {
+                redirectButtonClicked = true;
+            })
+        }
+
     }
 
 // TODO: Get window size so that image can be resized correctly if the window size is changed.
 
     return (
-        <div>
+        <FlexContainer flexDirection={"column"} alignItems="center">
             {isMenuShowing &&
             <FlexContainer margin={'0 0 .5rem 0'}>
                 {handleOptions()}
@@ -141,9 +173,16 @@ function Image({windowItem, item}) {
                     </ImageWrapper>
 
                 </ResizableBox>
-
             </FlexContainer>
-        </div>
+            {isMenuShowing &&
+            <DeleteButton
+                margin={"0.5rem 0 0"}
+                onClick={() => {
+                    handleDelete(windowData, setWindowData, windowItem, item["id"])
+                }}>
+                Delete
+            </DeleteButton>}
+        </FlexContainer>
     );
 }
 
@@ -155,6 +194,7 @@ const ImageComponent = styled.img`
     border: 1px solid blue;
   }
 `;
+
 
 const OptionsButton = styled.button`
   margin-left: 0.5rem;

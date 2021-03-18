@@ -6,6 +6,7 @@ import {AppContext} from "../../Contexts";
 import {FlexContainer} from "../../styles/Layout";
 import {TextAlignOptions, LinkOptions} from "../ComponentOptions";
 import {changeItemProperty, handleDelete} from "../Window/helper";
+import {DeleteButton} from "../../styles/StyledComponents";
 
 
 function Header({windowItem, item}) {
@@ -131,9 +132,7 @@ function Header({windowItem, item}) {
                     }}>
                     Delete
                 </DeleteButton>}
-
             </FlexContainer>
-
         </div>
     )
 }
@@ -153,12 +152,6 @@ const HeaderComponent = styled.input`
   width: ${props => props.isMenuShowing ? "81.8%" : "100%"};
   -webkit-user-select: text;
   user-select: text;
-`;
-
-const DeleteButton = styled.button`
-  min-width: 55px;
-  padding: 0 6px;
-  text-align: center;
 `;
 
 export default Header

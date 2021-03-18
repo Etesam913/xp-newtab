@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import Header from "../Header";
 import {getDesiredItem, getTranslateXY, replaceDesiredWindowItem} from "../../functions/helpers";
 import Image from "../Image";
+import {AppContext} from "../../Contexts";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -38,7 +39,8 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
     setWindowData(tempData)
 }
 
-export function renderComponents(componentsArr, windowItem) {
+export function RenderComponents(componentsArr, windowItem) {
+    const {isMenuShowing} = useContext(AppContext);
     const components = componentsArr.map((item, index) => {
         function getComponent() {
             if (item["componentName"] === "Header") {
@@ -52,7 +54,8 @@ export function renderComponents(componentsArr, windowItem) {
             }
         }
 
-        return <ComponentItem key={"item-" + windowItem['id'] + "-" + index}>{getComponent()}</ComponentItem>
+        return <ComponentItem isMenuShowing={isMenuShowing}
+                              key={"item-" + windowItem['id'] + "-" + index}>{getComponent()}</ComponentItem>
     })
     return <ComponentList>{components}</ComponentList>
 }
@@ -64,14 +67,17 @@ const ComponentList = styled.ul`
 `;
 
 const ComponentItem = styled.li`
-  margin: 0.5rem 0;
-
+  padding: 0.8rem 0;
+  border: ${props => !props.isMenuShowing ? "0px" : 'solid #b1afaf'} !important;
+  border-width: 1px 0 1px 0 !important;
   :first-child {
-    margin-top: 0;
+    padding-top: 0;
+    border-width: 0 0 0.5px 0 !important;
   }
 
   :last-child {
-    margin-bottom: 0;
+    padding-bottom: 0;
+    border-width: 0.5px 0 0px 0 !important;
   }
 `
 

@@ -3,7 +3,7 @@ export function getDefaultValue(localStorageProperty) {
     if (localStorageProperty === 'backgroundColor')
         defaultValue = "#ffffff"
     else if (localStorageProperty === 'backgroundImage')
-        defaultValue = ""
+        defaultValue = "https://i.imgur.com/VvNhMb0.jpg"
     else if (localStorageProperty === 'windowData') {
         defaultValue = [
             {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []},

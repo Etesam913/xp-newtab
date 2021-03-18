@@ -4,6 +4,7 @@ import {AppContext} from "../../Contexts";
 import {changeItemProperty, highlightText} from "../Window/helper";
 import {convertJustifyContentToTextAlign, convertTextAlignToJustifyContent} from "../../functions/helpers";
 import {FlexContainer} from "../../styles/Layout";
+import BackButton from "../BackButton";
 
 
 export function TextAlignOptions({windowItem, item, text}) {
@@ -92,6 +93,11 @@ export function LinkOptions({
         } else if (isTextSelected && showLinkInput) {
             return (
                 <FlexContainer width={"100%"}>
+                    <BackButton
+                        onClick={() => {
+                            setShowLinkInput(false);
+                        }}
+                        margin={"0 0.25rem 0 0"}/>
                     <LinkInput ref={linkInput} placeholder="Paste website url here" onKeyDown={handleEnter}/>
                     <button onClick={() => {
                         setShowLinkInput(false);

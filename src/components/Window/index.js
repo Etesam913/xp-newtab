@@ -1,9 +1,10 @@
 import React, {useRef, useContext} from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable'
+import "react-resizable/css/styles.css";
 import {
     handleComponentCreation,
-    renderComponents,
+    RenderComponents,
     setWindowProperty
 } from "./helper";
 import {AppContext} from "../../Contexts";
@@ -66,7 +67,7 @@ function Window({width, windowItem, windowId}) {
 
                 <div className='window-body'>
                     <article style={{height: '100%'}} role="tabpanel">
-                        {renderComponents(windowItem['items'], windowItem)}
+                        {RenderComponents(windowItem['items'], windowItem)}
 
                         {isMenuShowing &&
                         <ComponentsPanel ref={componentsPanel}>
