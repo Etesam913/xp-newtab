@@ -7,6 +7,7 @@ import {TopRight} from './styles/Layout';
 import {AppContext} from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import {getDefaultValue} from "./functions/helpers";
+import Startbar from "./components/Startbar";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"))
     const [isMenuShowing, setIsMenuShowing] = useState(false);
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
+    const [focusedWindow, setFocusedWindow] = useState(0);
 
     useEffect(() => {
         localStorage.setItem("windowData", JSON.stringify(windowData));
@@ -22,7 +24,7 @@ function App() {
     }, [windowData]);
 
     return (
-        <AppContext.Provider value={{isMenuShowing, windowData, setWindowData}}>
+        <AppContext.Provider value={{isMenuShowing, windowData, setWindowData, focusedWindow, setFocusedWindow}}>
             <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage}/>
             <TopRight>
                 <button
@@ -32,6 +34,7 @@ function App() {
                     Settings
                 </button>
             </TopRight>
+            <Startbar/>
             {isSettingsShowing &&
             <SettingsWindow
                 setIsSettingsShowing={setIsSettingsShowing}

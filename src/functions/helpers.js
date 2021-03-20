@@ -92,4 +92,37 @@ export function getSelectionText() {
     }
 }
 
+export function getTimeUnits() {
+    let d = new Date();
+    let hour = d.getHours();
+    let minutes = d.getMinutes();
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    let seconds = d.getSeconds();
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return {hour: hour, minutes: minutes, seconds: seconds}
+}
+
+export function getTimePeriodName(hourNumber) {
+    if (hourNumber > 11 && hourNumber < 24) {
+        return "PM";
+    } else if (hourNumber === 24 || hourNumber < 12) {
+        return "AM";
+    }
+}
+
+export function getTwelveHourTime(hourNumber) {
+    if (hourNumber > 12) {
+        return hourNumber - 12;
+    } else if (hourNumber === 0) {
+        return 12;
+    } else {
+        return hourNumber;
+    }
+}
+
+
 

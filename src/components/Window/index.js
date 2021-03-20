@@ -1,5 +1,5 @@
 import React, {useRef, useContext} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Draggable from 'react-draggable'
 import "react-resizable/css/styles.css";
 import {
@@ -12,7 +12,7 @@ import {AppContext} from "../../Contexts";
 function Window({width, windowItem, windowId}) {
     const windowRef = useRef(null);
     const componentsPanel = useRef(null);
-    const {windowData, setWindowData, isMenuShowing} = useContext(AppContext)
+    const {windowData, setWindowData, isMenuShowing, focusedWindow, setFocusedWindow} = useContext(AppContext)
     return (
         <Draggable
             handle={'.title-bar'}
@@ -30,12 +30,17 @@ function Window({width, windowItem, windowId}) {
             }}
         >
             <WindowContainer
+                tabIndex={0}
+                onFocus={() => {
+                    setFocusedWindow(windowItem["id"])
+                }}
+                notFocused={focusedWindow !== windowItem["id"]}
                 ref={windowRef}
                 width={width}
                 className='window'
                 hidden={windowItem["hidden"]}
             >
-                <TitleBar className='title-bar'>
+                <TitleBar className='title-bar' notFocused={focusedWindow !== windowItem["id"]}>
                     {isMenuShowing
                         ?
                         <TitleInput className='title-bar-text' value={windowItem['windowTitle']}
@@ -55,14 +60,14 @@ function Window({width, windowItem, windowId}) {
                         </div>
                     }
 
-                    <div className='title-bar-controls'>
+                    <ControlButtons className='title-bar-controls' notFocused={focusedWindow !== windowItem["id"]}>
                         <button aria-label='Minimize'
                                 onClick={() => {
                                     setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
                                 }}/>
                         <button aria-label='Maximize'/>
                         <button aria-label='Close'/>
-                    </div>
+                    </ControlButtons>
                 </TitleBar>
 
                 <div className='window-body'>
@@ -105,10 +110,20 @@ const WindowContainer = styled.div`
   min-width: 30rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
+  box-shadow: ${props=>props.notFocused && "0px 0px 0px"};
+  z-index: ${props=>props.notFocused ? "2": "999"};
+  :focus{
+    outline: none;
+  }
 `;
 
 const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
+  ${props => props.notFocused && css`
+    background: linear-gradient(180deg,#9db4f6,#8296e3 8%,#8394e0 40%,#8da6eb 88%,#8da6eb 93%,#a3b5e6 95%,#93bbdd 96%,#a8c0ff);
+    border: 0px;
+  `}
+
 `
 const TitleInput = styled.input`
   color: black !important;
@@ -116,6 +131,11 @@ const TitleInput = styled.input`
   font-weight: 700;
   font-size: 13px;
   width: 100%;
+`;
+
+const ControlButtons = styled.div`
+  filter: ${props=>props.notFocused && "contrast(50%) brightness(120%)"};
+  pointer-events: ${props=>props.notFocused && "none"};
 `;
 
 const ComponentsPanel = styled.fieldset`
