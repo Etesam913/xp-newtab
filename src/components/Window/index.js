@@ -8,6 +8,7 @@ import {
     setWindowProperty
 } from "./helper";
 import {AppContext} from "../../Contexts";
+import {deleteWindowItem} from "../../functions/helpers";
 
 function Window({width, windowItem, windowId}) {
     const windowRef = useRef(null);
@@ -61,12 +62,18 @@ function Window({width, windowItem, windowId}) {
                     }
 
                     <ControlButtons className='title-bar-controls' notFocused={focusedWindow !== windowItem["id"]}>
-                        <button aria-label='Minimize'
-                                onClick={() => {
-                                    setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
-                                }}/>
+                        <button
+                            aria-label='Minimize'
+                            onClick={() => {
+                                setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
+                            }}/>
                         <button aria-label='Maximize'/>
-                        <button aria-label='Close'/>
+                        <button
+                            aria-label='Close'
+                            onClick={() => {
+                                deleteWindowItem(windowData, setWindowData, windowItem);
+                            }}
+                        />
                     </ControlButtons>
                 </TitleBar>
 
@@ -110,9 +117,10 @@ const WindowContainer = styled.div`
   min-width: 30rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
-  box-shadow: ${props=>props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
-  z-index: ${props=>props.notFocused ? "2": "999"};
-  :focus{
+  box-shadow: ${props => props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
+  z-index: ${props => props.notFocused ? "2" : "999"};
+
+  :focus {
     outline: none;
   }
 `;
@@ -120,7 +128,7 @@ const WindowContainer = styled.div`
 const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
   ${props => props.notFocused && css`
-    background: linear-gradient(180deg,#9db4f6,#8296e3 8%,#8394e0 40%,#8da6eb 88%,#8da6eb 93%,#a3b5e6 95%,#93bbdd 96%,#a8c0ff);
+    background: linear-gradient(180deg, #9db4f6, #8296e3 8%, #8394e0 40%, #8da6eb 88%, #8da6eb 93%, #a3b5e6 95%, #93bbdd 96%, #a8c0ff);
     border: 0px;
   `}
 
@@ -134,8 +142,8 @@ const TitleInput = styled.input`
 `;
 
 const ControlButtons = styled.div`
-  filter: ${props=>props.notFocused && "contrast(50%) brightness(120%)"};
-  pointer-events: ${props=>props.notFocused && "none"};
+  filter: ${props => props.notFocused && "contrast(50%) brightness(120%)"};
+  pointer-events: ${props => props.notFocused && "none"};
 `;
 
 const ComponentsPanel = styled.fieldset`
