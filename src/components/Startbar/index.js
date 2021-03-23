@@ -7,17 +7,20 @@ import timeBarImg from '../../media/time-bar-img.png'
 import tabBackgroundImg from '../../media/test.png'
 import {getTimePeriodName, getTimeUnits, getTwelveHourTime} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
+import {setWindowProperty} from "../Window/helper";
 
 function Startbar() {
     const [time, setTime] = useState("");
-    const {windowData, focusedWindow, setFocusedWindow} = useContext(AppContext);
+    const {windowData, setWindowData, focusedWindow, setFocusedWindow} = useContext(AppContext);
 
     const tabs = windowData.map((item, index) => {
+        const windowItem = item;
         return <Tab
             tabBackgroundImg={tabBackgroundImg}
-            pressed={focusedWindow === item["id"]}
+            pressed={!item["hidden"]}
             onClick={() => {
-                setFocusedWindow(item["id"])
+                setFocusedWindow(item["id"]);
+                setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"])
             }}
             id={"tab-${index}"}
         >
