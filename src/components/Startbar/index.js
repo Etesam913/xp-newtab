@@ -1,19 +1,43 @@
 import React, {useEffect, useContext, useState, useRef} from 'react'
-import {Bar, StartButton, BlueSegment, TimeSegment, Tab, TabContainer, StartWindow} from './styles'
+import {
+    Bar,
+    StartButton,
+    BlueSegment,
+    TimeSegment,
+    Tab,
+    TabContainer,
+    StartWindow,
+    StartHeader,
+    StartBody, StartFooter, StartItemName, StartItemIcon
+} from './styles'
 import normalImg from '../../media/start-button.png'
 import pressedImg from '../../media/start-button-pressed.png'
 import blueBarImg from '../../media/blue-bar-img.png'
 import timeBarImg from '../../media/time-bar-img.png'
 import tabBackgroundImg from '../../media/test.png'
+import startFooterImg from '../../media/start-footer.png'
+import startHeaderImg from '../../media/start-header.png'
+import controlPanelImg from '../../media/control-panel-icon.jpg';
 import {getTimePeriodName, getTimeUnits, getTwelveHourTime} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
 import {setWindowProperty} from "../Window/helper";
+import {FlexContainer} from "../../styles/Layout";
+import Toggle from "../Toggle";
 
 function Startbar() {
     const [time, setTime] = useState("");
-    const startButton = useRef(null)
+    const startButton = useRef(null);
+    const startWindow = useRef(null);
     const [isStartWindowShowing, setIsStartWindowShowing] = useState(false);
-    const {windowData, setWindowData, focusedWindow, setFocusedWindow} = useContext(AppContext);
+    const {
+        windowData,
+        setWindowData,
+        setIsSettingsShowing,
+        setFocusedWindow,
+        isMenuShowing,
+        isSettingsShowing,
+        setIsMenuShowing
+    } = useContext(AppContext);
 
     const tabs = windowData.map((item, index) => {
         const windowItem = item;
@@ -29,14 +53,19 @@ function Startbar() {
             {item["windowTitle"]}
         </Tab>
     })
-    function handleBlur(e){
-        if(e.target !== startButton.current){
-            setIsStartWindowShowing(false)
+
+    function handleBlur(e) {
+        if (startWindow.current) {
+            if (e.target !== startButton.current && !startWindow.current.contains(e.target)) {
+                setIsStartWindowShowing(false)
+            }
         }
+
     }
+
     useEffect(() => {
         document.addEventListener('click', handleBlur);
-        return()=>{
+        return () => {
             document.removeEventListener('click', handleBlur);
 
         }
@@ -62,13 +91,42 @@ function Startbar() {
                 normalImg={normalImg}
                 pressedImg={pressedImg}
                 isPressed={isStartWindowShowing}
-                onBlur={()=>{
-                    console.log("hi")
-                }}
                 onClick={() => {
                     setIsStartWindowShowing(!isStartWindowShowing);
-                }}/>
-            {isStartWindowShowing && <StartWindow> hi</StartWindow>}
+                }}
+            />
+            {isStartWindowShowing &&
+            <StartWindow ref={startWindow}>
+                <StartHeader image={startHeaderImg}> Administrator </StartHeader>
+                <StartBody>
+                    <FlexContainer
+                        onClick={() => {
+                            setIsMenuShowing(!isMenuShowing)
+                        }}
+                        width={"max-content"}
+                        cursor={"pointer"}
+                        padding={"0.5rem"}
+                        justifyContent={"flex-start"}>
+                        <Toggle stateVal={isMenuShowing}/>
+                        <StartItemName>Edit Mode</StartItemName>
+                    </FlexContainer>
+                    <FlexContainer
+                        cursor={"pointer"}
+                        padding={"0.5rem"}
+                        justifyContent={"flex-start"}
+                        width={"max-content"}
+                        onClick={() => {
+                            setIsSettingsShowing(true);
+                            setIsStartWindowShowing(false);
+                        }}
+                    >
+                        <StartItemIcon src={controlPanelImg}/>
+                        <StartItemName>Settings</StartItemName>
+                    </FlexContainer>
+                </StartBody>
+                <StartFooter image={startFooterImg}></StartFooter>
+            </StartWindow>
+            }
             <BlueSegment blueBarImg={blueBarImg}/>
             <TabContainer>
                 {tabs}
@@ -76,7 +134,7 @@ function Startbar() {
             <TimeSegment timeBarImg={timeBarImg}> {time} </TimeSegment>
         </Bar>
     );
-}
+};
 
 
 export default Startbar;

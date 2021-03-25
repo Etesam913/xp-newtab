@@ -9,7 +9,9 @@ export const TopRight = styled.div`
 
 export const FlexContainer = styled.div`
   display: flex;
+  padding: ${props=>props.padding};
   margin: ${props=>props.margin};
+  cursor: ${props=>props.cursor};
   width: ${props=>props.width};
   flex-direction: ${props => props.flexDirection ? props.flexDirection : 'row'};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "center"};

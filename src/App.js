@@ -24,16 +24,26 @@ function App() {
     }, [windowData]);
 
     return (
-        <AppContext.Provider value={{isMenuShowing, windowData, setWindowData, focusedWindow, setFocusedWindow}}>
+        <AppContext.Provider
+            value={{
+                isMenuShowing,
+                setIsMenuShowing,
+                windowData,
+                setWindowData,
+                focusedWindow,
+                setFocusedWindow,
+                isSettingsShowing,
+                setIsSettingsShowing
+            }}>
             <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage}/>
-            <TopRight>
+            {/*<TopRight>
                 <button
                     onClick={() => {
                         setIsSettingsShowing(true)
                     }}>
                     Settings
                 </button>
-            </TopRight>
+            </TopRight>*/}
             <Startbar/>
             {isSettingsShowing &&
             <SettingsWindow
@@ -49,19 +59,19 @@ function App() {
                     setWindowData={setWindowData}
                     isMenuShowing={isMenuShowing}
                 />
-                <ShowMenuButton
+                {/*<ShowMenuButton
                     onClick={() => {
                         setIsMenuShowing(true);
                     }}
                 >
                     Edit Mode
-                </ShowMenuButton>
-                <Menu
+                </ShowMenuButton>*/}
+                {/*<Menu
                     isMenuShowing={isMenuShowing}
                     setIsMenuShowing={setIsMenuShowing}
                     windowData={windowData}
                     setWindowData={setWindowData}
-                />
+                />*/}
             </Wrapper>
         </AppContext.Provider>
     );
