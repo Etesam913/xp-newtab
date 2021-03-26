@@ -1,9 +1,7 @@
 import styled, {css} from "styled-components";
 
 export const Bar = styled.div`
-  position: absolute;
   width: 100%;
-  bottom: 0px;
   display: flex;
   /*justify-content: space-between;*/
 `;

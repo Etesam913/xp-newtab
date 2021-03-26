@@ -18,7 +18,7 @@ function Window({width, windowItem, windowId}) {
         <Draggable
             handle={'.title-bar'}
             nodeRef={windowRef}
-            bounds="body"
+            bounds="#wrapper"
             defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
             onStop={() => {
                 setWindowProperty(

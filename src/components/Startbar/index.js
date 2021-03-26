@@ -35,17 +35,19 @@ function Startbar() {
 
     const tabs = windowData.map((item) => {
         const windowItem = item;
-        return <Tab
-            tabBackgroundImg={tabBackgroundImg}
-            pressed={!item["hidden"]}
-            onClick={() => {
-                setFocusedWindow(item["id"]);
-                setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"])
-            }}
-            id={"tab-${index}"}
-        >
-            {item["windowTitle"]}
-        </Tab>
+        return (
+            <Tab
+                tabBackgroundImg={tabBackgroundImg}
+                pressed={!item["hidden"]}
+                onClick={() => {
+                    setFocusedWindow(item["id"]);
+                    setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"])
+                }}
+                key={"tab-${index}"}
+            >
+                {item["windowTitle"]}
+            </Tab>
+        )
     })
 
     function handleBlur(e) {

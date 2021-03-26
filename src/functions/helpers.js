@@ -9,11 +9,22 @@ export function getDefaultValue(localStorageProperty) {
             {id: 0, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []},
             {id: 1, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []},
         ];
+    } else if (localStorageProperty === 'iconData') {
+        defaultValue = [
+            {
+                id: 0,
+                src: 'https://via.placeholder.com/32',
+                title: 'Insert Title Here',
+                xCoord: 0,
+                yCoord: 0,
+                redirect: '/'
+            }
+        ]
     }
 
     let propertyValue = window.localStorage.getItem(localStorageProperty)
     // Has to be parsed if the property is an object
-    if (localStorageProperty === 'windowData') {
+    if (localStorageProperty === 'windowData' || localStorageProperty === 'iconData') {
         // If componentsArr is undefined uncomment localStorage.clear
         //localStorage.clear();
         propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty))
@@ -33,9 +44,9 @@ export function getTranslateXY(element) {
     }
 }
 
-export function deleteWindowItem(windowData, setWindowData, windowItem){
+export function deleteWindowItem(windowData, setWindowData, windowItem) {
     const tempData = [...windowData];
-    if(windowData.indexOf(windowItem) === -1){
+    if (windowData.indexOf(windowItem) === -1) {
         console.error("CAN'T FIND WINDOW TO DELETE");
         return;
     }
@@ -51,9 +62,9 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
     }
 }
 
-export function addWindowItem(windowData, setWindowData, setFocusedWindow){
+export function addWindowItem(windowData, setWindowData, setFocusedWindow) {
     const tempData = [...windowData];
-    const newId = getMaxId(windowData)+1
+    const newId = getMaxId(windowData) + 1
     setFocusedWindow(newId);
     const newItem = {id: newId, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []}
     tempData.push(newItem);

@@ -1,12 +1,5 @@
 import styled, {css} from 'styled-components';
 
-export const TopRight = styled.div`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 3;
-`;
-
 export const FlexContainer = styled.div`
   display: flex;
   padding: ${props=>props.padding};

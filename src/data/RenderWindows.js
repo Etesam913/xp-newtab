@@ -13,7 +13,7 @@ function RenderWindows() {
             />
         );
     });
-    return <>{windows}</>;
+    return <div>{windows}</div>;
 }
 
 export default RenderWindows;

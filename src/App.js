@@ -1,9 +1,8 @@
 import 'xp.css/dist/XP.css';
 import React, {useState, useEffect} from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
-import Menu from './components/Menu/index';
 import RenderWindows from './data/RenderWindows';
-import {TopRight} from './styles/Layout';
+import RenderIcons from "./data/RenderIcons";
 import {AppContext} from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import {getDefaultValue} from "./functions/helpers";
@@ -15,6 +14,7 @@ function App() {
     const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
     const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"))
     const [isMenuShowing, setIsMenuShowing] = useState(false);
+    const [iconData, setIconData] = useState(getDefaultValue("iconData"))
     const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
     const [focusedWindow, setFocusedWindow] = useState(0);
 
@@ -22,6 +22,12 @@ function App() {
         localStorage.setItem("windowData", JSON.stringify(windowData));
         console.log(windowData)
     }, [windowData]);
+
+    useEffect(() => {
+        localStorage.setItem("iconData", JSON.stringify(iconData));
+        console.log(iconData)
+    }, [iconData, setIconData]);
+
 
     return (
         <AppContext.Provider
@@ -33,18 +39,12 @@ function App() {
                 focusedWindow,
                 setFocusedWindow,
                 isSettingsShowing,
-                setIsSettingsShowing
+                setIsSettingsShowing,
+                iconData,
+                setIconData
             }}>
             <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage}/>
-            {/*<TopRight>
-                <button
-                    onClick={() => {
-                        setIsSettingsShowing(true)
-                    }}>
-                    Settings
-                </button>
-            </TopRight>*/}
-            <Startbar/>
+
             {isSettingsShowing &&
             <SettingsWindow
                 setIsSettingsShowing={setIsSettingsShowing}
@@ -53,32 +53,18 @@ function App() {
                 backgroundImage={backgroundImage}
                 setBackgroundImage={setBackgroundImage}
             />}
-            <Wrapper>
-                <RenderWindows
-                    windowData={windowData}
-                    setWindowData={setWindowData}
-                    isMenuShowing={isMenuShowing}
-                />
-                {/*<ShowMenuButton
-                    onClick={() => {
-                        setIsMenuShowing(true);
-                    }}
-                >
-                    Edit Mode
-                </ShowMenuButton>*/}
-                {/*<Menu
-                    isMenuShowing={isMenuShowing}
-                    setIsMenuShowing={setIsMenuShowing}
-                    windowData={windowData}
-                    setWindowData={setWindowData}
-                />*/}
+            <Wrapper id='wrapper'>
+                <RenderWindows/>
+                <RenderIcons/>
             </Wrapper>
+            <Startbar/>
+
         </AppContext.Provider>
     );
 }
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: calc(100vh - 30px);
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -120,11 +106,5 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const ShowMenuButton = styled.button`
-  position: absolute;
-  left: 0.75rem;
-  top: 0.75rem;
-  z-index: 3;
-`;
 
 export default App;
