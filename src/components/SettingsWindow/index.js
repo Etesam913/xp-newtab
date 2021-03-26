@@ -74,7 +74,7 @@ const Window = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
-  z-index: 5;
+  z-index: 6;
   @media only screen and (max-width: 768px) {
     width: 80% !important;
   }
@@ -84,7 +84,7 @@ const GrayShade = styled.div`
   height: 100vh;
   width: 100vw;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 4;
+  z-index: 5;
 `;
 
 export default SettingsWindow

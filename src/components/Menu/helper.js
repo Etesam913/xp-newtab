@@ -1,4 +1,5 @@
 import {setWindowProperty} from "../Window/helper";
+import {getMaxId} from "../../functions/helpers";
 
 export function createWindow(windowData, setWindowData) {
     let tempWindowData = [...windowData];
@@ -8,15 +9,7 @@ export function createWindow(windowData, setWindowData) {
     setWindowData(tempWindowData);
 }
 
-function getMaxId(windowData) {
-    let maxId = 0;
-    for (let i = 0; i < windowData.length; i++) {
-        if (windowData[i]['id'] > maxId) {
-            maxId = windowData[i]['id'];
-        }
-    }
-    return maxId;
-}
+
 
 export function handleEnter(
     e,

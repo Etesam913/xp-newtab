@@ -8,21 +8,19 @@ import {
     TabContainer,
     StartWindow,
     StartHeader,
-    StartBody, StartFooter, StartItemName, StartItemIcon
+    StartBody, StartFooter
 } from './styles'
 import normalImg from '../../media/start-button.png'
 import pressedImg from '../../media/start-button-pressed.png'
 import blueBarImg from '../../media/blue-bar-img.png'
 import timeBarImg from '../../media/time-bar-img.png'
-import tabBackgroundImg from '../../media/test.png'
+import tabBackgroundImg from '../../media/tab-background.png'
 import startFooterImg from '../../media/start-footer.png'
 import startHeaderImg from '../../media/start-header.png'
-import controlPanelImg from '../../media/control-panel-icon.jpg';
 import {getTimePeriodName, getTimeUnits, getTwelveHourTime} from "../../functions/helpers";
 import {AppContext} from "../../Contexts";
 import {setWindowProperty} from "../Window/helper";
-import {FlexContainer} from "../../styles/Layout";
-import Toggle from "../Toggle";
+import {CreateWindowItem, EditModeItem, SettingsItem} from "./items";
 
 function Startbar() {
     const [time, setTime] = useState("");
@@ -32,13 +30,10 @@ function Startbar() {
     const {
         windowData,
         setWindowData,
-        setIsSettingsShowing,
         setFocusedWindow,
-        isMenuShowing,
-        setIsMenuShowing
     } = useContext(AppContext);
 
-    const tabs = windowData.map((item, index) => {
+    const tabs = windowData.map((item) => {
         const windowItem = item;
         return <Tab
             tabBackgroundImg={tabBackgroundImg}
@@ -81,7 +76,7 @@ function Startbar() {
             setTime(timeText);
         }, 1000);
         return () => clearInterval(interval);
-    })
+    }, [setTime])
 
     return (
         <Bar>
@@ -98,32 +93,11 @@ function Startbar() {
             <StartWindow ref={startWindow}>
                 <StartHeader image={startHeaderImg}> Administrator </StartHeader>
                 <StartBody>
-                    <FlexContainer
-                        onClick={() => {
-                            setIsMenuShowing(!isMenuShowing)
-                        }}
-                        width={"max-content"}
-                        cursor={"pointer"}
-                        padding={"0.5rem"}
-                        justifyContent={"flex-start"}>
-                        <Toggle stateVal={isMenuShowing}/>
-                        <StartItemName>Edit Mode</StartItemName>
-                    </FlexContainer>
-                    <FlexContainer
-                        cursor={"pointer"}
-                        padding={"0.5rem"}
-                        justifyContent={"flex-start"}
-                        width={"max-content"}
-                        onClick={() => {
-                            setIsSettingsShowing(true);
-                            setIsStartWindowShowing(false);
-                        }}
-                    >
-                        <StartItemIcon src={controlPanelImg}/>
-                        <StartItemName>Settings</StartItemName>
-                    </FlexContainer>
+                    <EditModeItem/>
+                    <SettingsItem setIsStartWindowShowing={setIsStartWindowShowing}/>
+                    <CreateWindowItem/>
                 </StartBody>
-                <StartFooter image={startFooterImg}></StartFooter>
+                <StartFooter image={startFooterImg}/>
             </StartWindow>
             }
             <BlueSegment blueBarImg={blueBarImg}/>
@@ -133,7 +107,7 @@ function Startbar() {
             <TimeSegment timeBarImg={timeBarImg}> {time} </TimeSegment>
         </Bar>
     );
-};
+}
 
 
 export default Startbar;

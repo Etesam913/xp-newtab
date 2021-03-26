@@ -51,6 +51,15 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
     }
 }
 
+export function addWindowItem(windowData, setWindowData, setFocusedWindow){
+    const tempData = [...windowData];
+    const newId = getMaxId(windowData)+1
+    setFocusedWindow(newId);
+    const newItem = {id: newId, windowTitle: 'Insert Title Here', xCoord: 0, yCoord: 0, hidden: false, items: []}
+    tempData.push(newItem);
+    setWindowData(tempData);
+}
+
 // Gets window based off of id
 export function getDesiredItem(windowData, id) {
     for (let i = 0; i < windowData.length; i++) {
@@ -132,6 +141,16 @@ export function getTwelveHourTime(hourNumber) {
     } else {
         return hourNumber;
     }
+}
+
+export function getMaxId(windowData) {
+    let maxId = 0;
+    for (let i = 0; i < windowData.length; i++) {
+        if (windowData[i]['id'] > maxId) {
+            maxId = windowData[i]['id'];
+        }
+    }
+    return maxId;
 }
 
 
