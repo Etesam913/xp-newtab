@@ -28,10 +28,11 @@ export function ColorAndImageTab({
             e.preventDefault();
         }
     }
+
     return (
         <article role="tabpanel">
             <Header1 margin={'1rem 0 1rem'}>Change Background Image</Header1>
-            <FlexContainer justifyContent={'flex-start'} alignItems={"center"} tablet>
+            <FlexContainer justifyContent={'flex-start'} alignItems={"flex-start"} tablet>
                 <TabInput
                     ref={imageInput}
                     defaultValue={backgroundImage}
@@ -40,11 +41,23 @@ export function ColorAndImageTab({
                     onKeyDown={(e) => {
                         handleImageInputEnter(e)
                     }}/>
-                <button onClick={() => {
-                    setBackgroundImage(imageInput.current.value)
-                }}>
-                    Set Background Image
-                </button>
+                <FlexContainer flexDirection="column" alignItems={"flex-start"}>
+                    <button
+                        onClick={() => {
+                            setBackgroundImage(imageInput.current.value)
+                        }}
+                    >
+                        Set Image
+                    </button>
+                    <RemoveButton
+                        onClick={() => {
+                            setBackgroundImage("")
+                        }}
+                    >
+                        Remove Image
+                    </RemoveButton>
+                </FlexContainer>
+
             </FlexContainer>
 
             <Header1 margin={'1.5rem 0 1rem'}>Change Background Color</Header1>
@@ -78,9 +91,12 @@ const TabInput = styled.input`
     width: 80%;
   }
 `
+const RemoveButton = styled.button`
+  margin-top: 0.5rem;
+`;
 
-export function InfoTab(){
-    return(
+export function InfoTab() {
+    return (
         <article role="tabpanel">
             <Header1 margin={'0 0 1rem'}>Windows XP New Tab</Header1>
             <InfoGrid>
@@ -116,7 +132,7 @@ const InfoGrid = styled.div`
 `;
 
 // Allows user to set settings such as grid, icon size
-export function MiscTab(){
+export function MiscTab() {
 
 }
 

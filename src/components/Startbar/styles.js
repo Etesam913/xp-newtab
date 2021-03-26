@@ -98,6 +98,8 @@ export const StartWindow = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: 10px 10px 30px -17px rgba(0,0,0,0.4);
+
 `;
 
 export const StartHeader = styled.header`

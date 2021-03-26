@@ -95,6 +95,7 @@ const GlobalStyle = createGlobalStyle`
     background-repeat: no-repeat;
     background-size: cover;
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto;
+    overflow-x: hidden;
   }
 
   .window {

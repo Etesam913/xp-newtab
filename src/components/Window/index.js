@@ -118,7 +118,7 @@ const WindowContainer = styled.div`
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
   box-shadow: ${props => props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
-  z-index: ${props => props.notFocused ? "2" : "999"};
+  z-index: ${props => props.notFocused ? "2" : "3"};
 
   :focus {
     outline: none;

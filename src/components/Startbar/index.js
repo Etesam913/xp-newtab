@@ -35,7 +35,6 @@ function Startbar() {
         setIsSettingsShowing,
         setFocusedWindow,
         isMenuShowing,
-        isSettingsShowing,
         setIsMenuShowing
     } = useContext(AppContext);
 
