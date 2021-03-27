@@ -1,119 +1,119 @@
-import React, {useRef, useContext} from 'react';
-import styled, {css} from 'styled-components';
-import Draggable from 'react-draggable'
+import React, { useRef, useContext } from "react";
+import styled, { css } from "styled-components";
+import Draggable from "react-draggable";
 import "react-resizable/css/styles.css";
 import {
-    handleComponentCreation,
-    RenderComponents,
-    setWindowProperty
+  handleComponentCreation,
+  RenderComponents,
+  setWindowProperty
 } from "./helper";
-import {AppContext} from "../../Contexts";
-import {deleteWindowItem} from "../../functions/helpers";
+import { AppContext } from "../../Contexts";
+import { deleteWindowItem } from "../../functions/helpers";
 
-function Window({width, windowItem, windowId}) {
-    const windowRef = useRef(null);
-    const componentsPanel = useRef(null);
-    const {windowData, setWindowData, isMenuShowing, focusedWindow, setFocusedWindow} = useContext(AppContext)
-    return (
-        <Draggable
-            handle={'.title-bar'}
-            nodeRef={windowRef}
-            bounds="#wrapper"
-            defaultPosition={{x: windowItem['xCoord'], y: windowItem['yCoord']}}
-            onStop={() => {
-                setWindowProperty(
-                    windowData,
-                    setWindowData,
-                    windowItem,
-                    "position",
-                    windowRef
-                )
-            }}
-        >
-            <WindowContainer
-                tabIndex={0}
-                onFocus={() => {
-                    setFocusedWindow(windowItem["id"])
-                }}
-                notFocused={focusedWindow !== windowItem["id"]}
-                ref={windowRef}
-                width={width}
-                className='window'
-                hidden={windowItem["hidden"]}
-            >
-                <TitleBar className='title-bar' notFocused={focusedWindow !== windowItem["id"]}>
-                    {isMenuShowing
-                        ?
-                        <TitleInput className='title-bar-text' value={windowItem['windowTitle']}
-                                    onChange={(e) => {
-                                        setWindowProperty(
-                                            windowData,
-                                            setWindowData,
-                                            windowItem,
-                                            "windowTitle",
-                                            e.target.value
-                                        )
-                                    }}
-                        />
-                        :
-                        <div className='title-bar-text'>
-                            {windowItem['windowTitle']}
-                        </div>
-                    }
+function Window({ width, windowItem, windowId }) {
+  const windowRef = useRef(null);
+  const componentsPanel = useRef(null);
+  const { windowData, setWindowData, isMenuShowing, focusedWindow, setFocusedWindow } = useContext(AppContext);
+  return (
+    <Draggable
+      handle={".title-bar"}
+      nodeRef={windowRef}
+      bounds="#wrapper"
+      defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
+      onStop={() => {
+        setWindowProperty(
+          windowData,
+          setWindowData,
+          windowItem,
+          "position",
+          windowRef
+        );
+      }}
+    >
+      <WindowContainer
+        tabIndex={0}
+        onFocus={() => {
+          setFocusedWindow(windowItem["id"]);
+        }}
+        notFocused={focusedWindow !== windowItem["id"]}
+        ref={windowRef}
+        width={width}
+        className="wndow"
+        hidden={windowItem["hidden"]}
+      >
+        <TitleBar className="ttle-bar" notFocused={focusedWindow !== windowItem["id"]}>
+          {isMenuShowing
+            ?
+            <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
+                        onChange={(e) => {
+                          setWindowProperty(
+                            windowData,
+                            setWindowData,
+                            windowItem,
+                            "windowTitle",
+                            e.target.value
+                          );
+                        }}
+            />
+            :
+            <div className="title-bar-text">
+              {windowItem["windowTitle"]}
+            </div>
+          }
 
-                    <ControlButtons className='title-bar-controls' notFocused={focusedWindow !== windowItem["id"]}>
-                        <button
-                            aria-label='Minimize'
-                            onClick={() => {
-                                setWindowProperty(windowData, setWindowData, windowItem, "hidden", true)
-                            }}/>
-                        <button aria-label='Maximize'/>
-                        <button
-                            aria-label='Close'
-                            onClick={() => {
-                                deleteWindowItem(windowData, setWindowData, windowItem);
-                            }}
-                        />
-                    </ControlButtons>
-                </TitleBar>
+          <ControlButtons className="title-bar-controls" notFocused={focusedWindow !== windowItem["id"]}>
+            <button
+              aria-label="minimize"
+              onClick={() => {
+                setWindowProperty(windowData, setWindowData, windowItem, "hidden", true);
+              }} />
+            <button aria-label="Maximize" />
+            <button
+              aria-label="Close"
+              onClick={() => {
+                deleteWindowItem(windowData, setWindowData, windowItem);
+              }}
+            />
+          </ControlButtons>
+        </TitleBar>
 
-                <div className='window-body'>
-                    <article style={{height: '100%'}} role="tabpanel">
-                        {RenderComponents(windowItem['items'], windowItem)}
+        <div className="window-body">
+          <article style={{ height: "100%" }} role="tabpanel">
+            {RenderComponents(windowItem["items"], windowItem)}
 
-                        {isMenuShowing &&
-                        <ComponentsPanel ref={componentsPanel}>
-                            <div className="field-row">Select one component to add:</div>
-                            <div className="field-row">
-                                <input id={"header" + windowId} type="radio" name="radio-button"/>
-                                <label htmlFor={"header" + windowId}>Header</label>
-                            </div>
-                            <div className="field-row">
-                                <input id={"Image" + windowId} type="radio" name="radio-button"/>
-                                <label htmlFor={"Image" + windowId}>Image</label>
-                            </div>
-                            <div className="field-row">
-                                <input id={"video" + windowId} type="radio" name="radio-button"/>
-                                <label htmlFor={"video" + windowId}>Video</label>
-                            </div>
-                            <AddComponent
-                                as={'button'}
-                                onClick={() => {
-                                    handleComponentCreation(componentsPanel, windowData, setWindowData, windowItem);
-                                }}>
-                                Add Component
-                            </AddComponent>
-                        </ComponentsPanel>}
-                    </article>
-                </div>
-            </WindowContainer>
-        </Draggable>
-    );
+            {isMenuShowing &&
+            <ComponentsPanel ref={componentsPanel}>
+              <div className="field-row">Select one component to add:</div>
+              <div className="field-row">
+                <input id={"header" + windowId} type="radio" name="radio-button" />
+                <label htmlFor={"header" + windowId}>Header</label>
+              </div>
+              <div className="field-row">
+                <input id={"Image" + windowId} type="radio" name="radio-button" />
+                <label htmlFor={"Image" + windowId}>Image</label>
+              </div>
+              <div className="field-row">
+                <input id={"video" + windowId} type="radio" name="radio-button" />
+                <label htmlFor={"video" + windowId}>Video</label>
+              </div>
+              <AddComponent
+                as={"button"}
+                onClick={() => {
+                  handleComponentCreation(componentsPanel, windowData, setWindowData, windowItem);
+                }}>
+                Add Component
+              </AddComponent>
+            </ComponentsPanel>}
+          </article>
+        </div>
+      </WindowContainer>
+    </Draggable>
+  );
 }
 
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
-  width: ${(props) => (props.width ? props.width : '20rem')};
+  width: ${(props) => (props.width ? props.width : "20rem")};
   min-width: 30rem;
   font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
   position: absolute;
@@ -132,7 +132,7 @@ const TitleBar = styled.div`
     border: 0px;
   `}
 
-`
+`;
 const TitleInput = styled.input`
   color: black !important;
   font-family: 'Trebuchet MS';

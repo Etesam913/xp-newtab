@@ -1,18 +1,18 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
 
-function BackButton({margin, onClick}) {
-    function handleClick() {
-        if (onClick)
-            onClick();
-    }
+function BackButton({ margin, onClick }) {
+  function handleClick() {
+    if (onClick)
+      onClick();
+  }
 
-    return (
-        <ImageButton margin={margin}>
-            <BackImage onClick={handleClick} alt={"image of back button"}
-                       src={"https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/back.png"}/>
-        </ImageButton>
-    );
+  return (
+    <ImageButton margin={margin}>
+      <BackImage onClick={handleClick} alt={"image of back button"}
+                 src={"https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/back.png"} />
+    </ImageButton>
+  );
 }
 
 const BackImage = styled.img`

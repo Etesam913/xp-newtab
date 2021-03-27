@@ -1,24 +1,24 @@
-import React from 'react'
-import styled, {css} from 'styled-components'
-import {motion} from 'framer-motion';
+import React from "react";
+import styled, { css } from "styled-components";
+import { motion } from "framer-motion";
 
-function Toggle({stateVal, setStateVal, disable}) {
+function Toggle({ stateVal, setStateVal, disable }) {
 
-    return (
-        <ToggleWrapper
-            on={stateVal}
-            onClick={() => {
-                setStateVal && setStateVal(!stateVal)
-            }}>
-            <ToggleCircle layout transition={spring}/>
-        </ToggleWrapper>
-    );
+  return (
+    <ToggleWrapper
+      on={stateVal}
+      onClick={() => {
+        setStateVal && setStateVal(!stateVal);
+      }}>
+      <ToggleCircle layout transition={spring} />
+    </ToggleWrapper>
+  );
 }
 
 const spring = {
-    type: "spring",
-    stiffness: 700,
-    damping: 30
+  type: "spring",
+  stiffness: 700,
+  damping: 30
 };
 
 

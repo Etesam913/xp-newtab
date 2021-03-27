@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Bar = styled.div`
   width: 100%;
@@ -97,7 +97,7 @@ export const StartWindow = styled.div`
   flex-direction: column;
   overflow: hidden;
   z-index: 4;
-  box-shadow: 10px 10px 30px -17px rgba(0,0,0,0.4);
+  box-shadow: 10px 10px 30px -17px rgba(0, 0, 0, 0.4);
 
 `;
 
@@ -114,7 +114,7 @@ export const StartHeader = styled.header`
   text-shadow: 0.5px 0.5px 2px #165ba3;
   text-align: center;
   padding: 0 .5rem;
-`
+`;
 
 export const StartBody = styled.div`
   height: 23.5rem;
@@ -125,12 +125,12 @@ export const StartBody = styled.div`
 export const StartItemName = styled.span`
   font-family: 'Pixelated MS Sans Serif';
   font-size: 0.9rem;
-  margin: ${props=>props.margin ? props.margin : '0 0 0 0.5rem'};
+  margin: ${props => props.margin ? props.margin : "0 0 0 0.5rem"};
 `;
 
 export const StartItemIcon = styled.img`
-  width: ${props=>props.width};
-  height: ${props=>props.height};
+  width: ${props => props.width};
+  height: ${props => props.height};
 `;
 
 export const StartFooter = styled.footer`
