@@ -38,22 +38,21 @@ function Window({ width, windowItem, windowId }) {
         notFocused={focusedWindow !== windowItem["id"]}
         ref={windowRef}
         width={width}
-        className="wndow"
+        className="window"
         hidden={windowItem["hidden"]}
       >
-        <TitleBar className="ttle-bar" notFocused={focusedWindow !== windowItem["id"]}>
+        <TitleBar className="title-bar" notFocused={focusedWindow !== windowItem["id"]}>
           {isMenuShowing
-            ?
-            <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
-                        onChange={(e) => {
-                          setWindowProperty(
-                            windowData,
-                            setWindowData,
-                            windowItem,
-                            "windowTitle",
-                            e.target.value
-                          );
-                        }}
+            ? <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
+                          onChange={(e) => {
+                            setWindowProperty(
+                              windowData,
+                              setWindowData,
+                              windowItem,
+                              "windowTitle",
+                              e.target.value
+                            );
+                          }}
             />
             :
             <div className="title-bar-text">
@@ -63,11 +62,11 @@ function Window({ width, windowItem, windowId }) {
 
           <ControlButtons className="title-bar-controls" notFocused={focusedWindow !== windowItem["id"]}>
             <button
-              aria-label="minimize"
+              aria-label="Minimize"
               onClick={() => {
                 setWindowProperty(windowData, setWindowData, windowItem, "hidden", true);
               }} />
-            <button aria-label="Maximize" />
+
             <button
               aria-label="Close"
               onClick={() => {
@@ -129,7 +128,7 @@ const TitleBar = styled.div`
   cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
   ${props => props.notFocused && css`
     background: linear-gradient(180deg, #9db4f6, #8296e3 8%, #8394e0 40%, #8da6eb 88%, #8da6eb 93%, #a3b5e6 95%, #93bbdd 96%, #a8c0ff);
-    border: 0px;
+    border: 0;
   `}
 
 `;

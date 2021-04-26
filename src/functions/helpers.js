@@ -13,11 +13,11 @@ export function getDefaultValue(localStorageProperty) {
     defaultValue = [
       {
         id: 0,
-        src: "https://via.placeholder.com/32",
-        title: "Insert Title Here",
+        src: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Mail.ico",
+        title: "Email",
         xCoord: 0,
         yCoord: 0,
-        redirect: "/"
+        redirect: "https://www.gmail.com"
       }
     ];
   }
@@ -62,13 +62,28 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
   }
 }
 
-export function addWindowItem(windowData, setWindowData, setFocusedWindow) {
-  const tempData = [...windowData];
-  const newId = getMaxId(windowData) + 1;
-  setFocusedWindow(newId);
-  const newItem = { id: newId, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] };
+export function addDataItem(data, setData, useCase, setFocusedWindow) {
+  const tempData = [...data];
+  const newId = getMaxId(data) + 1;
+  if(setFocusedWindow)
+    setFocusedWindow(newId);
+  let newItem = {}
+  if(useCase === 'window'){
+    newItem = { id: newId, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] };
+  }
+  else if(useCase === 'icon'){
+    newItem = {
+      id: 0,
+      src: "https://via.placeholder.com/48",
+      title: "Insert Title Here",
+      xCoord: 0,
+      yCoord: 0,
+      redirect: "/"
+    }
+  }
+
   tempData.push(newItem);
-  setWindowData(tempData);
+  setData(tempData);
 }
 
 // Gets window based off of id

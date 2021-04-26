@@ -15,8 +15,7 @@ export const StartButton = styled.button`
   box-shadow: none !important;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   background-image: url(${props => props.normalImg});
 
   :focus {
@@ -44,7 +43,6 @@ export const TimeSegment = styled.div`
   background-image: url(${props => props.timeBarImg});
   text-align: center;
   color: white;
-  text-align: center;
   padding-top: 10px;
   font-family: 'Pixelated MS Sans Serif';
   margin-left: auto;
@@ -64,7 +62,6 @@ export const Tab = styled.button`
   border-radius: 4px;
   color: white;
   text-align: center;
-  border: none;
   font-size: 11px;
   border: 1px solid #164ef7;
   background: #397DF3 url(${props => props.tabBackgroundImg}) no-repeat 0 ${props => props.pressed ? "-75px" : "-7px"};
@@ -104,7 +101,6 @@ export const StartWindow = styled.div`
 export const StartHeader = styled.header`
   height: 4rem;
   background-image: url(${props => props.image});
-  background-repeat-y: no-repeat;
   font-family: "Arial";
   font-weight: bold;
   display: flex;
@@ -139,4 +135,12 @@ export const StartFooter = styled.footer`
   font-family: "Arial";
   font-weight: bold;
   display: flex;
+`;
+
+export const ItemContainer = styled.div`
+  width: 100%;
+  :hover {
+    background: #2d6ac2;
+    color: white;
+  }
 `;

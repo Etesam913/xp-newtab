@@ -20,7 +20,7 @@ import startHeaderImg from "../../media/start-header.png";
 import { getTimePeriodName, getTimeUnits, getTwelveHourTime } from "../../functions/helpers";
 import { AppContext } from "../../Contexts";
 import { setWindowProperty } from "../Window/helper";
-import { CreateWindowItem, EditModeItem, SettingsItem } from "./items";
+import { StartbarItem } from "./items";
 
 function Startbar() {
   const [time, setTime] = useState("");
@@ -33,7 +33,7 @@ function Startbar() {
     setFocusedWindow
   } = useContext(AppContext);
 
-  const tabs = windowData.map((item) => {
+  const tabs = windowData.map((item, index) => {
     const windowItem = item;
     return (
       <Tab
@@ -43,7 +43,7 @@ function Startbar() {
           setFocusedWindow(item["id"]);
           setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
         }}
-        key={"tab-${index}"}
+        key={`tab-${index}`}
       >
         {item["windowTitle"]}
       </Tab>
@@ -95,9 +95,10 @@ function Startbar() {
       <StartWindow ref={startWindow}>
         <StartHeader image={startHeaderImg}> Administrator </StartHeader>
         <StartBody>
-          <EditModeItem />
-          <SettingsItem setIsStartWindowShowing={setIsStartWindowShowing} />
-          <CreateWindowItem />
+          <StartbarItem identifier="Edit Mode"/>
+          <StartbarItem identifier="Settings" setIsStartWindowShowing={setIsStartWindowShowing}/>
+          <StartbarItem identifier="Create A New Window"/>
+          <StartbarItem identifier="Add Icon"/>
         </StartBody>
         <StartFooter image={startFooterImg} />
       </StartWindow>

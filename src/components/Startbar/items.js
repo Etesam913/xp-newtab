@@ -1,64 +1,59 @@
 import React, { useContext } from "react";
 import Toggle from "../Toggle";
-import { StartItemIcon, StartItemName } from "./styles";
+import { StartItemIcon, StartItemName, ItemContainer } from "./styles";
 import { FlexContainer } from "../../styles/Layout";
 import { AppContext } from "../../Contexts";
-import controlPanelImg from "../../media/control-panel-icon.jpg";
 import newWindowImg from "../../media/new-window-icon.png";
-import { addWindowItem } from "../../functions/helpers";
+import { addDataItem } from "../../functions/helpers";
 
-export function EditModeItem() {
-  const { isMenuShowing, setIsMenuShowing } = useContext(AppContext);
+
+export function StartbarItem({ identifier, setIsStartWindowShowing }) {
+  const {
+    isMenuShowing,
+    setIsMenuShowing,
+    setIsSettingsShowing,
+    windowData,
+    setWindowData,
+    setFocusedWindow,
+    iconData,
+    setIconData
+  } = useContext(AppContext);
+
+  function handleClick() {
+    if (identifier === "Edit Mode")
+      setIsMenuShowing(!isMenuShowing);
+    else if (identifier === "Settings") {
+      setIsSettingsShowing(true);
+      setIsStartWindowShowing(false);
+    } else if (identifier === "Create A New Window") {
+      addDataItem(windowData, setWindowData, "window", setFocusedWindow);
+    } else if (identifier === "Add Icon") {
+      addDataItem(iconData, setIconData, "icon");
+    }
+  }
 
   return (
-    <FlexContainer
+    <ItemContainer
       onClick={() => {
-        setIsMenuShowing(!isMenuShowing);
-      }}
-      width={"max-content"}
-      cursor={"pointer"}
-      padding={"0.5rem"}
-      justifyContent={"flex-start"}>
-      <Toggle stateVal={isMenuShowing} />
-      <StartItemName>Edit Mode</StartItemName>
-    </FlexContainer>
-  );
-};
+        handleClick();
+      }}>
+      <FlexContainer
+        width={"max-content"}
+        cursor={"pointer"}
+        padding={"0.5rem"}
+        justifyContent={"flex-start"}>
+        {identifier === "Edit Mode" && <Toggle stateVal={isMenuShowing} />}
+        {identifier === "Settings" &&
+        <StartItemIcon
+          width={"32px"}
+          height={"32px"}
+          src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico" />
+        }
+        {identifier === "Create A New Window" && <StartItemIcon width={"32px"} height={"32px"} src={newWindowImg} />}
 
-export function SettingsItem({ setIsStartWindowShowing }) {
-  const { setIsSettingsShowing } = useContext(AppContext);
-  return (
-    <FlexContainer
-      cursor={"pointer"}
-      padding={"0.5rem"}
-      justifyContent={"flex-start"}
-      width={"max-content"}
-      onClick={() => {
-        setIsSettingsShowing(true);
-        setIsStartWindowShowing(false);
-      }}
-    >
-      <StartItemIcon src={controlPanelImg} />
-      <StartItemName>Settings</StartItemName>
-    </FlexContainer>
-  );
-}
-
-export function CreateWindowItem() {
-  const { windowData, setWindowData, setFocusedWindow } = useContext(AppContext);
-  return (
-    <FlexContainer
-      cursor={"pointer"}
-      padding={"0.5rem"}
-      justifyContent={"flex-start"}
-      width={"max-content"}
-      onClick={() => {
-        addWindowItem(windowData, setWindowData, setFocusedWindow);
-      }}
-    >
-      <StartItemIcon width={"32px"} height={"32px"} src={newWindowImg} />
-      <StartItemName>Create A New Window</StartItemName>
-    </FlexContainer>
+        <StartItemName>{identifier}</StartItemName>
+      </FlexContainer>
+    </ItemContainer>
   );
 }
 
