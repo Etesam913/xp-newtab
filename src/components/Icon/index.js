@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import Draggable from "react-draggable";
-import { setWindowProperty } from "../Window/helper";
+import { setDataProperty } from "../Window/helper";
 import { AppContext } from "../../Contexts";
 
 function Index({ iconItem }) {
@@ -14,7 +14,7 @@ function Index({ iconItem }) {
       nodeRef={iconRef}
       defaultPosition={{ x: iconItem["xCoord"], y: iconItem["yCoord"] }}
       onStop={() => {
-        setWindowProperty(
+        setDataProperty(
           iconData,
           setIconData,
           iconItem,

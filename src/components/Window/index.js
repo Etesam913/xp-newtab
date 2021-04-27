@@ -5,7 +5,7 @@ import "react-resizable/css/styles.css";
 import {
   handleComponentCreation,
   RenderComponents,
-  setWindowProperty
+  setDataProperty
 } from "./helper";
 import { AppContext } from "../../Contexts";
 import { deleteWindowItem } from "../../functions/helpers";
@@ -21,7 +21,7 @@ function Window({ width, windowItem, windowId }) {
       bounds="#wrapper"
       defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       onStop={() => {
-        setWindowProperty(
+        setDataProperty(
           windowData,
           setWindowData,
           windowItem,
@@ -45,7 +45,7 @@ function Window({ width, windowItem, windowId }) {
           {isMenuShowing
             ? <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
                           onChange={(e) => {
-                            setWindowProperty(
+                            setDataProperty(
                               windowData,
                               setWindowData,
                               windowItem,
@@ -64,7 +64,7 @@ function Window({ width, windowItem, windowId }) {
             <button
               aria-label="Minimize"
               onClick={() => {
-                setWindowProperty(windowData, setWindowData, windowItem, "hidden", true);
+                setDataProperty(windowData, setWindowData, windowItem, "hidden", true);
               }} />
 
             <button

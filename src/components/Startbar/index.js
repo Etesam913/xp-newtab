@@ -19,7 +19,7 @@ import startFooterImg from "../../media/start-footer.png";
 import startHeaderImg from "../../media/start-header.png";
 import { getTimePeriodName, getTimeUnits, getTwelveHourTime } from "../../functions/helpers";
 import { AppContext } from "../../Contexts";
-import { setWindowProperty } from "../Window/helper";
+import { setDataProperty } from "../Window/helper";
 import { StartbarItem } from "./items";
 
 function Startbar() {
@@ -41,7 +41,7 @@ function Startbar() {
         pressed={!item["hidden"]}
         onClick={() => {
           setFocusedWindow(item["id"]);
-          setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
+          setDataProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
         }}
         key={`tab-${index}`}
       >
@@ -56,16 +56,13 @@ function Startbar() {
         setIsStartWindowShowing(false);
       }
     }
-
   }
 
   useEffect(() => {
     document.addEventListener("click", handleBlur);
     return () => {
       document.removeEventListener("click", handleBlur);
-
     };
-
   }, []);
 
   useEffect(() => {

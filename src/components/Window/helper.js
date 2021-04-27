@@ -111,15 +111,15 @@ export function getSelectedComponent(componentsParent) {
   return null;
 }
 
-export function setWindowProperty(
-  windowData,
-  setWindowData,
-  windowItem,
+export function setDataProperty(
+  data,
+  setData,
+  item,
   propertyName,
   propertyValue
 ) {
-  const tempData = [...windowData];
-  const itemToInsert = { ...windowItem };
+  const tempData = [...data];
+  const itemToInsert = { ...item };
   if (propertyName === "position") {
     // Property value is the window ref in this case
     const positions = getTranslateXY(propertyValue.current);
@@ -132,7 +132,7 @@ export function setWindowProperty(
   }
 
   replaceDesiredWindowItem(tempData, itemToInsert);
-  setWindowData(tempData);
+  setData(tempData);
 }
 
 export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue) {
@@ -183,7 +183,7 @@ export function highlightText(selection) {
 export function handleDelete(windowData, setWindowData, windowItem, id) {
   const tempItem = { ...windowItem };
   tempItem["items"] = tempItem["items"].filter(item => item.id !== id);
-  setWindowProperty(windowData, setWindowData, windowItem, "items", tempItem["items"]);
+  setDataProperty(windowData, setWindowData, windowItem, "items", tempItem["items"]);
 }
 
 

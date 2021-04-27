@@ -1,4 +1,4 @@
-import { setWindowProperty } from "../Window/helper";
+import { setDataProperty } from "../Window/helper";
 import { getMaxId } from "../../functions/helpers";
 
 export function createWindow(windowData, setWindowData) {
@@ -20,7 +20,7 @@ export function handleEnter(
   setIsEditing) {
   if (e.keyCode === 13) {
     setIsEditing(false);
-    setWindowProperty(windowData, setWindowData, windowItem, propertyName, propertyValue);
+    setDataProperty(windowData, setWindowData, windowItem, propertyName, propertyValue);
   }
 
 }

@@ -73,7 +73,7 @@ export function addDataItem(data, setData, useCase, setFocusedWindow) {
   }
   else if(useCase === 'icon'){
     newItem = {
-      id: 0,
+      id: newId,
       src: "https://via.placeholder.com/48",
       title: "Insert Title Here",
       xCoord: 0,
