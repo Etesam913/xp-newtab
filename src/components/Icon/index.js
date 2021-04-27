@@ -6,7 +6,7 @@ import { AppContext } from "../../Contexts";
 import { deleteDataItem } from "../../functions/helpers";
 
 function Index({ iconItem, theme }) {
-  const { iconData, setIconData, isEditModeOn } = useContext(AppContext);
+  const { iconData, setIconData, isEditModeOn, settingsData } = useContext(AppContext);
   const iconRef = useRef(null);
 
   function handleDoubleClick() {
@@ -20,6 +20,10 @@ function Index({ iconItem, theme }) {
     <Draggable
       bounds="#wrapper"
       nodeRef={iconRef}
+      grid={
+        parseInt(settingsData["draggingGrid"]) !== 0 &&
+        [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
+      }
       defaultPosition={{ x: iconItem["xCoord"], y: iconItem["yCoord"] }}
       onStop={() => {
         setDataProperty(

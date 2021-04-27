@@ -170,10 +170,22 @@ const InfoParagraph = styled.p`
 
 // Allows user to set settings such as grid, icon size
 export function MiscTab() {
+  const { settingsData, setSettingsData } = useContext(AppContext);
+
   return (
     <article role="tabpanel">
       <Header1>Change Dragging Grid</Header1>
-      <select>
+      <select
+        onChange={(e) => {
+          updateSetting(
+            settingsData,
+            setSettingsData,
+            "draggingGrid",
+            e.target.value
+          );
+        }}
+        defaultValue={settingsData["draggingGrid"]}
+      >
         <option>0px</option>
         <option>15px</option>
         <option>30px</option>

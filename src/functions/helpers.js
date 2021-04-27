@@ -19,7 +19,8 @@ export function getDefaultValue(localStorageProperty) {
   } else if (localStorageProperty === "settingsData") {
     defaultValue = {
       backgroundColor: "#ffffff",
-      backgroundImage: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg"
+      backgroundImage: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
+      draggingGrid: "0px"
     };
   }
 

@@ -13,12 +13,23 @@ import { deleteDataItem } from "../../functions/helpers";
 function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
-  const { windowData, setWindowData, isEditModeOn, focusedWindow, setFocusedWindow } = useContext(AppContext);
+  const {
+    windowData,
+    setWindowData,
+    isEditModeOn,
+    settingsData,
+    focusedWindow,
+    setFocusedWindow
+  } = useContext(AppContext);
   return (
     <Draggable
       handle={".title-bar"}
       nodeRef={windowRef}
       bounds="#wrapper"
+      grid={
+        parseInt(settingsData["draggingGrid"]) !== 0 &&
+        [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
+      }
       defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       onStop={() => {
         setDataProperty(
@@ -116,7 +127,7 @@ const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : "20rem")};
   min-width: 30rem;
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${props => props.theme.fonts.primary};
   position: absolute;
   box-shadow: ${props => props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
   z-index: ${props => props.notFocused ? "2" : "3"};

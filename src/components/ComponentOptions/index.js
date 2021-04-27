@@ -99,11 +99,14 @@ export function LinkOptions(
             }}
             margin={"0 0.25rem 0 0"} />
           <LinkInput ref={linkInput} placeholder="Paste website url here" onKeyDown={handleEnter} />
-          <button onClick={() => {
-            setShowLinkInput(false);
-            setIsTextSelected(false);
-            convertSelectionToLink();
-          }}>Done
+          <button
+            onClick={() => {
+              setShowLinkInput(false);
+              setIsTextSelected(false);
+              convertSelectionToLink();
+            }}
+          >
+            Done
           </button>
         </FlexContainer>
       );
