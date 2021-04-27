@@ -13,7 +13,7 @@ function App() {
   const [isSettingsShowing, setIsSettingsShowing] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
   const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"));
-  const [isMenuShowing, setIsMenuShowing] = useState(false);
+  const [isEditModeOn, setIsEditModeOn] = useState(false);
   const [iconData, setIconData] = useState(getDefaultValue("iconData"));
   const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
   const [focusedWindow, setFocusedWindow] = useState(0);
@@ -32,8 +32,8 @@ function App() {
   return (
     <AppContext.Provider
       value={{
-        isMenuShowing,
-        setIsMenuShowing,
+        isEditModeOn,
+        setIsEditModeOn,
         windowData,
         setWindowData,
         focusedWindow,

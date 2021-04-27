@@ -7,12 +7,12 @@ import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton";
 
 function Video({ windowItem, item }) {
-  const { isMenuShowing, windowData, setWindowData } = useContext(AppContext);
+  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
   const [isChangeUrlClicked, setIsChangedUrlClicked] = useState(false);
   const srcInput = useRef(null);
 
   function handleOptions() {
-    if (isMenuShowing && !isChangeUrlClicked) {
+    if (isEditModeOn && !isChangeUrlClicked) {
       return (
         <FlexContainer margin={"0 0 0.5rem 0"}>
           <DeleteButton
@@ -33,7 +33,7 @@ function Video({ windowItem, item }) {
         </FlexContainer>
 
       );
-    } else if (isMenuShowing && isChangeUrlClicked) {
+    } else if (isEditModeOn && isChangeUrlClicked) {
       return (
         <FlexContainer width={"100%"} margin={"0 0 0.5rem 0"}>
           <BackButton
@@ -86,7 +86,7 @@ function Video({ windowItem, item }) {
       </VideoContainer>
     </FlexContainer>
   );
-};
+}
 
 const VideoContainer = styled.div`
   position: relative;

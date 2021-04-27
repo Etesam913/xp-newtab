@@ -18,9 +18,9 @@ function Image({ windowItem, item }) {
   const redirectInput = useRef(null);
   const redirectButton = useRef(null);
 
-  const { isMenuShowing, windowData, setWindowData } = useContext(AppContext);
+  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
 
-  function onResize(e, { element, size, handle }) {
+  function onResize(e, {size }) {
     setImageWidth(size.width);
     setImageHeight(size.height);
   }
@@ -142,7 +142,7 @@ function Image({ windowItem, item }) {
 
   return (
     <FlexContainer flexDirection={"column"} alignItems="center">
-      {isMenuShowing &&
+      {isEditModeOn &&
       <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
         {handleOptions()}
       </FlexContainer>
@@ -155,10 +155,10 @@ function Image({ windowItem, item }) {
           onResize={onResize}
           maxConstraints={[350, 500]}
           lockAspectRatio
-          resizeHandles={isMenuShowing ? item["justifyContent"] === "flex-end" ? ["sw"] : ["se"] : []}
+          resizeHandles={isEditModeOn ? item["justifyContent"] === "flex-end" ? ["sw"] : ["se"] : []}
         >
           <ImageWrapper
-            href={isMenuShowing ? null : item["href"]}
+            href={isEditModeOn ? null : item["href"]}
             onFocus={() => {
               setIsRedirectClicked(false);
               setIsImageFocused(true);
@@ -174,7 +174,7 @@ function Image({ windowItem, item }) {
 
         </ResizableBox>
       </FlexContainer>
-      {isMenuShowing &&
+      {isEditModeOn &&
       <DeleteButton
         margin={"0.5rem 0 0"}
         onClick={() => {

@@ -8,12 +8,12 @@ import {
   setDataProperty
 } from "./helper";
 import { AppContext } from "../../Contexts";
-import { deleteWindowItem } from "../../functions/helpers";
+import { deleteDataItem } from "../../functions/helpers";
 
 function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
-  const { windowData, setWindowData, isMenuShowing, focusedWindow, setFocusedWindow } = useContext(AppContext);
+  const { windowData, setWindowData, isEditModeOn, focusedWindow, setFocusedWindow } = useContext(AppContext);
   return (
     <Draggable
       handle={".title-bar"}
@@ -42,17 +42,19 @@ function Window({ width, windowItem, windowId }) {
         hidden={windowItem["hidden"]}
       >
         <TitleBar className="title-bar" notFocused={focusedWindow !== windowItem["id"]}>
-          {isMenuShowing
-            ? <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
-                          onChange={(e) => {
-                            setDataProperty(
-                              windowData,
-                              setWindowData,
-                              windowItem,
-                              "windowTitle",
-                              e.target.value
-                            );
-                          }}
+          {isEditModeOn
+            ?
+            <TitleInput
+              className="title-bar-text" value={windowItem["windowTitle"]}
+              onChange={(e) => {
+                setDataProperty(
+                  windowData,
+                  setWindowData,
+                  windowItem,
+                  "windowTitle",
+                  e.target.value
+                );
+              }}
             />
             :
             <div className="title-bar-text">
@@ -70,7 +72,7 @@ function Window({ width, windowItem, windowId }) {
             <button
               aria-label="Close"
               onClick={() => {
-                deleteWindowItem(windowData, setWindowData, windowItem);
+                deleteDataItem(windowData, setWindowData, windowItem);
               }}
             />
           </ControlButtons>
@@ -80,7 +82,7 @@ function Window({ width, windowItem, windowId }) {
           <article style={{ height: "100%" }} role="tabpanel">
             {RenderComponents(windowItem["items"], windowItem)}
 
-            {isMenuShowing &&
+            {isEditModeOn &&
             <ComponentsPanel ref={componentsPanel}>
               <div className="field-row">Select one component to add:</div>
               <div className="field-row">

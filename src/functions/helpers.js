@@ -44,14 +44,14 @@ export function getTranslateXY(element) {
   };
 }
 
-export function deleteWindowItem(windowData, setWindowData, windowItem) {
-  const tempData = [...windowData];
-  if (windowData.indexOf(windowItem) === -1) {
+export function deleteDataItem(data, setData, dataItem) {
+  const tempData = [...data];
+  if (data.indexOf(dataItem) === -1) {
     console.error("CAN'T FIND WINDOW TO DELETE");
     return;
   }
-  tempData.splice(tempData.indexOf(windowItem), 1);
-  setWindowData(tempData);
+  tempData.splice(tempData.indexOf(dataItem), 1);
+  setData(tempData);
 }
 
 export function replaceDesiredWindowItem(windowData, windowItem) {

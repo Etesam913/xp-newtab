@@ -4,13 +4,14 @@ import { StartItemIcon, StartItemName, ItemContainer } from "./styles";
 import { FlexContainer } from "../../styles/Layout";
 import { AppContext } from "../../Contexts";
 import newWindowImg from "../../media/new-window-icon.png";
+import newIconImg from '../../media/new-icon-icon.png';
 import { addDataItem } from "../../functions/helpers";
 
 
 export function StartbarItem({ identifier, setIsStartWindowShowing }) {
   const {
-    isMenuShowing,
-    setIsMenuShowing,
+    isEditModeOn,
+    setIsEditModeOn,
     setIsSettingsShowing,
     windowData,
     setWindowData,
@@ -21,7 +22,7 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
 
   function handleClick() {
     if (identifier === "Edit Mode")
-      setIsMenuShowing(!isMenuShowing);
+      setIsEditModeOn(!isEditModeOn);
     else if (identifier === "Settings") {
       setIsSettingsShowing(true);
       setIsStartWindowShowing(false);
@@ -42,7 +43,7 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
         cursor={"pointer"}
         padding={"0.5rem"}
         justifyContent={"flex-start"}>
-        {identifier === "Edit Mode" && <Toggle stateVal={isMenuShowing} />}
+        {identifier === "Edit Mode" && <Toggle stateVal={isEditModeOn} />}
         {identifier === "Settings" &&
         <StartItemIcon
           width={"32px"}
@@ -50,7 +51,7 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
           src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico" />
         }
         {identifier === "Create A New Window" && <StartItemIcon width={"32px"} height={"32px"} src={newWindowImg} />}
-
+        {identifier === "Add Icon" && <StartItemIcon width={"32px"} height={"32px"} src={newIconImg} />}
         <StartItemName>{identifier}</StartItemName>
       </FlexContainer>
     </ItemContainer>

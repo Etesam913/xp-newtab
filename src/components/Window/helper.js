@@ -47,7 +47,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
 }
 
 export function RenderComponents(componentsArr, windowItem) {
-  const { isMenuShowing } = useContext(AppContext);
+  const { isEditModeOn } = useContext(AppContext);
   const componentLength = componentsArr.length;
   const components = componentsArr.map((item, index) => {
     function getComponent() {
@@ -66,8 +66,15 @@ export function RenderComponents(componentsArr, windowItem) {
       }
     }
 
-    return <ComponentItem isMenuShowing={isMenuShowing} componentLength={componentLength}
-                          key={"item-" + windowItem["id"] + "-" + index}>{getComponent()}</ComponentItem>;
+    return (
+      <ComponentItem
+        isEditModeOn={isEditModeOn}
+        componentLength={componentLength}
+        key={"item-" + windowItem["id"] + "-" + index}
+      >
+        {getComponent()}
+      </ComponentItem>
+    );
   });
   return <ComponentList>{components}</ComponentList>;
 }
@@ -80,7 +87,7 @@ const ComponentList = styled.ul`
 
 const ComponentItem = styled.li`
   padding: 0.8rem 0;
-  border: ${props => !props.isMenuShowing ? "0px" : "solid #b1afaf"} !important;
+  border: ${props => !props.isEditModeOn ? "0px" : "solid #b1afaf"} !important;
   border-width: 1px 0 1px 0 !important;
 
   :first-child {

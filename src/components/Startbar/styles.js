@@ -139,6 +139,10 @@ export const StartFooter = styled.footer`
 
 export const ItemContainer = styled.div`
   width: 100%;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   :hover {
     background: #2d6ac2;
     color: white;
