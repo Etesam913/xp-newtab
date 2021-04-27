@@ -12,12 +12,11 @@ import { theme } from "./styles/theme";
 
 function App() {
   const [isSettingsShowing, setIsSettingsShowing] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
-  const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"));
   const [isEditModeOn, setIsEditModeOn] = useState(false);
+  const [focusedWindow, setFocusedWindow] = useState(0);
+  const [settingsData, setSettingsData] = useState(getDefaultValue("settingsData"));
   const [iconData, setIconData] = useState(getDefaultValue("iconData"));
   const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
-  const [focusedWindow, setFocusedWindow] = useState(0);
 
   useEffect(() => {
     localStorage.setItem("windowData", JSON.stringify(windowData));
@@ -28,6 +27,11 @@ function App() {
     localStorage.setItem("iconData", JSON.stringify(iconData));
     console.log(iconData);
   }, [iconData, setIconData]);
+
+  useEffect(() => {
+    localStorage.setItem("settingsData", JSON.stringify(settingsData));
+    console.log(settingsData);
+  });
 
 
   return (
@@ -42,17 +46,20 @@ function App() {
         isSettingsShowing,
         setIsSettingsShowing,
         iconData,
-        setIconData
+        setIconData,
+        settingsData,
+        setSettingsData
       }}>
       <ThemeProvider theme={theme}>
-        <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage} />
+        <GlobalStyle
+          background={settingsData["backgroundColor"]}
+          backgroundImage={settingsData["backgroundImage"]}
+        />
         {isSettingsShowing &&
         <SettingsWindow
           setIsSettingsShowing={setIsSettingsShowing}
-          backgroundColor={backgroundColor}
-          setBackgroundColor={setBackgroundColor}
-          backgroundImage={backgroundImage}
-          setBackgroundImage={setBackgroundImage}
+          settingsData={settingsData}
+          setSettingsData={setSettingsData}
         />}
         <Wrapper id="wrapper">
           <RenderWindows />
@@ -81,7 +88,7 @@ const GlobalStyle = createGlobalStyle`
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-size: cover;
-    cursor: ${props=>props.theme.cursors.auto};
+    cursor: ${props => props.theme.cursors.auto};
     overflow-x: hidden;
   }
 
@@ -98,11 +105,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a, select, option {
-    cursor: ${props=>props.theme.cursors.pointer};
+    cursor: ${props => props.theme.cursors.pointer};
   }
 
   button {
-    cursor: ${props=>props.theme.cursors.pointer};
+    cursor: ${props => props.theme.cursors.pointer};
     color: black;
   }
 `;

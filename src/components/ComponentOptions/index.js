@@ -39,16 +39,17 @@ const OptionTitle = styled.span`
   white-space: nowrap;
 `;
 
-export function LinkOptions({
-                              isTextSelected,
-                              setIsTextSelected,
-                              selectionObj,
-                              showLinkInput,
-                              setShowLinkInput,
-                              windowItem,
-                              item,
-                              componentRef
-                            }) {
+export function LinkOptions(
+  {
+    isTextSelected,
+    setIsTextSelected,
+    selectionObj,
+    showLinkInput,
+    setShowLinkInput,
+    windowItem,
+    item,
+    componentRef
+  }) {
   const { windowData, setWindowData } = useContext(AppContext);
   const linkInput = useRef(null);
 

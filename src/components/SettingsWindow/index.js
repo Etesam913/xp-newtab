@@ -1,27 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ColorAndImageTab, InfoTab } from "./Tabs";
+import { ColorAndImageTab, InfoTab, MiscTab } from "./Tabs";
 
-function SettingsWindow({
-                          setIsSettingsShowing,
-                          backgroundColor,
-                          setBackgroundColor,
-                          backgroundImage,
-                          setBackgroundImage
-                        }) {
-  const [currentTab, setCurrentTab] = useState("image/color");
+function SettingsWindow(
+  {
+    setIsSettingsShowing,
+    settingsData
+  }) {
+  const [currentTab, setCurrentTab] = useState("Appearance");
   const imageInput = useRef(null);
   const colorInput = useRef(null);
 
   useEffect(() => {
-    imageInput.current.value = backgroundImage;
-    colorInput.current.value = backgroundColor;
+    imageInput.current.value = settingsData["backgroundImage"];
+    colorInput.current.value = settingsData["backgroundColor"];
   }, [imageInput, colorInput]);
 
-  useEffect(() => {
-    localStorage.setItem("backgroundColor", backgroundColor);
-    localStorage.setItem("backgroundImage", backgroundImage);
-  }, [backgroundColor, backgroundImage]);
+  const tabData = ["Appearance", "Miscellaneous", "Information"];
+  const tabs = tabData.map((tab, index) => {
+    return (
+      <button
+        key={`tab-${index}`}
+        aria-selected={currentTab === tab}
+        onClick={() => {
+          setCurrentTab(tab);
+        }}
+        aria-controls={tab}
+      >
+        {tab}
+      </button>
+    );
+  });
 
   return (
     <div>
@@ -36,28 +45,17 @@ function SettingsWindow({
         </div>
         <div className="window-body">
           <menu role="tablist">
-            <button aria-selected={currentTab === "image/color"} aria-controls="color"
-                    onClick={() => {
-                      setCurrentTab("image/color");
-                    }}>Image/Color
-            </button>
-            <button aria-selected={currentTab === "info"} onClick={() => {
-              setCurrentTab("info");
-            }} aria-controls="info">Info
-            </button>
+            {tabs}
           </menu>
 
-          {currentTab === "image/color" &&
+          {currentTab === "Appearance" &&
           <ColorAndImageTab
             imageInput={imageInput}
             colorInput={colorInput}
-            backgroundColor={backgroundColor}
-            setBackgroundColor={setBackgroundColor}
-            backgroundImage={backgroundImage}
-            setBackgroundImage={setBackgroundImage}
           />}
 
-          {currentTab === "info" && <InfoTab />}
+          {currentTab === "Information" && <InfoTab />}
+          {currentTab === "Miscellaneous" && <MiscTab />}
         </div>
       </Window>
       <GrayShade onClick={() => {
@@ -74,7 +72,7 @@ const Window = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${props => props.theme.fonts.primary};
   z-index: 6;
   @media only screen and (max-width: 768px) {
     width: 80% !important;

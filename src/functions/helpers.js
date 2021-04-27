@@ -1,10 +1,6 @@
 export function getDefaultValue(localStorageProperty) {
   let defaultValue = false;
-  if (localStorageProperty === "backgroundColor")
-    defaultValue = "#ffffff";
-  else if (localStorageProperty === "backgroundImage")
-    defaultValue = "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg";
-  else if (localStorageProperty === "windowData") {
+  if (localStorageProperty === "windowData") {
     defaultValue = [
       { id: 0, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] },
       { id: 1, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] }
@@ -20,16 +16,14 @@ export function getDefaultValue(localStorageProperty) {
         redirect: "https://www.gmail.com"
       }
     ];
+  } else if (localStorageProperty === "settingsData") {
+    defaultValue = {
+      backgroundColor: "#ffffff",
+      backgroundImage: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg"
+    };
   }
 
-  let propertyValue = window.localStorage.getItem(localStorageProperty);
-  // Has to be parsed if the property is an object
-  if (localStorageProperty === "windowData" || localStorageProperty === "iconData") {
-    // If componentsArr is undefined uncomment localStorage.clear
-    //localStorage.clear();
-    propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty));
-  }
-
+  const propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty));
   if (propertyValue !== null)
     defaultValue = propertyValue;
   return defaultValue;
@@ -62,16 +56,16 @@ export function replaceDesiredWindowItem(windowData, windowItem) {
   }
 }
 
+// Used to create a new window or icon
 export function addDataItem(data, setData, useCase, setFocusedWindow) {
   const tempData = [...data];
   const newId = getMaxId(data) + 1;
-  if(setFocusedWindow)
+  if (setFocusedWindow)
     setFocusedWindow(newId);
-  let newItem = {}
-  if(useCase === 'window'){
+  let newItem = {};
+  if (useCase === "window") {
     newItem = { id: newId, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] };
-  }
-  else if(useCase === 'icon'){
+  } else if (useCase === "icon") {
     newItem = {
       id: newId,
       src: "https://via.placeholder.com/48",
@@ -79,7 +73,7 @@ export function addDataItem(data, setData, useCase, setFocusedWindow) {
       xCoord: 0,
       yCoord: 0,
       redirect: "/"
-    }
+    };
   }
 
   tempData.push(newItem);
@@ -177,6 +171,17 @@ export function getMaxId(windowData) {
     }
   }
   return maxId;
+}
+
+export function updateSetting(
+  settingsData,
+  setSettingsData,
+  propertyName,
+  propertyValue
+) {
+  const tempSettingsData = { ...settingsData };
+  tempSettingsData[propertyName] = propertyValue;
+  setSettingsData(tempSettingsData);
 }
 
 

@@ -92,10 +92,13 @@ function Startbar() {
       <StartWindow ref={startWindow}>
         <StartHeader image={startHeaderImg}> Administrator </StartHeader>
         <StartBody>
-          <StartbarItem identifier="Edit Mode"/>
-          <StartbarItem identifier="Settings" setIsStartWindowShowing={setIsStartWindowShowing}/>
-          <StartbarItem identifier="Create A New Window"/>
-          <StartbarItem identifier="Add Icon"/>
+          <StartbarItem
+            identifier="Settings"
+            setIsStartWindowShowing={setIsStartWindowShowing}
+          />
+          <StartbarItem identifier="Create A New Window" />
+          <StartbarItem identifier="Add Icon" />
+          <StartbarItem identifier="Edit Mode" />
         </StartBody>
         <StartFooter image={startFooterImg} />
       </StartWindow>
