@@ -74,7 +74,7 @@ const Window = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
+  font-family: ${props=>props.theme.fonts.primary};
   z-index: 6;
   @media only screen and (max-width: 768px) {
     width: 80% !important;

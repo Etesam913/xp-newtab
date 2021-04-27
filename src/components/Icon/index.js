@@ -1,17 +1,17 @@
 import React, { useContext, useRef } from "react";
-import styled from "styled-components";
+import styled, {withTheme} from "styled-components";
 import Draggable from "react-draggable";
 import { setDataProperty } from "../Window/helper";
 import { AppContext } from "../../Contexts";
 import { deleteDataItem } from "../../functions/helpers";
 
-function Index({ iconItem }) {
+function Index({ iconItem, theme }) {
   const { iconData, setIconData, isEditModeOn } = useContext(AppContext);
   const iconRef = useRef(null);
 
   function handleDoubleClick() {
     if (!isEditModeOn) {
-      document.body.style.cursor = 'url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/loading.cur"), auto';
+      document.body.style.cursor = theme.cursors.wait;
       window.location = iconItem["redirect"];
     }
   }
@@ -102,9 +102,7 @@ function Index({ iconItem }) {
             </button>
           </DeleteRow>
         </footer>}
-
       </IconWrapper>
-
     </Draggable>
 
   );
@@ -147,17 +145,19 @@ const DeleteRow = styled.section`
 `;
 
 const IconText = styled.p`
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
   margin-top: 0.35rem;
   color: white;
   text-align: center;
   width: auto;
   max-width: 100px;
-  max-height: 56px;
-  word-break: break-word;
+  max-height: 43px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  -webkit-line-clamp: 3;
   text-overflow: ellipsis;
   text-shadow: 1.25px 1.2px 1px #000000;
 `;
 
-export default Index;
+export default withTheme(Index);

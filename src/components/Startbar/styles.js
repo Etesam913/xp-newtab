@@ -44,7 +44,7 @@ export const TimeSegment = styled.div`
   text-align: center;
   color: white;
   padding-top: 10px;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
   margin-left: auto;
 `;
 
@@ -53,7 +53,7 @@ export const TabContainer = styled.div`
   align-items: center;
   padding: 0 0.5rem;
   color: white;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
 `;
 
 export const Tab = styled.button`
@@ -101,7 +101,6 @@ export const StartWindow = styled.div`
 export const StartHeader = styled.header`
   height: 4rem;
   background-image: url(${props => props.image});
-  font-family: "Arial";
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -119,7 +118,7 @@ export const StartBody = styled.div`
 `;
 
 export const StartItemName = styled.span`
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
   font-size: 0.9rem;
   margin: ${props => props.margin ? props.margin : "0 0 0 0.5rem"};
 `;
@@ -132,7 +131,6 @@ export const StartItemIcon = styled.img`
 export const StartFooter = styled.footer`
   height: 2.5rem;
   background-image: url(${props => props.image});
-  font-family: "Arial";
   font-weight: bold;
   display: flex;
 `;

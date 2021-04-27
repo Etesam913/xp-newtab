@@ -1,12 +1,13 @@
 import "xp.css/dist/XP.css";
 import React, { useState, useEffect } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
 import { AppContext } from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import { getDefaultValue } from "./functions/helpers";
 import Startbar from "./components/Startbar";
+import { theme } from "./styles/theme";
 
 
 function App() {
@@ -43,22 +44,22 @@ function App() {
         iconData,
         setIconData
       }}>
-      <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage} />
-
-      {isSettingsShowing &&
-      <SettingsWindow
-        setIsSettingsShowing={setIsSettingsShowing}
-        backgroundColor={backgroundColor}
-        setBackgroundColor={setBackgroundColor}
-        backgroundImage={backgroundImage}
-        setBackgroundImage={setBackgroundImage}
-      />}
-      <Wrapper id="wrapper">
-        <RenderWindows />
-        <RenderIcons />
-      </Wrapper>
-      <Startbar />
-
+      <ThemeProvider theme={theme}>
+        <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage} />
+        {isSettingsShowing &&
+        <SettingsWindow
+          setIsSettingsShowing={setIsSettingsShowing}
+          backgroundColor={backgroundColor}
+          setBackgroundColor={setBackgroundColor}
+          backgroundImage={backgroundImage}
+          setBackgroundImage={setBackgroundImage}
+        />}
+        <Wrapper id="wrapper">
+          <RenderWindows />
+          <RenderIcons />
+        </Wrapper>
+        <Startbar />
+      </ThemeProvider>
     </AppContext.Provider>
   );
 }
@@ -80,7 +81,7 @@ const GlobalStyle = createGlobalStyle`
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-size: cover;
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto;
+    cursor: ${props=>props.theme.cursors.auto};
     overflow-x: hidden;
   }
 
@@ -96,12 +97,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  a {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+  a, select, option {
+    cursor: ${props=>props.theme.cursors.pointer};
   }
 
   button {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+    cursor: ${props=>props.theme.cursors.pointer};
     color: black;
   }
 `;

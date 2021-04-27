@@ -37,7 +37,6 @@ export function TextAlignOptions({ windowItem, item, text }) {
 const OptionTitle = styled.span`
   margin-right: 0.25rem;
   white-space: nowrap;
-
 `;
 
 export function LinkOptions({

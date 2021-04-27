@@ -20,40 +20,37 @@ function Image({ windowItem, item }) {
 
   const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
 
-  function onResize(e, {size }) {
+  function onResize(e, { size }) {
     setImageWidth(size.width);
     setImageHeight(size.height);
   }
 
   function handleOptions() {
     function setImageUrl() {
-      if (srcInput.current.value.trim() !== "") {
-        changeItemProperty(
-          windowItem,
-          windowData,
-          setWindowData,
-          item,
-          "src",
-          srcInput.current.value.trim()
-        );
-        setIsImageFocused(false);
-      }
+      changeItemProperty(
+        windowItem,
+        windowData,
+        setWindowData,
+        item,
+        "src",
+        srcInput.current.value.trim()
+      );
+      setIsImageFocused(false);
     }
 
+
     function setRedirectUrl() {
-      if (redirectInput.current.value.trim() !== "") {
-        changeItemProperty(
-          windowItem,
-          windowData,
-          setWindowData,
-          item,
-          "href",
-          redirectInput.current.value
-        );
-        setIsRedirectClicked(false);
-        console.log(imageWidth);
-        console.log(imageHeight);
-      }
+      changeItemProperty(
+        windowItem,
+        windowData,
+        setWindowData,
+        item,
+        "href",
+        redirectInput.current.value
+      );
+      setIsRedirectClicked(false);
+      console.log(imageWidth);
+      console.log(imageHeight);
     }
 
 
@@ -63,24 +60,30 @@ function Image({ windowItem, item }) {
           <TextAlignOptions item={item} windowItem={windowItem} />
           <OptionsButton>Fit Size To Window</OptionsButton>
           <OptionsButton
-            width={"125px"}
             onClick={() => {
               setIsRedirectClicked(true);
             }}
           >
-            Redirect to Website
+            Set Image Url
           </OptionsButton>
         </FlexContainer>
       );
     } else if (isImageFocused) {
       return (
         <FlexContainer width={"100%"}>
-          <input ref={srcInput} style={{ width: "100%" }} placeholder={"Enter image url"}
-                 defaultValue={item["src"]} />
+          <input
+            ref={redirectInput}
+            style={{ width: "100%" }}
+            placeholder={"Enter redirect url"}
+            defaultValue={item["href"]}
+            onBlur={handleBlur}
+          />
           <OptionsButton
-            onClick={setImageUrl}
+            onClick={setRedirectUrl}
+            width="140px"
+            ref={redirectButton}
           >
-            Set Image Url
+            Set Redirect Url
           </OptionsButton>
         </FlexContainer>
       );
@@ -88,22 +91,24 @@ function Image({ windowItem, item }) {
       return (
         <FlexContainer width={"100%"}>
           <BackButton
+            aria-label="back button"
             margin={"0 0.25rem 0 0"}
             onClick={() => {
               setIsRedirectClicked(false);
             }}
           />
-          <input ref={redirectInput} style={{ width: "87%" }}
-                 placeholder={"Enter website url to redirect to on image click"}
-                 defaultValue={item["href"] !== null ? item["href"] : ""}
-                 onBlur={handleBlur}
+          <input
+            ref={srcInput}
+            style={{ width: "87%" }}
+            placeholder={"Enter image url"}
+            defaultValue={item["src"] !== null ? item["src"] : ""}
+            /*onBlur={handleBlur}*/
           />
           <OptionsButton
             width={"125px"}
-            ref={redirectButton}
-            onClick={setRedirectUrl}
+            onClick={setImageUrl}
           >
-            Set Redirect Url
+            Set Image Url
           </OptionsButton>
         </FlexContainer>
       );
@@ -122,7 +127,7 @@ function Image({ windowItem, item }) {
     }
 
     setTimeout(function() {
-      if (srcInput && srcInput.current !== document.activeElement) {
+      if (redirectInput && redirectInput.current !== document.activeElement) {
         setIsImageFocused(false);
       }
       if (!redirectButtonClicked) {
@@ -158,7 +163,7 @@ function Image({ windowItem, item }) {
           resizeHandles={isEditModeOn ? item["justifyContent"] === "flex-end" ? ["sw"] : ["se"] : []}
         >
           <ImageWrapper
-            href={isEditModeOn ? null : item["href"]}
+            href={isEditModeOn ? null : (item["href"] === "" ? "javascript:void(0)" : item["href"])}
             onFocus={() => {
               setIsRedirectClicked(false);
               setIsImageFocused(true);
@@ -197,9 +202,11 @@ const ImageComponent = styled.img`
 
 const ImageWrapper = styled.a`
   :focus {
-    outline: 2px dotted gray;
+    outline: ${props => props.href === "javascript:void(0)" ? "0" : "2px dotted gray"};
+    cursor: ${props => props.href === "javascript:void(0)" ? props.theme.cursors.auto : props.theme.cursors.wait};
   }
 ;
+  cursor: ${props => props.href === "javascript:void(0)" ? props.theme.cursors.auto : props.theme.cursors.pointer};
   display: block;
   width: ${props => props.width}px;
   height: ${props => props.height}px;

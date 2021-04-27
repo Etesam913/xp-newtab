@@ -86,7 +86,7 @@ const ComponentList = styled.ul`
 `;
 
 const ComponentItem = styled.li`
-  padding: 0.8rem 0;
+  padding: 0.5rem 0;
   border: ${props => !props.isEditModeOn ? "0px" : "solid #b1afaf"} !important;
   border-width: 1px 0 1px 0 !important;
 

@@ -87,15 +87,15 @@ function Window({ width, windowItem, windowId }) {
               <div className="field-row">Select one component to add:</div>
               <div className="field-row">
                 <input id={"header" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"header" + windowId}>Header</label>
+                <WindowLabel htmlFor={"header" + windowId}>Header</WindowLabel>
               </div>
               <div className="field-row">
                 <input id={"Image" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"Image" + windowId}>Image</label>
+                <WindowLabel htmlFor={"Image" + windowId}>Image</WindowLabel>
               </div>
               <div className="field-row">
                 <input id={"video" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"video" + windowId}>Video</label>
+                <WindowLabel htmlFor={"video" + windowId}>Video</WindowLabel>
               </div>
               <AddComponent
                 as={"button"}
@@ -116,7 +116,7 @@ const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : "20rem")};
   min-width: 30rem;
-  font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
+  font-family: ${props=>props.theme.fonts.primary};
   position: absolute;
   box-shadow: ${props => props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
   z-index: ${props => props.notFocused ? "2" : "3"};
@@ -127,7 +127,7 @@ const WindowContainer = styled.div`
 `;
 
 const TitleBar = styled.div`
-  cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
+  cursor: ${props => props.theme.cursors.move};
   ${props => props.notFocused && css`
     background: linear-gradient(180deg, #9db4f6, #8296e3 8%, #8394e0 40%, #8da6eb 88%, #8da6eb 93%, #a3b5e6 95%, #93bbdd 96%, #a8c0ff);
     border: 0;
@@ -136,7 +136,7 @@ const TitleBar = styled.div`
 `;
 const TitleInput = styled.input`
   color: black !important;
-  font-family: 'Trebuchet MS';
+  font-family: ${props => props.theme.fonts.secondary};
   font-weight: 700;
   font-size: 13px;
   width: 100%;
@@ -152,6 +152,10 @@ const ComponentsPanel = styled.fieldset`
 `;
 
 const AddComponent = styled(ComponentsPanel)`
+`;
+
+const WindowLabel = styled.label`
+  cursor: ${props => props.theme.cursors.pointer};
 `;
 
 export default Window;
