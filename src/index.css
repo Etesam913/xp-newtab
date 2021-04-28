@@ -15,4 +15,10 @@ code {
     color: white;
 }
 
+.list-item{
+    font-size: 13px;
+    padding: 0.15rem 0;
+    cursor: text;
+}
+
 

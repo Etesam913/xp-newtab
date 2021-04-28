@@ -21,6 +21,17 @@ function Window({ width, windowItem, windowId }) {
     focusedWindow,
     setFocusedWindow
   } = useContext(AppContext);
+
+  const componentData=["Header", "Image", "Video", "List"]
+  const components = componentData.map((componentName, index)=>{
+    return(
+      <div className="field-row" key={index}>
+        <input id={componentName.toLowerCase() + windowId} type="radio" name="radio-button" />
+        <WindowLabel htmlFor={componentName.toLowerCase() + windowId}>{componentName}</WindowLabel>
+      </div>
+    );
+  })
+
   return (
     <Draggable
       handle={".title-bar"}
@@ -96,18 +107,7 @@ function Window({ width, windowItem, windowId }) {
             {isEditModeOn &&
             <ComponentsPanel ref={componentsPanel}>
               <div className="field-row">Select one component to add:</div>
-              <div className="field-row">
-                <input id={"header" + windowId} type="radio" name="radio-button" />
-                <WindowLabel htmlFor={"header" + windowId}>Header</WindowLabel>
-              </div>
-              <div className="field-row">
-                <input id={"Image" + windowId} type="radio" name="radio-button" />
-                <WindowLabel htmlFor={"Image" + windowId}>Image</WindowLabel>
-              </div>
-              <div className="field-row">
-                <input id={"video" + windowId} type="radio" name="radio-button" />
-                <WindowLabel htmlFor={"video" + windowId}>Video</WindowLabel>
-              </div>
+              {components}
               <AddComponent
                 as={"button"}
                 onClick={() => {

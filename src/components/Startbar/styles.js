@@ -53,11 +53,14 @@ export const TabContainer = styled.div`
   align-items: center;
   padding: 0 0.5rem;
   color: white;
+  width: 100%;
   font-family: ${props=>props.theme.fonts.primary};
+  overflow-x: auto;
 `;
 
 export const Tab = styled.button`
   width: 8rem;
+  min-width: 1rem;
   height: 80%;
   border-radius: 4px;
   color: white;

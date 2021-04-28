@@ -5,6 +5,7 @@ import { getDesiredItem, getTranslateXY, replaceDesiredWindowItem } from "../../
 import Image from "../Image";
 import { AppContext } from "../../Contexts";
 import Video from "../Video";
+import List from "../List";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -41,6 +42,14 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       componentName: "Video",
       src: "https://www.youtube.com/embed/5pzM_pFNWak"
     });
+  } else if (componentToAdd === "List") {
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "List",
+      children: [
+        '<li contenteditable="true" class="list-item">first child</li>'
+      ]
+    });
   }
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);
@@ -62,6 +71,10 @@ export function RenderComponents(componentsArr, windowItem) {
       } else if (item["componentName"] === "Video") {
         return (
           <Video item={item} windowItem={windowItem} />
+        );
+      } else if (item["componentName"] === "List") {
+        return (
+          <List item={item} windowItem={windowItem} />
         );
       }
     }
@@ -86,18 +99,18 @@ const ComponentList = styled.ul`
 `;
 
 const ComponentItem = styled.li`
-  padding: 0.5rem 0;
-  border: ${props => !props.isEditModeOn ? "0px" : "solid #b1afaf"} !important;
-  border-width: 1px 0 1px 0 !important;
+  padding: 0.25rem 0;
+  /*border: ${props => !props.isEditModeOn ? "0px" : "solid #b1afaf"} !important;*/
+  /*border-width: 1px 0 1px 0 !important;*/
 
   :first-child {
     padding-top: 0;
-    border-width: ${props => props.componentLength === 1 ? "0px" : "0 0 0.5px 0"} !important;
+    /*border-width: ${props => props.componentLength === 1 ? "0px" : "0 0 0.5px 0"} !important;*/
   }
 
   :last-child {
     padding-bottom: 0;
-    border-width: ${props => props.componentLength === 1 ? "0px" : "0.5px 0 0px 0"} !important;
+   /* border-width: ${props => props.componentLength === 1 ? "0px" : "0.5px 0 0px 0"} !important;*/
   }
 `;
 

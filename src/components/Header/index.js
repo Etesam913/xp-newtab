@@ -152,6 +152,7 @@ const HeaderComponent = styled.input`
   width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
   -webkit-user-select: text;
   user-select: text;
+  cursor: ${props=>props.isEditModeOn ? "text" : props.theme.cursors.auto};
 `;
 
 export default Header;
