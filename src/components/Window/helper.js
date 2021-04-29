@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "../Header";
 import { getDesiredItem, getTranslateXY, replaceDesiredWindowItem } from "../../functions/helpers";
 import Image from "../Image";
 import { AppContext } from "../../Contexts";
 import Video from "../Video";
 import List from "../List";
+import DragIndicator from "../DragIndicator";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -47,7 +49,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       id: maxId + 1,
       componentName: "List",
       children: [
-        '<li contenteditable="true" class="list-item">first child</li>'
+        { id: 0, html: "<li contenteditable=\"true\" class=\"list-item\">first child</li>" }
       ]
     });
   }
@@ -56,8 +58,25 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
 }
 
 export function RenderComponents(componentsArr, windowItem) {
-  const { isEditModeOn } = useContext(AppContext);
+  /*const [componentsList, updateComponentsList] = useState(componentsArr);*/
+  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
   const componentLength = componentsArr.length;
+
+  function handleOnDragEnd(result){
+    if (!result.destination) return;
+    const items = Array.from(componentsArr);
+    // Recreates the components arr array
+    // with the correct positions after dragging
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    let tempWindowData = [...windowData]
+    let tempWindowItem = {...windowItem}
+    tempWindowItem["items"] = items
+    replaceDesiredWindowItem(tempWindowData, tempWindowItem)
+    setWindowData(tempWindowData);
+  }
+
   const components = componentsArr.map((item, index) => {
     function getComponent() {
       if (item["componentName"] === "Header") {
@@ -80,16 +99,46 @@ export function RenderComponents(componentsArr, windowItem) {
     }
 
     return (
-      <ComponentItem
-        isEditModeOn={isEditModeOn}
-        componentLength={componentLength}
+      <Draggable
         key={"item-" + windowItem["id"] + "-" + index}
+        draggableId={"item-" + windowItem["id"] + "-" + index}
+        index={index}
+        isDragDisabled={!isEditModeOn}
       >
-        {getComponent()}
-      </ComponentItem>
+        {(provided, snapshot) => {
+          if (snapshot.isDragging) {
+            provided.draggableProps.style.left = provided.draggableProps.style.offsetLeft;
+            provided.draggableProps.style.top = provided.draggableProps.style.offsetTop;
+          }
+          return (
+            <ComponentItem
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              isEditModeOn={isEditModeOn}
+              componentLength={componentLength}
+            >
+              <DragIndicator />
+              {getComponent()}
+            </ComponentItem>
+          );
+        }}
+      </Draggable>
     );
   });
-  return <ComponentList>{components}</ComponentList>;
+  return (
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Droppable droppableId="window-items">
+        {(provided) => (
+          <ComponentList ref={provided.innerRef} {...provided.droppableProps}>
+            {components}
+            {provided.placeholder}
+          </ComponentList>
+        )}
+
+      </Droppable>
+    </DragDropContext>
+  );
 }
 
 const ComponentList = styled.ul`
@@ -100,18 +149,6 @@ const ComponentList = styled.ul`
 
 const ComponentItem = styled.li`
   padding: 0.25rem 0;
-  /*border: ${props => !props.isEditModeOn ? "0px" : "solid #b1afaf"} !important;*/
-  /*border-width: 1px 0 1px 0 !important;*/
-
-  :first-child {
-    padding-top: 0;
-    /*border-width: ${props => props.componentLength === 1 ? "0px" : "0 0 0.5px 0"} !important;*/
-  }
-
-  :last-child {
-    padding-bottom: 0;
-   /* border-width: ${props => props.componentLength === 1 ? "0px" : "0.5px 0 0px 0"} !important;*/
-  }
 `;
 
 

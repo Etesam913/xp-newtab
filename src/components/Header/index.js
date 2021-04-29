@@ -108,7 +108,6 @@ function Header({ windowItem, item }) {
           contentEditable={isEditModeOn ? "true" : "false"}
           width={"100%"}
           background={isEditModeOn ? "white" : "transparent"}
-          border={isEditModeOn ? "1px solid #cccccc" : "0px"}
           onClick={(e) => {
             createLink(e);
           }}

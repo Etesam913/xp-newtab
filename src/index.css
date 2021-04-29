@@ -15,9 +15,17 @@ code {
     color: white;
 }
 
+[contenteditable="true"]{
+    border: 1px solid #cccccc;
+}
+[contenteditable="false"]{
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
+}
+
 .list-item{
     font-size: 13px;
-    padding: 0.15rem 0;
+    margin: 0.15rem 0;
+    padding: 0.075rem 0;
     cursor: text;
 }
 

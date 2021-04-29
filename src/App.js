@@ -89,7 +89,7 @@ const GlobalStyle = createGlobalStyle`
     background-repeat: no-repeat;
     background-size: cover;
     cursor: ${props => props.theme.cursors.auto};
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   .window {
