@@ -69,18 +69,18 @@ function Header({ windowItem, item }) {
     }
   }
 
-/*
-  function getCaretPosition(parent, cursorNode, relativeCurPosition) {
-    const children = parent.childNodes;
-    let currentLength = 0;
-    for (let i = 0; i < children.length; i++) {
-      if (children[i] === cursorNode) {
-        return currentLength + relativeCurPosition;
+  /*
+    function getCaretPosition(parent, cursorNode, relativeCurPosition) {
+      const children = parent.childNodes;
+      let currentLength = 0;
+      for (let i = 0; i < children.length; i++) {
+        if (children[i] === cursorNode) {
+          return currentLength + relativeCurPosition;
+        }
+        currentLength += children[i].textContent.length;
       }
-      currentLength += children[i].textContent.length;
     }
-  }
-*/
+  */
 
   function handleKeyDown(e) {
     if (e.keyCode === 13) {
@@ -95,7 +95,7 @@ function Header({ windowItem, item }) {
       <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
         {handleOptions()}
       </FlexContainer>
-      <FlexContainer>
+      <FlexContainer justifyContent="flex-start">
         <HeaderComponent
           isEditModeOn={isEditModeOn}
           ref={header}
@@ -142,16 +142,18 @@ const HeaderComponent = styled.input`
   :hover {
     outline: ${props => !props.isEditModeOn && "0px"};
   }
+
   p::selection {
     background-color: #2267cb;
     color: white;
   }
+
   margin-right: 0.4rem;
   word-wrap: break-word;
   width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
   -webkit-user-select: text;
   user-select: text;
-  cursor: ${props=>props.isEditModeOn ? "text" : props.theme.cursors.auto};
+  cursor: ${props => props.isEditModeOn ? "text" : props.theme.cursors.auto};
 `;
 
 export default Header;

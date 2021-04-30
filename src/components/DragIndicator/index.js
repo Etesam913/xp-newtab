@@ -46,7 +46,6 @@ function DragIndicator() {
 }
 
 const Indicator = styled.svg`
-  position: absolute;
   display: ${props=>!props.isEditModeOn && "none"};
 `;
 

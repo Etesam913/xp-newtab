@@ -1,6 +1,7 @@
 import "xp.css/dist/XP.css";
 import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { HashRouter as Router, Route } from "react-router-dom";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
 import { AppContext } from "./Contexts";
@@ -8,6 +9,8 @@ import SettingsWindow from "./components/SettingsWindow";
 import { getDefaultValue } from "./functions/helpers";
 import Startbar from "./components/Startbar";
 import { theme } from "./styles/theme";
+import SignIn from "./components/Pages/SignIn";
+import SignUp from "./components/Pages/SignUp";
 
 
 function App() {
@@ -55,17 +58,27 @@ function App() {
           background={settingsData["backgroundColor"]}
           backgroundImage={settingsData["backgroundImage"]}
         />
-        {isSettingsShowing &&
-        <SettingsWindow
-          setIsSettingsShowing={setIsSettingsShowing}
-          settingsData={settingsData}
-          setSettingsData={setSettingsData}
-        />}
-        <Wrapper id="wrapper">
-          <RenderWindows />
-          <RenderIcons />
-        </Wrapper>
-        <Startbar />
+      <Router>
+        <Route exact path="/">
+          {isSettingsShowing &&
+          <SettingsWindow
+            setIsSettingsShowing={setIsSettingsShowing}
+            settingsData={settingsData}
+            setSettingsData={setSettingsData}
+          />}
+          <Wrapper id="wrapper">
+            <RenderWindows />
+            <RenderIcons />
+          </Wrapper>
+          <Startbar />
+        </Route>
+        <Route exact path="/signin">
+            <SignIn />
+        </Route>
+        <Route exact path="/signup">
+          <SignUp />
+        </Route>
+      </Router>
       </ThemeProvider>
     </AppContext.Provider>
   );
@@ -79,7 +92,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -103,13 +115,16 @@ const GlobalStyle = createGlobalStyle`
   p {
     margin: 0;
   }
+  
+  label{
+    cursor: ${props => props.theme.cursors.auto};
+  }
 
-  a, select, option {
+  a, select, option, button {
     cursor: ${props => props.theme.cursors.pointer};
   }
 
   button {
-    cursor: ${props => props.theme.cursors.pointer};
     color: black;
   }
 `;
