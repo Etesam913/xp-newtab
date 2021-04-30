@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AuthButton, AuthInput, AuthSection, InputLabel, Window, Wrapper } from "./AuthStyles";
 import { Link } from "react-router-dom";
+import { auth, generateUserDocument } from "../../firebase";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -8,8 +9,16 @@ function SignUp() {
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(null);
 
-  const createUserWithEmailAndPasswordHandler = (event, email, password) => {
+  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
     event.preventDefault();
+    try{
+      const {user} = await auth.createUserWithEmailAndPassword(email, password);
+      generateUserDocument(user, {displayName});
+    }
+    catch(error){
+      setError(error);
+    }
+
     setEmail("");
     setPassword("");
     setDisplayName("");
@@ -75,13 +84,13 @@ function SignUp() {
                 />
               </AuthSection>
               <AuthSection>
-                {error !== null && <div>{error}</div>}
+                {error !== null && <div>{error.message}</div>}
                 <AuthButton
                   onClick={event => {
                     createUserWithEmailAndPasswordHandler(event, email, password);
                   }}
                 >
-                  Sign In
+                  Sign Up
                 </AuthButton>
                 <br />
                 <AuthButton>Sign In With Google</AuthButton>

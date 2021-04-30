@@ -1,18 +1,12 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useContext, useState } from "react";
 import { Wrapper, Window, InputLabel, AuthInput, AuthSection, AuthButton } from "./AuthStyles";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../Contexts";
 
-function SignIn() {
+function SignIn({ requestLogin, requestLogout }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-
-  const signInWithEmailAndPasswordHandler =
-    (event, email, password) => {
-      event.preventDefault();
-    };
-
+  const { user } = useContext(UserContext);
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
     if (name === "userEmail") {
@@ -57,25 +51,32 @@ function SignIn() {
                   onChange={(event) => onChangeHandler(event)} />
               </AuthSection>
               <AuthSection>
-                {error !== null && <div>{error}</div>}
                 <AuthButton
                   onClick={(event) => {
-                    signInWithEmailAndPasswordHandler(event, email, password);
+                    event.preventDefault();
+                    requestLogin(email, password);
                   }}>
                   Sign In
                 </AuthButton>
                 <br />
                 <AuthButton>Sign In With Google</AuthButton>
+                <br />
+                {user && user.userObj !== undefined && <AuthButton onClick={(e) => {
+                  e.preventDefault();
+                  requestLogout();
+                }}>Logout</AuthButton>}
               </AuthSection>
               <AuthSection>
                 <div style={{ marginBottom: "0.5rem" }}>
                   Don't have an account? Sign up <Link to="/signup">here</Link>.
                 </div>
                 <div style={{ marginTop: "0.5rem" }}>
-                  <Link>Forgot Password</Link>
+                  <Link to="/password-reset">Forgot Password</Link>
                 </div>
               </AuthSection>
             </form>
+
+
           </article>
         </div>
       </Window>

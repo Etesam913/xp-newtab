@@ -138,6 +138,34 @@ export const StartFooter = styled.footer`
   display: flex;
 `;
 
+export const LoginButton = styled.button`
+  border: 0;
+  background: transparent;
+  :hover{
+    background: transparent;
+    box-shadow: none !important;
+    border: 0;
+  }
+  min-width: auto;
+  :active{
+    background: transparent !important;
+  }
+  :focus{
+    background: transparent;
+    outline: 0 !important;
+  }
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+  padding: 0 0.5rem;
+  color: white;
+`;
+
+export const LoginImg = styled.img`
+  margin: 0 0.4rem;
+`;
+
 export const ItemContainer = styled.div`
   width: 100%;
   height: 48px;
