@@ -6,7 +6,7 @@ import { DeleteButton, OptionsButton } from "../../styles/StyledComponents";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton";
 
-function Video({ windowItem, item }) {
+function Video({ windowObj, windowItem }) {
   const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
   const [isChangeUrlClicked, setIsChangedUrlClicked] = useState(false);
   const srcInput = useRef(null);
@@ -17,7 +17,7 @@ function Video({ windowItem, item }) {
         <FlexContainer margin={"0 0 0.5rem 0"}>
           <DeleteButton
             onClick={() => {
-              handleDelete(windowData, setWindowData, windowItem, item["id"]);
+              handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
             }}
           >
             Delete
@@ -44,7 +44,7 @@ function Video({ windowItem, item }) {
           <input
             ref={srcInput}
             style={{ width: "87%" }}
-            defaultValue={item["src"]}
+            defaultValue={windowItem["src"]}
             placeholder={"Type out YouTube video link"}
           />
           <OptionsButton onClick={setVideoSrc}> Set Video Link </OptionsButton>
@@ -63,10 +63,10 @@ function Video({ windowItem, item }) {
       const videoId = (match && match[7].length === 11) ? match[7] : false;
       const valueToInsert = "https://www.youtube.com/embed/" + videoId;
       changeItemProperty(
-        windowItem,
+        windowObj,
         windowData,
         setWindowData,
-        item,
+        windowItem,
         "src",
         valueToInsert
       );
@@ -78,7 +78,7 @@ function Video({ windowItem, item }) {
       {handleOptions()}
       <VideoContainer>
         <VideoComponent
-          src={item["src"]}
+          src={windowItem["src"]}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

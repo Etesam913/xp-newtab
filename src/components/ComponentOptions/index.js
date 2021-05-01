@@ -7,7 +7,7 @@ import { FlexContainer } from "../../styles/Layout";
 import BackButton from "../BackButton/index";
 
 
-export function TextAlignOptions({ windowItem, item, text }) {
+export function TextAlignOptions({ windowObj, windowItem, text }) {
   const { windowData, setWindowData } = useContext(AppContext);
 
   return (
@@ -16,15 +16,15 @@ export function TextAlignOptions({ windowItem, item, text }) {
       <select
         onChange={(e) =>
           changeItemProperty(
-            windowItem,
+            windowObj,
             windowData,
             setWindowData,
-            item,
+            windowItem,
             "justifyContent",
             convertTextAlignToJustifyContent(e.target.value)
           )
         }
-        defaultValue={convertJustifyContentToTextAlign(item["justifyContent"])}>
+        defaultValue={convertJustifyContentToTextAlign(windowObj["justifyContent"])}>
         <option>left</option>
         <option>center</option>
         <option>right</option>
@@ -46,8 +46,8 @@ export function LinkOptions(
     selectionObj,
     showLinkInput,
     setShowLinkInput,
+    windowObj,
     windowItem,
-    item,
     componentRef
   }) {
   const { windowData, setWindowData } = useContext(AppContext);
@@ -62,10 +62,10 @@ export function LinkOptions(
       childToReplaceWith.innerText = selectionElem.innerText;
       parent.replaceChild(childToReplaceWith, selectionElem);
       changeItemProperty(
-        windowItem,
+        windowObj,
         windowData,
         setWindowData,
-        item,
+        windowItem,
         "html",
         componentRef.current.innerHTML
       );

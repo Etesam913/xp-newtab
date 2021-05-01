@@ -3,7 +3,8 @@ import styled, { css } from "styled-components";
 export const Bar = styled.div`
   width: 100%;
   display: flex;
-  /*justify-content: space-between;*/
+  z-index: 4;
+  position: absolute;
 `;
 
 export const StartButton = styled.button`

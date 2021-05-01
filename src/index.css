@@ -22,6 +22,17 @@ code {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
 }
 
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
+
+.list-delete-button{
+    margin: 0.5rem 0;
+}
+
 .list-item{
     font-size: 13px;
     margin: 0.15rem 0;

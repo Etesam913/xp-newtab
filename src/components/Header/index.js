@@ -9,7 +9,7 @@ import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
 
 
-function Header({ windowItem, item }) {
+function Header({ windowObj, windowItem }) {
   const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
   const [isTextSelected, setIsTextSelected] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
@@ -17,8 +17,8 @@ function Header({ windowItem, item }) {
   const header = useRef(null);
 
   useEffect(() => {
-    header.current.innerHTML = item["html"];
-  }, [header, item]);
+    header.current.innerHTML = windowItem["html"];
+  }, [header, windowItem]);
 
   function createLink() {
     // Can only select if nothing is currently selected.
@@ -60,11 +60,11 @@ function Header({ windowItem, item }) {
             componentRef={header}
             showLinkInput={showLinkInput}
             setShowLinkInput={setShowLinkInput}
+            windowObj={windowObj}
             windowItem={windowItem}
-            item={item}
           />);
       } else {
-        return <TextAlignOptions text item={item} windowItem={windowItem} />;
+        return <TextAlignOptions text windowItem={windowItem} windowObj={windowObj} />;
       }
     }
   }
@@ -103,7 +103,7 @@ function Header({ windowItem, item }) {
           onKeyDown={(e) => {
             handleKeyDown(e);
           }}
-          key={"header-" + windowItem["id"] + "-" + item["id"]}
+          key={"header-" + windowObj["id"] + "-" + windowItem["id"]}
           as={Header1}
           contentEditable={isEditModeOn ? "true" : "false"}
           width={"100%"}
@@ -113,15 +113,15 @@ function Header({ windowItem, item }) {
           }}
           onBlur={() => {
             changeItemProperty(
-              windowItem,
+              windowObj,
               windowData,
               setWindowData,
-              item,
+              windowItem,
               "html",
               header.current.innerHTML
             );
           }}
-          textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+          textAlign={convertJustifyContentToTextAlign(windowItem["justifyContent"])}
           margin={"0"}
           suppressContentEditableWarning={true}
         >
@@ -129,7 +129,7 @@ function Header({ windowItem, item }) {
         {isEditModeOn &&
         <DeleteButton
           onClick={() => {
-            handleDelete(windowData, setWindowData, windowItem, item["id"]);
+            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
           }}>
           Delete
         </DeleteButton>}

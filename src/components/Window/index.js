@@ -101,7 +101,7 @@ function Window({ width, windowItem, windowId }) {
         </TitleBar>
 
         <div className="window-body">
-          <article style={{ height: "100%" }} role="tabpanel">
+          <WindowPanel role="tabpanel">
             {RenderComponents(windowItem["items"], windowItem)}
 
             {isEditModeOn &&
@@ -116,7 +116,7 @@ function Window({ width, windowItem, windowId }) {
                 Add Component
               </AddComponent>
             </ComponentsPanel>}
-          </article>
+          </WindowPanel>
         </div>
       </WindowContainer>
     </Draggable>
@@ -168,6 +168,12 @@ const AddComponent = styled(ComponentsPanel)`
 
 const WindowLabel = styled.label`
   cursor: ${props => props.theme.cursors.pointer};
+`;
+
+const WindowPanel = styled.article`
+  max-height: 60vh;
+  overflow-y: auto;
+  height: 100%;
 `;
 
 export default Window;

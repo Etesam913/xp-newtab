@@ -49,7 +49,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       id: maxId + 1,
       componentName: "List",
       children: [
-        { id: 0, html: "<li contenteditable=\"true\" class=\"list-item\">first child</li>" }
+        { id: 0, html: "<li contenteditable=\"true\" class=\"list-item\">first child</li><button class='show list-delete-button'>Delete</button>" }
       ]
     });
   }
@@ -57,7 +57,7 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
   setWindowData(tempData);
 }
 
-export function RenderComponents(componentsArr, windowItem) {
+export function RenderComponents(componentsArr, windowObj) {
   /*const [componentsList, updateComponentsList] = useState(componentsArr);*/
   const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
   const componentLength = componentsArr.length;
@@ -71,37 +71,37 @@ export function RenderComponents(componentsArr, windowItem) {
     items.splice(result.destination.index, 0, reorderedItem);
 
     let tempWindowData = [...windowData]
-    let tempWindowItem = {...windowItem}
+    let tempWindowItem = {...windowObj}
     tempWindowItem["items"] = items
     replaceDesiredWindowItem(tempWindowData, tempWindowItem)
     setWindowData(tempWindowData);
   }
 
-  const components = componentsArr.map((item, index) => {
+  const components = componentsArr.map((windowItem, index) => {
     function getComponent() {
-      if (item["componentName"] === "Header") {
+      if (windowItem["componentName"] === "Header") {
         return (
-          <Header windowItem={windowItem} item={item} />
+          <Header windowItem={windowItem} windowObj={windowObj} />
         );
-      } else if (item["componentName"] === "Image") {
+      } else if (windowItem["componentName"] === "Image") {
         return (
-          <Image windowItem={windowItem} item={item} />
+          <Image windowItem={windowItem} windowObj={windowObj} />
         );
-      } else if (item["componentName"] === "Video") {
+      } else if (windowItem["componentName"] === "Video") {
         return (
-          <Video item={item} windowItem={windowItem} />
+          <Video windowItem={windowItem} windowObj={windowObj} />
         );
-      } else if (item["componentName"] === "List") {
+      } else if (windowItem["componentName"] === "List") {
         return (
-          <List item={item} windowItem={windowItem} />
+          <List windowItem={windowItem} windowObj={windowObj} />
         );
       }
     }
 
     return (
       <Draggable
-        key={"item-" + windowItem["id"] + "-" + index}
-        draggableId={"item-" + windowItem["id"] + "-" + index}
+        key={"item-" + windowObj["id"] + "-" + index}
+        draggableId={"item-" + windowObj["id"] + "-" + index}
         index={index}
         isDragDisabled={!isEditModeOn}
       >
@@ -151,7 +151,6 @@ const ComponentItem = styled.li`
   padding: 0.25rem 0;
 `;
 
-
 // For radio buttons
 export function getSelectedComponent(componentsParent) {
   const components = componentsParent.current.children;
@@ -193,17 +192,20 @@ export function setDataProperty(
   return tempData
 }
 
-export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue) {
-  const windowId = windowItem["id"];
-  let newWindowData = [...windowData];
+export function changeItemProperty(windowObj, windowData, setWindowData, windowItem, propertyName, propertyValue) {
+  /*const windowId = windowItem["id"];*/
+  let tempWindowData = [...windowData];
   // Gets the current window
-  let desiredWindow = getDesiredItem(windowData, windowId);
-  const items = desiredWindow["items"];
+  /*let desiredWindow = getDesiredItem(windowData, windowId);*/
+  let tempWindow = {...windowObj}
+  let items = tempWindow["items"]
   // Gets the current item
-  let desiredItem = getDesiredItem(items, item["id"]);
-  desiredItem[propertyName] = propertyValue;
-  newWindowData["items"] = items;
-  setWindowData(newWindowData);
+  /*let desiredItem = getDesiredItem(items, item["id"]);*/
+  let tempWindowItem = {...windowItem}
+  tempWindowItem[propertyName] = propertyValue;
+  replaceDesiredWindowItem(items, tempWindowItem)
+  replaceDesiredWindowItem(tempWindowData, tempWindow)
+  setWindowData(tempWindowData);
 }
 
 // Good for adding selection class, bolding, underlining, etc..

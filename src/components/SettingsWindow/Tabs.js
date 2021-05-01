@@ -134,17 +134,17 @@ export function InfoTab() {
       <InfoGrid>
         <p style={{ marginRight: "0.5rem" }}>GitHub Link: </p>
         <a href={"https://github.com/Etesam913/xp-newtab"}>
-          https://github.com/Etesam913/windowsxp-newtab
+          https://github.com/Etesam913/xp-newtab
         </a>
 
         <p style={{ marginRight: "0.5rem" }}>Firefox Addon Link: </p>
         <a href={"https://github.com/Etesam913/windowsxp-newtab"}>
-          https://github.com/Etesam913/windowsxp-newtab
+          https://github.com/Etesam913/xp-newtab
         </a>
 
         <p style={{ marginRight: "0.5rem" }}>Chrome Addon Link: </p>
         <a href={"https://github.com/Etesam913/windowsxp-newtab"}>
-          https://github.com/Etesam913/windowsxp-newtab
+          https://github.com/Etesam913/xp-newtab
         </a>
       </InfoGrid>
     </article>

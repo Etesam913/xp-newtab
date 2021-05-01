@@ -19,6 +19,7 @@ function App() {
 
   useEffect(()=>{
     localStorage.setItem("windowData", JSON.stringify(windowData));
+    console.log(windowData)
   }, [windowData])
 
   useEffect(()=>{
@@ -69,10 +70,6 @@ function App() {
 const Wrapper = styled.div`
   height: calc(100vh - 30px);
   width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
 `;
 
