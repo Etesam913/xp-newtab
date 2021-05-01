@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "../Header";
@@ -173,7 +173,7 @@ export function setDataProperty(
   setData,
   item,
   propertyName,
-  propertyValue
+  propertyValue,
 ) {
   const tempData = [...data];
   const itemToInsert = { ...item };
@@ -190,6 +190,7 @@ export function setDataProperty(
 
   replaceDesiredWindowItem(tempData, itemToInsert);
   setData(tempData);
+  return tempData
 }
 
 export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue) {

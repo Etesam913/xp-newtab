@@ -1,19 +1,13 @@
 import "xp.css/dist/XP.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
-import { HashRouter as Router, Route } from "react-router-dom";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
-import { AppContext, UserContext } from "./Contexts";
+import { AppContext } from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import { getDefaultValue } from "./functions/helpers";
 import Startbar from "./components/Startbar";
 import { theme } from "./styles/theme";
-import SignIn from "./components/Pages/SignIn";
-import SignUp from "./components/Pages/SignUp";
-import PasswordReset from "./components/Pages/PasswordReset";
-import { login, logout, onAuthStateChange } from "./firebase";
-
 
 function App() {
   const [isSettingsShowing, setIsSettingsShowing] = useState(false);
@@ -22,42 +16,18 @@ function App() {
   const [settingsData, setSettingsData] = useState(getDefaultValue("settingsData"));
   const [iconData, setIconData] = useState(getDefaultValue("iconData"));
   const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange(setUser);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   useEffect(()=>{
-    console.log(error)
-  }, [error])
-
-  useEffect(() => {
     localStorage.setItem("windowData", JSON.stringify(windowData));
-    console.log(windowData);
-  }, [windowData]);
+  }, [windowData])
 
-  useEffect(() => {
+  useEffect(()=>{
     localStorage.setItem("iconData", JSON.stringify(iconData));
-    console.log(iconData);
-  }, [iconData, setIconData]);
+  }, [iconData])
 
-  useEffect(() => {
+  useEffect(()=>{
     localStorage.setItem("settingsData", JSON.stringify(settingsData));
-    console.log(settingsData);
-  });
-
-  const requestLogin = useCallback(( email, password) => {
-    login(email, password).catch(error => setError(error.code));
-  });
-  const requestLogout = useCallback(() => {
-    logout();
-  }, []);
-
+  }, [settingsData])
 
   return (
     <AppContext.Provider
@@ -75,38 +45,23 @@ function App() {
         settingsData,
         setSettingsData
       }}>
-      <UserContext.Provider value={{ user }}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle
-            background={settingsData["backgroundColor"]}
-            backgroundImage={settingsData["backgroundImage"]}
-          />
-          <Router>
-            <Route exact path="/">
-              {isSettingsShowing &&
-              <SettingsWindow
-                setIsSettingsShowing={setIsSettingsShowing}
-                settingsData={settingsData}
-                setSettingsData={setSettingsData}
-              />}
-              <Wrapper id="wrapper">
-                <RenderWindows />
-                <RenderIcons />
-              </Wrapper>
-              <Startbar />
-            </Route>
-            <Route exact path="/signin">
-              <SignIn requestLogin={requestLogin} requestLogout={requestLogout}/>
-            </Route>
-            <Route exact path="/signup">
-              <SignUp  />
-            </Route>
-            <Route exact path="/password-reset">
-              <PasswordReset />
-            </Route>
-          </Router>
-        </ThemeProvider>
-      </UserContext.Provider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle
+          background={settingsData["backgroundColor"]}
+          backgroundImage={settingsData["backgroundImage"]}
+        />
+        {isSettingsShowing &&
+        <SettingsWindow
+          setIsSettingsShowing={setIsSettingsShowing}
+          settingsData={settingsData}
+          setSettingsData={setSettingsData}
+        />}
+        <Wrapper id="wrapper">
+          <RenderWindows />
+          <RenderIcons />
+        </Wrapper>
+        <Startbar />
+      </ThemeProvider>
     </AppContext.Provider>
   );
 }

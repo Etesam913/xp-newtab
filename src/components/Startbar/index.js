@@ -17,15 +17,12 @@ import timeBarImg from "../../media/time-bar-img.png";
 import tabBackgroundImg from "../../media/tab-background.png";
 import startFooterImg from "../../media/start-footer.png";
 import startHeaderImg from "../../media/start-header.png";
-import loginImg from "../../media/login-icon.png";
 import { getTimePeriodName, getTimeUnits, getTwelveHourTime } from "../../functions/helpers";
-import { AppContext, UserContext } from "../../Contexts";
+import { AppContext } from "../../Contexts";
 import { setDataProperty } from "../Window/helper";
 import { StartbarItem } from "./items";
-import { useHistory } from "react-router-dom";
 
 function Startbar() {
-  const history = useHistory();
   const [time, setTime] = useState("");
   const startButton = useRef(null);
   const startWindow = useRef(null);
@@ -35,7 +32,6 @@ function Startbar() {
     setWindowData,
     setFocusedWindow
   } = useContext(AppContext);
-  const { user } = useContext(UserContext);
 
   const tabs = windowData.map((item, index) => {
     const windowItem = item;
@@ -97,7 +93,7 @@ function Startbar() {
         <StartHeader
           image={startHeaderImg}
         >
-          {user.userObj ? user.userObj.displayName : "Administrator"}
+          Administrator
         </StartHeader>
         <StartBody>
           <StartbarItem
@@ -109,17 +105,6 @@ function Startbar() {
           <StartbarItem identifier="Edit Mode" />
         </StartBody>
         <StartFooter image={startFooterImg}>
-          <LoginButton
-            onClick={() => {
-              history.push("/signin");
-            }}>
-            <LoginImg src={loginImg} />
-            {user.userObj
-              ? "Logged In"
-              : "Not Logged In"
-            }
-          </LoginButton>
-
         </StartFooter>
       </StartWindow>
       }

@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import styled, {withTheme} from "styled-components";
+import styled, { withTheme } from "styled-components";
 import Draggable from "react-draggable";
 import { setDataProperty } from "../Window/helper";
 import { AppContext } from "../../Contexts";
@@ -24,16 +24,17 @@ function Index({ iconItem, theme }) {
         parseInt(settingsData["draggingGrid"]) !== 0 &&
         [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
       }
-      defaultPosition={{ x: iconItem["xCoord"], y: iconItem["yCoord"] }}
+      position={{ x: iconItem["xCoord"], y: iconItem["yCoord"] }}
       onStop={() => {
-        setDataProperty(
-          iconData,
-          setIconData,
-          iconItem,
-          "position",
-          iconRef
-        );
-      }}
+         setDataProperty(
+            iconData,
+            setIconData,
+            iconItem,
+            "position",
+            iconRef
+          );
+        }
+      }
     >
       {/* TODO: Change cursor to loading cursor for 0.5 seconds */}
       <IconWrapper
@@ -47,7 +48,7 @@ function Index({ iconItem, theme }) {
             <IconText>Img Url</IconText>
             <IconInput
               defaultValue={iconItem["src"]}
-              onChange={(e) => {
+              onBlur={(e) => {
                 setDataProperty(
                   iconData,
                   setIconData,
@@ -67,7 +68,7 @@ function Index({ iconItem, theme }) {
             <IconText>Icon Title</IconText>
             <IconTextArea
               defaultValue={iconItem["title"]}
-              onChange={(e) => {
+              onBlur={(e) => {
                 setDataProperty(
                   iconData,
                   setIconData,
@@ -85,7 +86,7 @@ function Index({ iconItem, theme }) {
             <IconText>Redirect Url</IconText>
             <IconInput
               defaultValue={iconItem["redirect"]}
-              onChange={(e) => {
+              onBlur={(e) => {
                 setDataProperty(
                   iconData,
                   setIconData,
@@ -120,7 +121,7 @@ const IconWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   :focus {
     outline: 1px dotted black;
   }
@@ -149,7 +150,7 @@ const DeleteRow = styled.section`
 `;
 
 const IconText = styled.p`
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${props => props.theme.fonts.primary};
   margin-top: 0.35rem;
   color: white;
   text-align: center;

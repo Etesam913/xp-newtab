@@ -156,8 +156,6 @@ export const LoginButton = styled.button`
   }
   display: flex;
   align-items: center;
-  width: 100%;
-  justify-content: flex-end;
   padding: 0 0.5rem;
   color: white;
 `;
