@@ -1,13 +1,11 @@
 import React, { useState, useContext, useRef } from "react";
 import styled from "styled-components";
-import { ResizableBox } from "react-resizable";
-import "react-resizable/css/styles.css";
 import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions } from "../ComponentOptions";
 import { AppContext } from "../../Contexts";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton/index";
-import { DeleteButton, OptionsButton } from "../../styles/StyledComponents";
+import { DeleteButton, OptionsButton } from "../../styles/StyledComponents"
 
 function Image({ windowObj, windowItem }) {
   const [isImageFocused, setIsImageFocused] = useState(false);
@@ -57,6 +55,7 @@ function Image({ windowObj, windowItem }) {
             onClick={() => {
               setIsRedirectClicked(true);
             }}
+            width="95px"
           >
             Set Image Url
           </OptionsButton>
@@ -99,8 +98,8 @@ function Image({ windowObj, windowItem }) {
             /*onBlur={handleBlur}*/
           />
           <OptionsButton
-            width={"125px"}
             onClick={setImageUrl}
+            width="95px"
           >
             Set Image Url
           </OptionsButton>
@@ -140,38 +139,38 @@ function Image({ windowObj, windowItem }) {
 // TODO: Get window size so that image can be resized correctly if the window size is changed.
 
   return (
-    <FlexContainer flexDirection={"column"} alignItems="center">
-      {isEditModeOn &&
-      <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
-        {handleOptions()}
-      </FlexContainer>
-      }
+      <FlexContainer flexDirection={"column"} alignItems="center">
+        {isEditModeOn &&
+        <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
+          {handleOptions()}
+        </FlexContainer>
+        }
 
-      <FlexContainer justifyContent={windowItem["justifyContent"]} width="100%">
-        <ImageWrapper
-          href={isEditModeOn ? null : (windowItem["href"] === "" ? "javascript:void(0)" : windowItem["href"])}
-          onFocus={() => {
-            setIsRedirectClicked(false);
-            setIsImageFocused(true);
-          }}
-          onBlur={() => {
-            handleBlur();
-          }}
-          tabIndex={0}
-          imageWidth={imageWidth}
-        >
-          <ImageComponent src={windowItem["src"]} />
-        </ImageWrapper>
+        <FlexContainer justifyContent={windowItem["justifyContent"]} width="100%">
+          <ImageWrapper
+            href={isEditModeOn ? null : (windowItem["href"] === "" ? "javascript:void(0)" : windowItem["href"])}
+            onFocus={() => {
+              setIsRedirectClicked(false);
+              setIsImageFocused(true);
+            }}
+            onBlur={() => {
+              handleBlur();
+            }}
+            tabIndex={0}
+            imageWidth={imageWidth}
+          >
+            <ImageComponent src={windowItem["src"]} />
+          </ImageWrapper>
+        </FlexContainer>
+        {isEditModeOn &&
+        <DeleteButton
+          margin={"0.5rem 0 0"}
+          onClick={() => {
+            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
+          }}>
+          Delete
+        </DeleteButton>}
       </FlexContainer>
-      {isEditModeOn &&
-      <DeleteButton
-        margin={"0.5rem 0 0"}
-        onClick={() => {
-          handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-        }}>
-        Delete
-      </DeleteButton>}
-    </FlexContainer>
   );
 }
 

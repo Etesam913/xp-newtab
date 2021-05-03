@@ -1,7 +1,6 @@
 import React, { useRef, useContext } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 import Draggable from "react-draggable";
-import "react-resizable/css/styles.css";
 import {
   handleComponentCreation,
   RenderComponents,
@@ -10,7 +9,7 @@ import {
 import { AppContext } from "../../Contexts";
 import { deleteDataItem } from "../../functions/helpers";
 
-function Window({ width, windowItem, windowId }) {
+function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
   const {
@@ -102,8 +101,11 @@ function Window({ width, windowItem, windowId }) {
 
         <div className="window-body">
           <WindowPanel role="tabpanel">
-            {RenderComponents(windowItem["items"], windowItem)}
-
+            <RenderComponents
+              componentsArr={windowItem["items"]}
+              windowObj={windowItem}
+              moveCursor={theme.cursors.move}
+              autoCursor={theme.cursors.auto}/>
             {isEditModeOn &&
             <ComponentsPanel ref={componentsPanel}>
               <div className="field-row">Select one component to add:</div>
@@ -176,5 +178,5 @@ const WindowPanel = styled.article`
   height: 100%;
 `;
 
-export default Window;
+export default withTheme(Window);
 

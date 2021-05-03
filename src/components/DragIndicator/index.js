@@ -47,6 +47,7 @@ function DragIndicator() {
 
 const Indicator = styled.svg`
   display: ${props=>!props.isEditModeOn && "none"};
+  cursor: ${props=>props.theme.cursors.move};
 `;
 
 export default DragIndicator;

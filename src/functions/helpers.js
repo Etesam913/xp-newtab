@@ -49,10 +49,10 @@ export function deleteDataItem(data, setData, dataItem) {
   setData(tempData);
 }
 
-export function replaceDesiredWindowItem(windowData, windowItem) {
+export function replaceDesiredWindowItem(windowData, windowObj) {
   for (let i = 0; i < windowData.length; i++) {
-    if (windowData[i]["id"] === windowItem["id"]) {
-      windowData[i] = windowItem;
+    if (windowData[i]["id"] === windowObj["id"]) {
+      windowData[i] = windowObj;
     }
   }
 }

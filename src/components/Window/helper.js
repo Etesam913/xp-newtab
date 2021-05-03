@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import Header from "../Header";
-import { getDesiredItem, getTranslateXY, replaceDesiredWindowItem } from "../../functions/helpers";
+import { getTranslateXY, replaceDesiredWindowItem } from "../../functions/helpers";
 import Image from "../Image";
 import { AppContext } from "../../Contexts";
 import Video from "../Video";
 import List from "../List";
 import DragIndicator from "../DragIndicator";
+import arrayMove from "array-move";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -49,7 +50,15 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       id: maxId + 1,
       componentName: "List",
       children: [
-        { id: 0, html: "<li contenteditable=\"true\" class=\"list-item\">first child</li><button class='show list-delete-button'>Delete</button>" }
+        {
+          id: 0,
+          html:
+            "<li contenteditable=\"true\" class=\"list-item\">first child</li>" +
+            "<div class='list-item-options show'>" +
+            "<button class='list-delete-button'>Delete</button>" +
+            "<button class='list-strikethrough-button'>Strikethrough</button>" +
+            "</div>"
+        }
       ]
     });
   }
@@ -57,25 +66,16 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
   setWindowData(tempData);
 }
 
-export function RenderComponents(componentsArr, windowObj) {
-  /*const [componentsList, updateComponentsList] = useState(componentsArr);*/
+const DragHandle = sortableHandle(() => <DragIndicator />);
+
+const SortableItem = sortableElement(({ children }) => <ComponentItem><DragHandle />{children}</ComponentItem>);
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <ComponentList>{children}</ComponentList>;
+});
+
+export function RenderComponents({componentsArr, windowObj, moveCursor, autoCursor}) {
   const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
-  const componentLength = componentsArr.length;
-
-  function handleOnDragEnd(result){
-    if (!result.destination) return;
-    const items = Array.from(componentsArr);
-    // Recreates the components arr array
-    // with the correct positions after dragging
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    let tempWindowData = [...windowData]
-    let tempWindowItem = {...windowObj}
-    tempWindowItem["items"] = items
-    replaceDesiredWindowItem(tempWindowData, tempWindowItem)
-    setWindowData(tempWindowData);
-  }
 
   const components = componentsArr.map((windowItem, index) => {
     function getComponent() {
@@ -99,45 +99,31 @@ export function RenderComponents(componentsArr, windowObj) {
     }
 
     return (
-      <Draggable
-        key={"item-" + windowObj["id"] + "-" + index}
-        draggableId={"item-" + windowObj["id"] + "-" + index}
-        index={index}
-        isDragDisabled={!isEditModeOn}
-      >
-        {(provided, snapshot) => {
-          if (snapshot.isDragging) {
-            provided.draggableProps.style.left = provided.draggableProps.style.offsetLeft;
-            provided.draggableProps.style.top = provided.draggableProps.style.offsetTop;
-          }
-          return (
-            <ComponentItem
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              isEditModeOn={isEditModeOn}
-              componentLength={componentLength}
-            >
-              <DragIndicator />
-              {getComponent()}
-            </ComponentItem>
-          );
-        }}
-      </Draggable>
+      <SortableItem key={"item-" + windowObj["id"] + "-" + index} index={index}>
+        {getComponent()}
+      </SortableItem>
+
     );
   });
-  return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="window-items">
-        {(provided) => (
-          <ComponentList ref={provided.innerRef} {...provided.droppableProps}>
-            {components}
-            {provided.placeholder}
-          </ComponentList>
-        )}
 
-      </Droppable>
-    </DragDropContext>
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    let tempComponentsArr = [...componentsArr];
+    tempComponentsArr = arrayMove(tempComponentsArr, oldIndex, newIndex);
+    let tempWindowObj = { ...windowObj };
+    tempWindowObj["items"] = tempComponentsArr;
+    let tempWindowData = [...windowData];
+    replaceDesiredWindowItem(tempWindowData, tempWindowObj);
+    setWindowData(tempWindowData);
+    document.body.style.cursor = autoCursor
+    /*this.setState(({items}) => ({
+      items: arrayMove(items, oldIndex, newIndex),
+    }));*/
+  };
+
+  return (
+    <SortableContainer useDragHandle onSortEnd={onSortEnd} onSortMove={()=>{document.body.style.cursor = moveCursor}}>
+      {components}
+    </SortableContainer>
   );
 }
 
@@ -149,6 +135,9 @@ const ComponentList = styled.ul`
 
 const ComponentItem = styled.li`
   padding: 0.25rem 0;
+  z-index: 5;
+  list-style-type: none;
+  font-family: ${props=>props.theme.fonts.primary};
 `;
 
 // For radio buttons
@@ -172,7 +161,7 @@ export function setDataProperty(
   setData,
   item,
   propertyName,
-  propertyValue,
+  propertyValue
 ) {
   const tempData = [...data];
   const itemToInsert = { ...item };
@@ -189,7 +178,7 @@ export function setDataProperty(
 
   replaceDesiredWindowItem(tempData, itemToInsert);
   setData(tempData);
-  return tempData
+  return tempData;
 }
 
 export function changeItemProperty(windowObj, windowData, setWindowData, windowItem, propertyName, propertyValue) {
@@ -197,14 +186,14 @@ export function changeItemProperty(windowObj, windowData, setWindowData, windowI
   let tempWindowData = [...windowData];
   // Gets the current window
   /*let desiredWindow = getDesiredItem(windowData, windowId);*/
-  let tempWindow = {...windowObj}
-  let items = tempWindow["items"]
+  let tempWindow = { ...windowObj };
+  let items = tempWindow["items"];
   // Gets the current item
   /*let desiredItem = getDesiredItem(items, item["id"]);*/
-  let tempWindowItem = {...windowItem}
+  let tempWindowItem = { ...windowItem };
   tempWindowItem[propertyName] = propertyValue;
-  replaceDesiredWindowItem(items, tempWindowItem)
-  replaceDesiredWindowItem(tempWindowData, tempWindow)
+  replaceDesiredWindowItem(items, tempWindowItem);
+  replaceDesiredWindowItem(tempWindowData, tempWindow);
   setWindowData(tempWindowData);
 }
 

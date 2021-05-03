@@ -5,7 +5,8 @@ import { setDataProperty } from "../Window/helper";
 import { AppContext } from "../../Contexts";
 import { deleteDataItem } from "../../functions/helpers";
 
-function Index({ iconItem, theme }) {
+
+function Index({ iconItem, theme, id }) {
   const { iconData, setIconData, isEditModeOn, settingsData } = useContext(AppContext);
   const iconRef = useRef(null);
 
@@ -36,7 +37,6 @@ function Index({ iconItem, theme }) {
         }
       }
     >
-      {/* TODO: Change cursor to loading cursor for 0.5 seconds */}
       <IconWrapper
         ref={iconRef}
         tabIndex={0}
@@ -109,7 +109,6 @@ function Index({ iconItem, theme }) {
         </footer>}
       </IconWrapper>
     </Draggable>
-
   );
 }
 

@@ -11,8 +11,6 @@ function List({ windowItem, windowObj }) {
   const listInput = useRef(null);
   const children = windowItem["children"].map((child, index) => {
     // is content editable true
-    console.log("show", child["html"].indexOf("show"))
-    console.log("hide", child["html"].indexOf("hide"))
     if (!isEditModeOn && child["html"].indexOf("true") === 21 && child["html"].indexOf("show") !== -1) {
       child["html"] = child["html"].replace("true", "false");
       child["html"] = child["html"].replace("show", "hide");
@@ -32,8 +30,18 @@ function List({ windowItem, windowObj }) {
         if (!currentListItem.onblur) {
           currentListItem.onblur = function(e) {
             const tempChildren = [...windowItem["children"]];
-            console.log(e.target.innerText);
-            tempChildren[i]["html"] = `<li contenteditable="true" class="list-item">${e.target.innerText}</li><button class="show list-delete-button">Delete</button>`;
+            const strikethroughClass = currentListItem
+              .classList.contains("strikethrough") ? "strikethrough" : ""
+            const strikethroughButtonText =
+              currentListItem
+                .classList.contains("strikethrough") ? "Remove Strikethrough" : "Strikethrough";
+
+            tempChildren[i]["html"] =
+              `<li contenteditable="true" class="list-item ${strikethroughClass}">${e.target.innerText}</li>
+                <div class="list-item-options show">
+                  <button class="list-delete-button">Delete</button>
+                  <button class="list-strikethrough-button">${strikethroughButtonText}</button>
+                </div>`;
             changeItemProperty(
               windowObj,
               windowData,
@@ -47,15 +55,13 @@ function List({ windowItem, windowObj }) {
       }
     }
 
-    const listButtons = list.current.getElementsByTagName("button")
-    if(listButtons){
-      for(let i = 0; i < listButtons.length; i++){
-        let currentButton = listButtons[i]
-        currentButton.onclick = function(e){
+    const deleteButtons = list.current.getElementsByClassName("list-delete-button");
+    if (deleteButtons) {
+      for (let i = 0; i < deleteButtons.length; i++) {
+        let currentButton = deleteButtons[i];
+        currentButton.onclick = function() {
           let tempChildren = [...windowItem["children"]];
-          console.log(i)
-          tempChildren.splice(0, 1);
-          console.log(tempChildren)
+          tempChildren.splice(i, 1);
           changeItemProperty(
             windowObj,
             windowData,
@@ -64,22 +70,62 @@ function List({ windowItem, windowObj }) {
             "children",
             tempChildren
           );
-        }
+        };
       }
     }
 
+    const strikethroughButtons = list.current.getElementsByClassName("list-strikethrough-button");
+    if (strikethroughButtons) {
+      for (let i = 0; i < strikethroughButtons.length; i++) {
+        let currentButton = strikethroughButtons[i];
+        currentButton.onclick = function() {
+          const tempChildren = [...windowItem["children"]];
+          const listItem = listItems[i];
+          /*tempChildren[i]["html"] = {*/
+          if (listItem.classList.contains("strikethrough")) {
+            tempChildren[i]["html"] =
+              `<li contenteditable="true" class="list-item">${listItem.innerText}</li>
+                <div class="list-item-options show">
+                  <button class="list-delete-button">Delete</button>
+                  <button class="list-strikethrough-button">Strikethrough</button>
+                </div>`;
+          } else {
+            tempChildren[i]["html"] =
+              `<li contenteditable="true" class="list-item strikethrough">${listItem.innerText}</li>
+                <div class="list-item-options show">
+                  <button class="list-delete-button">Delete</button>
+                  <button class="list-strikethrough-button">Remove Strikethrough</button>
+                </div>`;
+          }
+
+          changeItemProperty(
+            windowObj,
+            windowData,
+            setWindowData,
+            windowItem,
+            "children",
+            tempChildren
+          );
+        };
+      }
+    }
   }, [windowData, list, isEditModeOn]);
 
   function handleClick() {
     const tempChildren = [...windowItem["children"]];
     // TODO: Change this to get max id
     let newId = 0;
-    if(tempChildren.length > 0)
+    if (tempChildren.length > 0)
       newId = getMaxId(windowItem) + 1;
 
     tempChildren.push({
       id: newId,
-      html: `<li contenteditable="true" class="list-item">${listInput.current.value}</li><button class="show list-delete-button">Delete</button>`
+      html:
+        `<li contenteditable="true" class="list-item">${listInput.current.value}</li>
+        <div class="list-item-options show">
+          <button class="list-delete-button">Delete</button>
+          <button class="list-strikethrough-button">Strikethrough</button>
+        </div>`
     });
 
     changeItemProperty(

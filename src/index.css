@@ -23,14 +23,28 @@ code {
 }
 
 .show{
-    display: block;
+    display: flex !important;
 }
 .hide{
-    display: none;
+    display: none !important;
 }
 
+.list-item-options{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.4rem 0;
+}
+
+.strikethrough{
+    text-decoration: line-through;
+}
+
+
 .list-delete-button{
-    margin: 0.5rem 0;
+}
+
+.list-strikethrough-button{
 }
 
 .list-item{

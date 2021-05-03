@@ -7,22 +7,30 @@ import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions, LinkOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
+import DragIndicator from "../DragIndicator";
 
 
-function Header({ windowObj, windowItem }) {
+function Header({ windowObj, windowItem, }) {
   const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
   const [isTextSelected, setIsTextSelected] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [selectionObj, setSelectionObj] = useState(null);
+  const [cursorInHeader, setCursorInHeader] = useState(false)
+
   const header = useRef(null);
 
   useEffect(() => {
     header.current.innerHTML = windowItem["html"];
   }, [header, windowItem]);
 
+  useEffect(()=>{
+    console.log(cursorInHeader)
+  }, [cursorInHeader])
+
   function createLink() {
     // Can only select if nothing is currently selected.
     if (getSelectionText() !== "" && document.getElementsByClassName("selected").length === 0) {
+      console.log('good')
       const selection = window.getSelection();
       const range = selection.getRangeAt(0);
       const parentTag = range.commonAncestorContainer.parentElement.tagName;
@@ -91,7 +99,7 @@ function Header({ windowObj, windowItem }) {
   }
 
   return (
-    <div>
+    <div onMouseDown={()=>{!cursorInHeader && header.current.blur()}}>
       <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
         {handleOptions()}
       </FlexContainer>
@@ -110,6 +118,12 @@ function Header({ windowObj, windowItem }) {
           background={isEditModeOn ? "white" : "transparent"}
           onClick={(e) => {
             createLink(e);
+          }}
+          onMouseEnter={() => {
+            setCursorInHeader(true);
+          }}
+          onMouseLeave={() => {
+            setCursorInHeader(false);
           }}
           onBlur={() => {
             changeItemProperty(
