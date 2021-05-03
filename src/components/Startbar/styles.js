@@ -71,12 +71,11 @@ export const Tab = styled.button`
   background: #397DF3 url(${props => props.tabBackgroundImg}) no-repeat 0 ${props => props.pressed ? "-75px" : "-7px"};
   white-space: nowrap;
   overflow: hidden;
+  box-shadow: none !important;
   text-overflow: ellipsis;
-
   :focus {
     outline: none;
   }
-
   :hover {
     box-shadow: none !important;
   }

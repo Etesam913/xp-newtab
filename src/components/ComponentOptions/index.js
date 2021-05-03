@@ -24,7 +24,7 @@ export function TextAlignOptions({ windowObj, windowItem, text }) {
             convertTextAlignToJustifyContent(e.target.value)
           )
         }
-        defaultValue={convertJustifyContentToTextAlign(windowObj["justifyContent"])}>
+        defaultValue={convertJustifyContentToTextAlign(windowItem["justifyContent"])}>
         <option>left</option>
         <option>center</option>
         <option>right</option>

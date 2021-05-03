@@ -38,7 +38,8 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       componentName: "Image",
       href: null,
       src: "https://via.placeholder.com/300x175",
-      justifyContent: "flex-start"
+      justifyContent: "flex-start",
+      imageWidth: "50%"
     });
   } else if (componentToAdd === "Video") {
     newItem["items"].push({

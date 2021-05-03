@@ -76,19 +76,6 @@ function Header({ windowObj, windowItem, }) {
     }
   }
 
-  /*
-    function getCaretPosition(parent, cursorNode, relativeCurPosition) {
-      const children = parent.childNodes;
-      let currentLength = 0;
-      for (let i = 0; i < children.length; i++) {
-        if (children[i] === cursorNode) {
-          return currentLength + relativeCurPosition;
-        }
-        currentLength += children[i].textContent.length;
-      }
-    }
-  */
-
   function handleKeyDown(e) {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -102,7 +89,7 @@ function Header({ windowObj, windowItem, }) {
       <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
         {handleOptions()}
       </FlexContainer>
-      <FlexContainer justifyContent="flex-start">
+
         <HeaderComponent
           isEditModeOn={isEditModeOn}
           ref={header}
@@ -140,13 +127,15 @@ function Header({ windowObj, windowItem, }) {
         >
         </HeaderComponent>
         {isEditModeOn &&
-        <DeleteButton
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}>
-          Delete
-        </DeleteButton>}
-      </FlexContainer>
+          <FlexContainer width="100%" justifyContent="center" margin="0.5rem 0 0">
+            <DeleteButton
+              onClick={() => {
+                handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
+              }}>
+              Delete
+            </DeleteButton>
+          </FlexContainer>
+        }
     </div>
   );
 }
@@ -163,7 +152,7 @@ const HeaderComponent = styled.input`
 
   margin-right: 0.4rem;
   word-wrap: break-word;
-  width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
+  width: 100%;
   -webkit-user-select: text;
   user-select: text;
   cursor: ${props => props.isEditModeOn ? "text" : props.theme.cursors.auto};

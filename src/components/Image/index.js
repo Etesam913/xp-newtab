@@ -5,12 +5,11 @@ import { TextAlignOptions } from "../ComponentOptions";
 import { AppContext } from "../../Contexts";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton/index";
-import { DeleteButton, OptionsButton } from "../../styles/StyledComponents"
+import { DeleteButton, OptionsButton } from "../../styles/StyledComponents";
 
 function Image({ windowObj, windowItem }) {
   const [isImageFocused, setIsImageFocused] = useState(false);
   const [isRedirectClicked, setIsRedirectClicked] = useState(false);
-  const [imageWidth, setImageWidth] = useState("300px");
   const srcInput = useRef(null);
   const redirectInput = useRef(null);
   const redirectButton = useRef(null);
@@ -43,14 +42,34 @@ function Image({ windowObj, windowItem }) {
       setIsRedirectClicked(false);
     }
 
+    function convertToImgWidth(e) {
+      const sliderVal = e.target.value;
+      const ratio = sliderVal / 20;
+      const ratioPercentage = (ratio * 100) + "%";
+      changeItemProperty(windowObj, windowData, setWindowData, windowItem, "imageWidth", ratioPercentage);
+    }
+    function convertToSliderWidth(valToConvert) {
+      const percentageNum = parseInt(valToConvert);
+      const ratioNum = percentageNum / 100;
+      return ratioNum*20;
+    }
 
     if (!isImageFocused && !isRedirectClicked) {
       return (
         <FlexContainer width={"100%"}>
           <TextAlignOptions windowItem={windowItem} windowObj={windowObj} />
-          <OptionsButton onClick={() => {
-            {imageWidth === "100%" ? setImageWidth("300px") : setImageWidth("100%")}
-          }}>{imageWidth === "100%" ? "Revert to Original" : "Fit Size To Window"}</OptionsButton>
+          <Slider className="field-row">
+            <label htmlFor="range25">Size:</label>
+            <input
+              id="range25"
+              type="range"
+              min={1}
+              max={20}
+              defaultValue={convertToSliderWidth(windowItem["imageWidth"])}
+              onChange={(e) => {
+                convertToImgWidth(e);
+              }} />
+          </Slider>
           <OptionsButton
             onClick={() => {
               setIsRedirectClicked(true);
@@ -139,38 +158,38 @@ function Image({ windowObj, windowItem }) {
 // TODO: Get window size so that image can be resized correctly if the window size is changed.
 
   return (
-      <FlexContainer flexDirection={"column"} alignItems="center">
-        {isEditModeOn &&
-        <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
-          {handleOptions()}
-        </FlexContainer>
-        }
-
-        <FlexContainer justifyContent={windowItem["justifyContent"]} width="100%">
-          <ImageWrapper
-            href={isEditModeOn ? null : (windowItem["href"] === "" ? "javascript:void(0)" : windowItem["href"])}
-            onFocus={() => {
-              setIsRedirectClicked(false);
-              setIsImageFocused(true);
-            }}
-            onBlur={() => {
-              handleBlur();
-            }}
-            tabIndex={0}
-            imageWidth={imageWidth}
-          >
-            <ImageComponent src={windowItem["src"]} />
-          </ImageWrapper>
-        </FlexContainer>
-        {isEditModeOn &&
-        <DeleteButton
-          margin={"0.5rem 0 0"}
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}>
-          Delete
-        </DeleteButton>}
+    <FlexContainer flexDirection={"column"} alignItems="center">
+      {isEditModeOn &&
+      <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
+        {handleOptions()}
       </FlexContainer>
+      }
+
+      <FlexContainer justifyContent={windowItem["justifyContent"]} width="100%">
+        <ImageWrapper
+          href={isEditModeOn ? null : (windowItem["href"] === "" ? "javascript:void(0)" : windowItem["href"])}
+          onFocus={() => {
+            setIsRedirectClicked(false);
+            setIsImageFocused(true);
+          }}
+          onBlur={() => {
+            handleBlur();
+          }}
+          tabIndex={0}
+          imageWidth={windowItem["imageWidth"]}
+        >
+          <ImageComponent src={windowItem["src"]} />
+        </ImageWrapper>
+      </FlexContainer>
+      {isEditModeOn &&
+      <DeleteButton
+        margin={"0.5rem 0 0"}
+        onClick={() => {
+          handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
+        }}>
+        Delete
+      </DeleteButton>}
+    </FlexContainer>
   );
 }
 
@@ -193,6 +212,11 @@ const ImageWrapper = styled.a`
   display: block;
   height: auto;
   width: ${props => props.imageWidth};
+`;
+
+const Slider = styled.div`
+  width: 9.5rem;
+  margin: 0 0.5rem;
 `;
 
 export default Image;
