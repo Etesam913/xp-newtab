@@ -99,7 +99,7 @@ function Image({ windowObj, windowItem }) {
           />
           <OptionsButton
             onClick={setImageUrl}
-            width="95px"
+            width="110px"
           >
             Set Image Url
           </OptionsButton>

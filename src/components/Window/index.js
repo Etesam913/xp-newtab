@@ -21,7 +21,7 @@ function Window({ width, windowItem, windowId, theme }) {
     setFocusedWindow
   } = useContext(AppContext);
 
-  const componentData=["Header", "Image", "Video", "List"]
+  const componentData=["Header", "Image", "Video", "List", "Search Bar"]
   const components = componentData.map((componentName, index)=>{
     return(
       <div className="field-row" key={index}>

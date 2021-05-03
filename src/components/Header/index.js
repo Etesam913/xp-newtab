@@ -7,7 +7,6 @@ import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions, LinkOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
-import DragIndicator from "../DragIndicator";
 
 
 function Header({ windowObj, windowItem, }) {
