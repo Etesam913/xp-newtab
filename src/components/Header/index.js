@@ -7,22 +7,30 @@ import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions, LinkOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
+import DragIndicator from "../DragIndicator";
 
 
-function Header({ windowItem, item }) {
-  const { windowData, setWindowData, isMenuShowing } = useContext(AppContext);
+function Header({ windowObj, windowItem, }) {
+  const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
   const [isTextSelected, setIsTextSelected] = useState(false);
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [selectionObj, setSelectionObj] = useState(null);
+  const [cursorInHeader, setCursorInHeader] = useState(false)
+
   const header = useRef(null);
 
   useEffect(() => {
-    header.current.innerHTML = item["html"];
-  }, [header, item]);
+    header.current.innerHTML = windowItem["html"];
+  }, [header, windowItem]);
 
-  function createLink(e) {
+  useEffect(()=>{
+    console.log(cursorInHeader)
+  }, [cursorInHeader])
+
+  function createLink() {
     // Can only select if nothing is currently selected.
     if (getSelectionText() !== "" && document.getElementsByClassName("selected").length === 0) {
+      console.log('good')
       const selection = window.getSelection();
       const range = selection.getRangeAt(0);
       const parentTag = range.commonAncestorContainer.parentElement.tagName;
@@ -50,7 +58,7 @@ function Header({ windowItem, item }) {
 
 
   function handleOptions() {
-    if (isMenuShowing) {
+    if (isEditModeOn) {
       if (isTextSelected) {
         return (
           <LinkOptions
@@ -60,25 +68,27 @@ function Header({ windowItem, item }) {
             componentRef={header}
             showLinkInput={showLinkInput}
             setShowLinkInput={setShowLinkInput}
+            windowObj={windowObj}
             windowItem={windowItem}
-            item={item}
           />);
       } else {
-        return <TextAlignOptions text item={item} windowItem={windowItem} />;
+        return <TextAlignOptions text windowItem={windowItem} windowObj={windowObj} />;
       }
     }
   }
 
-  function getCaretPosition(parent, cursorNode, relativeCurPosition) {
-    const children = parent.childNodes;
-    let currentLength = 0;
-    for (let i = 0; i < children.length; i++) {
-      if (children[i] === cursorNode) {
-        return currentLength + relativeCurPosition;
+  /*
+    function getCaretPosition(parent, cursorNode, relativeCurPosition) {
+      const children = parent.childNodes;
+      let currentLength = 0;
+      for (let i = 0; i < children.length; i++) {
+        if (children[i] === cursorNode) {
+          return currentLength + relativeCurPosition;
+        }
+        currentLength += children[i].textContent.length;
       }
-      currentLength += children[i].textContent.length;
     }
-  }
+  */
 
   function handleKeyDown(e) {
     if (e.keyCode === 13) {
@@ -89,46 +99,51 @@ function Header({ windowItem, item }) {
   }
 
   return (
-    <div>
-      <FlexContainer margin={isMenuShowing ? "0 0 .5rem 0" : "0"}>
+    <div onMouseDown={()=>{!cursorInHeader && header.current.blur()}}>
+      <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
         {handleOptions()}
       </FlexContainer>
-      <FlexContainer>
+      <FlexContainer justifyContent="flex-start">
         <HeaderComponent
-          isMenuShowing={isMenuShowing}
+          isEditModeOn={isEditModeOn}
           ref={header}
           tabIndex={0}
           onKeyDown={(e) => {
             handleKeyDown(e);
           }}
-          key={"header-" + windowItem["id"] + "-" + item["id"]}
+          key={"header-" + windowObj["id"] + "-" + windowItem["id"]}
           as={Header1}
-          contentEditable={isMenuShowing ? "true" : "false"}
+          contentEditable={isEditModeOn ? "true" : "false"}
           width={"100%"}
-          background={isMenuShowing ? "white" : "transparent"}
-          border={isMenuShowing ? "1px solid #cccccc" : "0px"}
+          background={isEditModeOn ? "white" : "transparent"}
           onClick={(e) => {
             createLink(e);
           }}
+          onMouseEnter={() => {
+            setCursorInHeader(true);
+          }}
+          onMouseLeave={() => {
+            setCursorInHeader(false);
+          }}
           onBlur={() => {
             changeItemProperty(
-              windowItem,
+              windowObj,
               windowData,
               setWindowData,
-              item,
+              windowItem,
               "html",
               header.current.innerHTML
             );
           }}
-          textAlign={convertJustifyContentToTextAlign(item["justifyContent"])}
+          textAlign={convertJustifyContentToTextAlign(windowItem["justifyContent"])}
           margin={"0"}
           suppressContentEditableWarning={true}
         >
         </HeaderComponent>
-        {isMenuShowing &&
+        {isEditModeOn &&
         <DeleteButton
           onClick={() => {
-            handleDelete(windowData, setWindowData, windowItem, item["id"]);
+            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
           }}>
           Delete
         </DeleteButton>}
@@ -139,7 +154,7 @@ function Header({ windowItem, item }) {
 
 const HeaderComponent = styled.input`
   :hover {
-    outline: ${props => !props.isMenuShowing && "0px"};
+    outline: ${props => !props.isEditModeOn && "0px"};
   }
 
   p::selection {
@@ -149,9 +164,10 @@ const HeaderComponent = styled.input`
 
   margin-right: 0.4rem;
   word-wrap: break-word;
-  width: ${props => props.isMenuShowing ? "81.8%" : "100%"};
+  width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
   -webkit-user-select: text;
   user-select: text;
+  cursor: ${props => props.isEditModeOn ? "text" : props.theme.cursors.auto};
 `;
 
 export default Header;

@@ -8,7 +8,7 @@ import {
   TabContainer,
   StartWindow,
   StartHeader,
-  StartBody, StartFooter
+  StartBody, StartFooter, LoginButton, LoginImg
 } from "./styles";
 import normalImg from "../../media/start-button.png";
 import pressedImg from "../../media/start-button-pressed.png";
@@ -19,7 +19,7 @@ import startFooterImg from "../../media/start-footer.png";
 import startHeaderImg from "../../media/start-header.png";
 import { getTimePeriodName, getTimeUnits, getTwelveHourTime } from "../../functions/helpers";
 import { AppContext } from "../../Contexts";
-import { setWindowProperty } from "../Window/helper";
+import { setDataProperty } from "../Window/helper";
 import { StartbarItem } from "./items";
 
 function Startbar() {
@@ -41,7 +41,7 @@ function Startbar() {
         pressed={!item["hidden"]}
         onClick={() => {
           setFocusedWindow(item["id"]);
-          setWindowProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
+          setDataProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
         }}
         key={`tab-${index}`}
       >
@@ -56,16 +56,13 @@ function Startbar() {
         setIsStartWindowShowing(false);
       }
     }
-
   }
 
   useEffect(() => {
     document.addEventListener("click", handleBlur);
     return () => {
       document.removeEventListener("click", handleBlur);
-
     };
-
   }, []);
 
   useEffect(() => {
@@ -93,14 +90,22 @@ function Startbar() {
       />
       {isStartWindowShowing &&
       <StartWindow ref={startWindow}>
-        <StartHeader image={startHeaderImg}> Administrator </StartHeader>
+        <StartHeader
+          image={startHeaderImg}
+        >
+          Administrator
+        </StartHeader>
         <StartBody>
-          <StartbarItem identifier="Edit Mode"/>
-          <StartbarItem identifier="Settings" setIsStartWindowShowing={setIsStartWindowShowing}/>
-          <StartbarItem identifier="Create A New Window"/>
-          <StartbarItem identifier="Add Icon"/>
+          <StartbarItem
+            identifier="Settings"
+            setIsStartWindowShowing={setIsStartWindowShowing}
+          />
+          <StartbarItem identifier="Create A New Window" />
+          <StartbarItem identifier="Add Icon" />
+          <StartbarItem identifier="Edit Mode" />
         </StartBody>
-        <StartFooter image={startFooterImg} />
+        <StartFooter image={startFooterImg}>
+        </StartFooter>
       </StartWindow>
       }
       <BlueSegment blueBarImg={blueBarImg} />

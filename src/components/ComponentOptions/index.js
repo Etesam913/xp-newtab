@@ -7,7 +7,7 @@ import { FlexContainer } from "../../styles/Layout";
 import BackButton from "../BackButton/index";
 
 
-export function TextAlignOptions({ windowItem, item, text }) {
+export function TextAlignOptions({ windowObj, windowItem, text }) {
   const { windowData, setWindowData } = useContext(AppContext);
 
   return (
@@ -16,15 +16,15 @@ export function TextAlignOptions({ windowItem, item, text }) {
       <select
         onChange={(e) =>
           changeItemProperty(
-            windowItem,
+            windowObj,
             windowData,
             setWindowData,
-            item,
+            windowItem,
             "justifyContent",
             convertTextAlignToJustifyContent(e.target.value)
           )
         }
-        defaultValue={convertJustifyContentToTextAlign(item["justifyContent"])}>
+        defaultValue={convertJustifyContentToTextAlign(windowObj["justifyContent"])}>
         <option>left</option>
         <option>center</option>
         <option>right</option>
@@ -37,19 +37,19 @@ export function TextAlignOptions({ windowItem, item, text }) {
 const OptionTitle = styled.span`
   margin-right: 0.25rem;
   white-space: nowrap;
-
 `;
 
-export function LinkOptions({
-                              isTextSelected,
-                              setIsTextSelected,
-                              selectionObj,
-                              showLinkInput,
-                              setShowLinkInput,
-                              windowItem,
-                              item,
-                              componentRef
-                            }) {
+export function LinkOptions(
+  {
+    isTextSelected,
+    setIsTextSelected,
+    selectionObj,
+    showLinkInput,
+    setShowLinkInput,
+    windowObj,
+    windowItem,
+    componentRef
+  }) {
   const { windowData, setWindowData } = useContext(AppContext);
   const linkInput = useRef(null);
 
@@ -62,10 +62,10 @@ export function LinkOptions({
       childToReplaceWith.innerText = selectionElem.innerText;
       parent.replaceChild(childToReplaceWith, selectionElem);
       changeItemProperty(
-        windowItem,
+        windowObj,
         windowData,
         setWindowData,
-        item,
+        windowItem,
         "html",
         componentRef.current.innerHTML
       );
@@ -99,11 +99,14 @@ export function LinkOptions({
             }}
             margin={"0 0.25rem 0 0"} />
           <LinkInput ref={linkInput} placeholder="Paste website url here" onKeyDown={handleEnter} />
-          <button onClick={() => {
-            setShowLinkInput(false);
-            setIsTextSelected(false);
-            convertSelectionToLink();
-          }}>Done
+          <button
+            onClick={() => {
+              setShowLinkInput(false);
+              setIsTextSelected(false);
+              convertSelectionToLink();
+            }}
+          >
+            Done
           </button>
         </FlexContainer>
       );

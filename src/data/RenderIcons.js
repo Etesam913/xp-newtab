@@ -9,6 +9,7 @@ function RenderIcons() {
       <Icon
         iconItem={icon}
         key={"icon-" + index}
+        id={"icon-" + index}
       />
     );
   });

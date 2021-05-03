@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import Header from "../Header";
-import { getDesiredItem, getTranslateXY, replaceDesiredWindowItem } from "../../functions/helpers";
+import { getTranslateXY, replaceDesiredWindowItem } from "../../functions/helpers";
 import Image from "../Image";
 import { AppContext } from "../../Contexts";
 import Video from "../Video";
+import List from "../List";
+import DragIndicator from "../DragIndicator";
+import arrayMove from "array-move";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -41,35 +45,86 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       componentName: "Video",
       src: "https://www.youtube.com/embed/5pzM_pFNWak"
     });
+  } else if (componentToAdd === "List") {
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "List",
+      children: [
+        {
+          id: 0,
+          html:
+            "<li contenteditable=\"true\" class=\"list-item\">first child</li>" +
+            "<div class='list-item-options show'>" +
+            "<button class='list-delete-button'>Delete</button>" +
+            "<button class='list-strikethrough-button'>Strikethrough</button>" +
+            "</div>"
+        }
+      ]
+    });
   }
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);
 }
 
-export function RenderComponents(componentsArr, windowItem) {
-  const { isMenuShowing } = useContext(AppContext);
-  const componentLength = componentsArr.length;
-  const components = componentsArr.map((item, index) => {
+const DragHandle = sortableHandle(() => <DragIndicator />);
+
+const SortableItem = sortableElement(({ children }) => <ComponentItem><DragHandle />{children}</ComponentItem>);
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <ComponentList>{children}</ComponentList>;
+});
+
+export function RenderComponents({componentsArr, windowObj, moveCursor, autoCursor}) {
+  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
+
+  const components = componentsArr.map((windowItem, index) => {
     function getComponent() {
-      if (item["componentName"] === "Header") {
+      if (windowItem["componentName"] === "Header") {
         return (
-          <Header windowItem={windowItem} item={item} />
+          <Header windowItem={windowItem} windowObj={windowObj} />
         );
-      } else if (item["componentName"] === "Image") {
+      } else if (windowItem["componentName"] === "Image") {
         return (
-          <Image windowItem={windowItem} item={item} />
+          <Image windowItem={windowItem} windowObj={windowObj} />
         );
-      } else if (item["componentName"] === "Video") {
+      } else if (windowItem["componentName"] === "Video") {
         return (
-          <Video item={item} windowItem={windowItem} />
+          <Video windowItem={windowItem} windowObj={windowObj} />
+        );
+      } else if (windowItem["componentName"] === "List") {
+        return (
+          <List windowItem={windowItem} windowObj={windowObj} />
         );
       }
     }
 
-    return <ComponentItem isMenuShowing={isMenuShowing} componentLength={componentLength}
-                          key={"item-" + windowItem["id"] + "-" + index}>{getComponent()}</ComponentItem>;
+    return (
+      <SortableItem key={"item-" + windowObj["id"] + "-" + index} index={index}>
+        {getComponent()}
+      </SortableItem>
+
+    );
   });
-  return <ComponentList>{components}</ComponentList>;
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    let tempComponentsArr = [...componentsArr];
+    tempComponentsArr = arrayMove(tempComponentsArr, oldIndex, newIndex);
+    let tempWindowObj = { ...windowObj };
+    tempWindowObj["items"] = tempComponentsArr;
+    let tempWindowData = [...windowData];
+    replaceDesiredWindowItem(tempWindowData, tempWindowObj);
+    setWindowData(tempWindowData);
+    document.body.style.cursor = autoCursor
+    /*this.setState(({items}) => ({
+      items: arrayMove(items, oldIndex, newIndex),
+    }));*/
+  };
+
+  return (
+    <SortableContainer useDragHandle onSortEnd={onSortEnd} onSortMove={()=>{document.body.style.cursor = moveCursor}}>
+      {components}
+    </SortableContainer>
+  );
 }
 
 const ComponentList = styled.ul`
@@ -79,21 +134,11 @@ const ComponentList = styled.ul`
 `;
 
 const ComponentItem = styled.li`
-  padding: 0.8rem 0;
-  border: ${props => !props.isMenuShowing ? "0px" : "solid #b1afaf"} !important;
-  border-width: 1px 0 1px 0 !important;
-
-  :first-child {
-    padding-top: 0;
-    border-width: ${props => props.componentLength === 1 ? "0px" : "0 0 0.5px 0"} !important;
-  }
-
-  :last-child {
-    padding-bottom: 0;
-    border-width: ${props => props.componentLength === 1 ? "0px" : "0.5px 0 0px 0"} !important;
-  }
+  padding: 0.25rem 0;
+  z-index: 5;
+  list-style-type: none;
+  font-family: ${props=>props.theme.fonts.primary};
 `;
-
 
 // For radio buttons
 export function getSelectedComponent(componentsParent) {
@@ -111,15 +156,15 @@ export function getSelectedComponent(componentsParent) {
   return null;
 }
 
-export function setWindowProperty(
-  windowData,
-  setWindowData,
-  windowItem,
+export function setDataProperty(
+  data,
+  setData,
+  item,
   propertyName,
   propertyValue
 ) {
-  const tempData = [...windowData];
-  const itemToInsert = { ...windowItem };
+  const tempData = [...data];
+  const itemToInsert = { ...item };
   if (propertyName === "position") {
     // Property value is the window ref in this case
     const positions = getTranslateXY(propertyValue.current);
@@ -132,20 +177,24 @@ export function setWindowProperty(
   }
 
   replaceDesiredWindowItem(tempData, itemToInsert);
-  setWindowData(tempData);
+  setData(tempData);
+  return tempData;
 }
 
-export function changeItemProperty(windowItem, windowData, setWindowData, item, propertyName, propertyValue) {
-  const windowId = windowItem["id"];
-  let newWindowData = [...windowData];
+export function changeItemProperty(windowObj, windowData, setWindowData, windowItem, propertyName, propertyValue) {
+  /*const windowId = windowItem["id"];*/
+  let tempWindowData = [...windowData];
   // Gets the current window
-  let desiredWindow = getDesiredItem(windowData, windowId);
-  const items = desiredWindow["items"];
+  /*let desiredWindow = getDesiredItem(windowData, windowId);*/
+  let tempWindow = { ...windowObj };
+  let items = tempWindow["items"];
   // Gets the current item
-  let desiredItem = getDesiredItem(items, item["id"]);
-  desiredItem[propertyName] = propertyValue;
-  newWindowData["items"] = items;
-  setWindowData(newWindowData);
+  /*let desiredItem = getDesiredItem(items, item["id"]);*/
+  let tempWindowItem = { ...windowItem };
+  tempWindowItem[propertyName] = propertyValue;
+  replaceDesiredWindowItem(items, tempWindowItem);
+  replaceDesiredWindowItem(tempWindowData, tempWindow);
+  setWindowData(tempWindowData);
 }
 
 // Good for adding selection class, bolding, underlining, etc..
@@ -183,7 +232,7 @@ export function highlightText(selection) {
 export function handleDelete(windowData, setWindowData, windowItem, id) {
   const tempItem = { ...windowItem };
   tempItem["items"] = tempItem["items"].filter(item => item.id !== id);
-  setWindowProperty(windowData, setWindowData, windowItem, "items", tempItem["items"]);
+  setDataProperty(windowData, setWindowData, windowItem, "items", tempItem["items"]);
 }
 
 

@@ -1,39 +1,40 @@
 import "xp.css/dist/XP.css";
 import React, { useState, useEffect } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
 import { AppContext } from "./Contexts";
 import SettingsWindow from "./components/SettingsWindow";
 import { getDefaultValue } from "./functions/helpers";
 import Startbar from "./components/Startbar";
-
+import { theme } from "./styles/theme";
 
 function App() {
   const [isSettingsShowing, setIsSettingsShowing] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState(getDefaultValue("backgroundColor"));
-  const [backgroundImage, setBackgroundImage] = useState(getDefaultValue("backgroundImage"));
-  const [isMenuShowing, setIsMenuShowing] = useState(false);
+  const [isEditModeOn, setIsEditModeOn] = useState(false);
+  const [focusedWindow, setFocusedWindow] = useState(0);
+  const [settingsData, setSettingsData] = useState(getDefaultValue("settingsData"));
   const [iconData, setIconData] = useState(getDefaultValue("iconData"));
   const [windowData, setWindowData] = useState(getDefaultValue("windowData"));
-  const [focusedWindow, setFocusedWindow] = useState(0);
 
-  useEffect(() => {
+  useEffect(()=>{
     localStorage.setItem("windowData", JSON.stringify(windowData));
-    console.log(windowData);
-  }, [windowData]);
+    console.log(windowData)
+  }, [windowData])
 
-  useEffect(() => {
+  useEffect(()=>{
     localStorage.setItem("iconData", JSON.stringify(iconData));
-    console.log(iconData);
-  }, [iconData, setIconData]);
+  }, [iconData])
 
+  useEffect(()=>{
+    localStorage.setItem("settingsData", JSON.stringify(settingsData));
+  }, [settingsData])
 
   return (
     <AppContext.Provider
       value={{
-        isMenuShowing,
-        setIsMenuShowing,
+        isEditModeOn,
+        setIsEditModeOn,
         windowData,
         setWindowData,
         focusedWindow,
@@ -41,24 +42,27 @@ function App() {
         isSettingsShowing,
         setIsSettingsShowing,
         iconData,
-        setIconData
+        setIconData,
+        settingsData,
+        setSettingsData
       }}>
-      <GlobalStyle background={backgroundColor} backgroundImage={backgroundImage} />
-
-      {isSettingsShowing &&
-      <SettingsWindow
-        setIsSettingsShowing={setIsSettingsShowing}
-        backgroundColor={backgroundColor}
-        setBackgroundColor={setBackgroundColor}
-        backgroundImage={backgroundImage}
-        setBackgroundImage={setBackgroundImage}
-      />}
-      <Wrapper id="wrapper">
-        <RenderWindows />
-        <RenderIcons />
-      </Wrapper>
-      <Startbar />
-
+      <ThemeProvider theme={theme}>
+        <GlobalStyle
+          background={settingsData["backgroundColor"]}
+          backgroundImage={settingsData["backgroundImage"]}
+        />
+        {isSettingsShowing &&
+        <SettingsWindow
+          setIsSettingsShowing={setIsSettingsShowing}
+          settingsData={settingsData}
+          setSettingsData={setSettingsData}
+        />}
+        <Wrapper id="wrapper">
+          <RenderWindows />
+          <RenderIcons />
+        </Wrapper>
+        <Startbar />
+      </ThemeProvider>
     </AppContext.Provider>
   );
 }
@@ -66,12 +70,7 @@ function App() {
 const Wrapper = styled.div`
   height: calc(100vh - 30px);
   width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -80,8 +79,8 @@ const GlobalStyle = createGlobalStyle`
     background-image: url(${props => props.backgroundImage});
     background-repeat: no-repeat;
     background-size: cover;
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto;
-    overflow-x: hidden;
+    cursor: ${props => props.theme.cursors.auto};
+    overflow: hidden;
   }
 
   .window {
@@ -96,12 +95,15 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  a {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
+  label {
+    cursor: ${props => props.theme.cursors.auto};
+  }
+
+  a, select, option, button {
+    cursor: ${props => props.theme.cursors.pointer};
   }
 
   button {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/pointer.cur"), pointer;
     color: black;
   }
 `;

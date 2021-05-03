@@ -1,13 +1,9 @@
 export function getDefaultValue(localStorageProperty) {
   let defaultValue = false;
-  if (localStorageProperty === "backgroundColor")
-    defaultValue = "#ffffff";
-  else if (localStorageProperty === "backgroundImage")
-    defaultValue = "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg";
-  else if (localStorageProperty === "windowData") {
+  if (localStorageProperty === "windowData") {
     defaultValue = [
       { id: 0, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] },
-      { id: 1, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] }
+      /*{ id: 1, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] }*/
     ];
   } else if (localStorageProperty === "iconData") {
     defaultValue = [
@@ -20,16 +16,15 @@ export function getDefaultValue(localStorageProperty) {
         redirect: "https://www.gmail.com"
       }
     ];
+  } else if (localStorageProperty === "settingsData") {
+    defaultValue = {
+      backgroundColor: "#ffffff",
+      backgroundImage: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
+      draggingGrid: "0px"
+    };
   }
 
-  let propertyValue = window.localStorage.getItem(localStorageProperty);
-  // Has to be parsed if the property is an object
-  if (localStorageProperty === "windowData" || localStorageProperty === "iconData") {
-    // If componentsArr is undefined uncomment localStorage.clear
-    //localStorage.clear();
-    propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty));
-  }
-
+  const propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty));
   if (propertyValue !== null)
     defaultValue = propertyValue;
   return defaultValue;
@@ -44,42 +39,42 @@ export function getTranslateXY(element) {
   };
 }
 
-export function deleteWindowItem(windowData, setWindowData, windowItem) {
-  const tempData = [...windowData];
-  if (windowData.indexOf(windowItem) === -1) {
+export function deleteDataItem(data, setData, dataItem) {
+  const tempData = [...data];
+  if (data.indexOf(dataItem) === -1) {
     console.error("CAN'T FIND WINDOW TO DELETE");
     return;
   }
-  tempData.splice(tempData.indexOf(windowItem), 1);
-  setWindowData(tempData);
+  tempData.splice(tempData.indexOf(dataItem), 1);
+  setData(tempData);
 }
 
-export function replaceDesiredWindowItem(windowData, windowItem) {
+export function replaceDesiredWindowItem(windowData, windowObj) {
   for (let i = 0; i < windowData.length; i++) {
-    if (windowData[i]["id"] === windowItem["id"]) {
-      windowData[i] = windowItem;
+    if (windowData[i]["id"] === windowObj["id"]) {
+      windowData[i] = windowObj;
     }
   }
 }
 
+// Used to create a new window or icon
 export function addDataItem(data, setData, useCase, setFocusedWindow) {
   const tempData = [...data];
   const newId = getMaxId(data) + 1;
-  if(setFocusedWindow)
+  if (setFocusedWindow)
     setFocusedWindow(newId);
-  let newItem = {}
-  if(useCase === 'window'){
+  let newItem = {};
+  if (useCase === "window") {
     newItem = { id: newId, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] };
-  }
-  else if(useCase === 'icon'){
+  } else if (useCase === "icon") {
     newItem = {
-      id: 0,
+      id: newId,
       src: "https://via.placeholder.com/48",
       title: "Insert Title Here",
       xCoord: 0,
       yCoord: 0,
       redirect: "/"
-    }
+    };
   }
 
   tempData.push(newItem);
@@ -177,6 +172,17 @@ export function getMaxId(windowData) {
     }
   }
   return maxId;
+}
+
+export function updateSetting(
+  settingsData,
+  setSettingsData,
+  propertyName,
+  propertyValue
+) {
+  const tempSettingsData = { ...settingsData };
+  tempSettingsData[propertyName] = propertyValue;
+  setSettingsData(tempSettingsData);
 }
 
 

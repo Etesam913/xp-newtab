@@ -28,7 +28,6 @@ const ToggleWrapper = styled(motion.div)`
   border-radius: 100px;
   padding: 0 3px;
   display: flex;
-  cursor: pointer;
   box-sizing: border-box;
   align-items: center;
   ${props => props.on && css`

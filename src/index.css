@@ -1,8 +1,5 @@
 body {
     margin: 0;
-    font-family: 'MS Sans Serif', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     user-select: none;
@@ -16,6 +13,45 @@ code {
 .selected {
     background-color: #2267cb;
     color: white;
+}
+
+[contenteditable="true"]{
+    border: 1px solid #cccccc;
+}
+[contenteditable="false"]{
+    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
+}
+
+.show{
+    display: flex !important;
+}
+.hide{
+    display: none !important;
+}
+
+.list-item-options{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.4rem 0;
+}
+
+.strikethrough{
+    text-decoration: line-through;
+}
+
+
+.list-delete-button{
+}
+
+.list-strikethrough-button{
+}
+
+.list-item{
+    font-size: 13px;
+    margin: 0.15rem 0;
+    padding: 0.075rem 0;
+    cursor: text;
 }
 
 

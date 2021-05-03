@@ -4,7 +4,7 @@ import { createWindow } from "./helper";
 import WindowTitleText from "./WindowTitleText";
 import "xp.css/dist/XP.css";
 
-function Menu({ isMenuShowing, setIsMenuShowing, windowData, setWindowData }) {
+function Menu({ isEditModeOn, setIsEditModeOn, windowData, setWindowData }) {
   const windowListItems = windowData.map((item, index) => {
     return (
       <WindowTitleText
@@ -17,7 +17,7 @@ function Menu({ isMenuShowing, setIsMenuShowing, windowData, setWindowData }) {
     );
   });
   return (
-    <MenuWrapper className="tree-view" show={isMenuShowing}>
+    <MenuWrapper className="tree-view" show={isEditModeOn}>
       <div style={{ overflowY: "auto", marginBottom: "0.5rem" }}>
         <MenuHeader>Items</MenuHeader>
         <MenuSubtitle>Windows</MenuSubtitle>
@@ -36,7 +36,7 @@ function Menu({ isMenuShowing, setIsMenuShowing, windowData, setWindowData }) {
       </div>
       <CloseButton
         onClick={() => {
-          setIsMenuShowing(false);
+          setIsEditModeOn(false);
         }}
       >
         Exit Edit Mode

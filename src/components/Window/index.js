@@ -1,27 +1,48 @@
 import React, { useRef, useContext } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 import Draggable from "react-draggable";
-import "react-resizable/css/styles.css";
 import {
   handleComponentCreation,
   RenderComponents,
-  setWindowProperty
+  setDataProperty
 } from "./helper";
 import { AppContext } from "../../Contexts";
-import { deleteWindowItem } from "../../functions/helpers";
+import { deleteDataItem } from "../../functions/helpers";
 
-function Window({ width, windowItem, windowId }) {
+function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
-  const { windowData, setWindowData, isMenuShowing, focusedWindow, setFocusedWindow } = useContext(AppContext);
+  const {
+    windowData,
+    setWindowData,
+    isEditModeOn,
+    settingsData,
+    focusedWindow,
+    setFocusedWindow
+  } = useContext(AppContext);
+
+  const componentData=["Header", "Image", "Video", "List"]
+  const components = componentData.map((componentName, index)=>{
+    return(
+      <div className="field-row" key={index}>
+        <input id={componentName.toLowerCase() + windowId} type="radio" name="radio-button" />
+        <WindowLabel htmlFor={componentName.toLowerCase() + windowId}>{componentName}</WindowLabel>
+      </div>
+    );
+  })
+
   return (
     <Draggable
       handle={".title-bar"}
       nodeRef={windowRef}
       bounds="#wrapper"
+      grid={
+        parseInt(settingsData["draggingGrid"]) !== 0 &&
+        [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
+      }
       defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       onStop={() => {
-        setWindowProperty(
+        setDataProperty(
           windowData,
           setWindowData,
           windowItem,
@@ -42,17 +63,19 @@ function Window({ width, windowItem, windowId }) {
         hidden={windowItem["hidden"]}
       >
         <TitleBar className="title-bar" notFocused={focusedWindow !== windowItem["id"]}>
-          {isMenuShowing
-            ? <TitleInput className="title-bar-text" value={windowItem["windowTitle"]}
-                          onChange={(e) => {
-                            setWindowProperty(
-                              windowData,
-                              setWindowData,
-                              windowItem,
-                              "windowTitle",
-                              e.target.value
-                            );
-                          }}
+          {isEditModeOn
+            ?
+            <TitleInput
+              className="title-bar-text" value={windowItem["windowTitle"]}
+              onChange={(e) => {
+                setDataProperty(
+                  windowData,
+                  setWindowData,
+                  windowItem,
+                  "windowTitle",
+                  e.target.value
+                );
+              }}
             />
             :
             <div className="title-bar-text">
@@ -64,37 +87,29 @@ function Window({ width, windowItem, windowId }) {
             <button
               aria-label="Minimize"
               onClick={() => {
-                setWindowProperty(windowData, setWindowData, windowItem, "hidden", true);
+                setDataProperty(windowData, setWindowData, windowItem, "hidden", true);
               }} />
 
             <button
               aria-label="Close"
               onClick={() => {
-                deleteWindowItem(windowData, setWindowData, windowItem);
+                deleteDataItem(windowData, setWindowData, windowItem);
               }}
             />
           </ControlButtons>
         </TitleBar>
 
         <div className="window-body">
-          <article style={{ height: "100%" }} role="tabpanel">
-            {RenderComponents(windowItem["items"], windowItem)}
-
-            {isMenuShowing &&
+          <WindowPanel role="tabpanel">
+            <RenderComponents
+              componentsArr={windowItem["items"]}
+              windowObj={windowItem}
+              moveCursor={theme.cursors.move}
+              autoCursor={theme.cursors.auto}/>
+            {isEditModeOn &&
             <ComponentsPanel ref={componentsPanel}>
               <div className="field-row">Select one component to add:</div>
-              <div className="field-row">
-                <input id={"header" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"header" + windowId}>Header</label>
-              </div>
-              <div className="field-row">
-                <input id={"Image" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"Image" + windowId}>Image</label>
-              </div>
-              <div className="field-row">
-                <input id={"video" + windowId} type="radio" name="radio-button" />
-                <label htmlFor={"video" + windowId}>Video</label>
-              </div>
+              {components}
               <AddComponent
                 as={"button"}
                 onClick={() => {
@@ -103,7 +118,7 @@ function Window({ width, windowItem, windowId }) {
                 Add Component
               </AddComponent>
             </ComponentsPanel>}
-          </article>
+          </WindowPanel>
         </div>
       </WindowContainer>
     </Draggable>
@@ -113,8 +128,9 @@ function Window({ width, windowItem, windowId }) {
 const WindowContainer = styled.div`
   display: ${props => props.hidden && "none"};
   width: ${(props) => (props.width ? props.width : "20rem")};
+  height: auto;
   min-width: 30rem;
-  font-family: 'Pixelated MS Sans Serif', 'Arial', serif;
+  font-family: ${props => props.theme.fonts.primary};
   position: absolute;
   box-shadow: ${props => props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
   z-index: ${props => props.notFocused ? "2" : "3"};
@@ -125,7 +141,7 @@ const WindowContainer = styled.div`
 `;
 
 const TitleBar = styled.div`
-  cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/move.cur"), move;
+  cursor: ${props => props.theme.cursors.move};
   ${props => props.notFocused && css`
     background: linear-gradient(180deg, #9db4f6, #8296e3 8%, #8394e0 40%, #8da6eb 88%, #8da6eb 93%, #a3b5e6 95%, #93bbdd 96%, #a8c0ff);
     border: 0;
@@ -134,7 +150,7 @@ const TitleBar = styled.div`
 `;
 const TitleInput = styled.input`
   color: black !important;
-  font-family: 'Trebuchet MS';
+  font-family: ${props => props.theme.fonts.secondary};
   font-weight: 700;
   font-size: 13px;
   width: 100%;
@@ -152,5 +168,15 @@ const ComponentsPanel = styled.fieldset`
 const AddComponent = styled(ComponentsPanel)`
 `;
 
-export default Window;
+const WindowLabel = styled.label`
+  cursor: ${props => props.theme.cursors.pointer};
+`;
+
+const WindowPanel = styled.article`
+  max-height: 60vh;
+  overflow-y: auto;
+  height: 100%;
+`;
+
+export default withTheme(Window);
 

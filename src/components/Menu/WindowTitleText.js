@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { handleEnter } from "./helper";
-import { setWindowProperty } from "../Window/helper";
+import { setDataProperty } from "../Window/helper";
 import { AppContext } from "../../Contexts";
 
 function WindowTitleText({ windowItem, disabled }) {
@@ -36,7 +36,7 @@ function WindowTitleText({ windowItem, disabled }) {
           disabled={disabled}
           onClick={() => {
             !disabled && setIsEditing(true);
-            disabled && setWindowProperty(
+            disabled && setDataProperty(
               windowData,
               setWindowData,
               windowItem,

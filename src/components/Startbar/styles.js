@@ -3,7 +3,8 @@ import styled, { css } from "styled-components";
 export const Bar = styled.div`
   width: 100%;
   display: flex;
-  /*justify-content: space-between;*/
+  z-index: 4;
+  position: absolute;
 `;
 
 export const StartButton = styled.button`
@@ -44,7 +45,7 @@ export const TimeSegment = styled.div`
   text-align: center;
   color: white;
   padding-top: 10px;
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
   margin-left: auto;
 `;
 
@@ -53,11 +54,14 @@ export const TabContainer = styled.div`
   align-items: center;
   padding: 0 0.5rem;
   color: white;
-  font-family: 'Pixelated MS Sans Serif';
+  width: 100%;
+  font-family: ${props=>props.theme.fonts.primary};
+  overflow-x: auto;
 `;
 
 export const Tab = styled.button`
   width: 8rem;
+  min-width: 1rem;
   height: 80%;
   border-radius: 4px;
   color: white;
@@ -101,7 +105,6 @@ export const StartWindow = styled.div`
 export const StartHeader = styled.header`
   height: 4rem;
   background-image: url(${props => props.image});
-  font-family: "Arial";
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -119,7 +122,7 @@ export const StartBody = styled.div`
 `;
 
 export const StartItemName = styled.span`
-  font-family: 'Pixelated MS Sans Serif';
+  font-family: ${props=>props.theme.fonts.primary};
   font-size: 0.9rem;
   margin: ${props => props.margin ? props.margin : "0 0 0 0.5rem"};
 `;
@@ -132,13 +135,42 @@ export const StartItemIcon = styled.img`
 export const StartFooter = styled.footer`
   height: 2.5rem;
   background-image: url(${props => props.image});
-  font-family: "Arial";
   font-weight: bold;
   display: flex;
 `;
 
+export const LoginButton = styled.button`
+  border: 0;
+  background: transparent;
+  :hover{
+    background: transparent;
+    box-shadow: none !important;
+    border: 0;
+  }
+  min-width: auto;
+  :active{
+    background: transparent !important;
+  }
+  :focus{
+    background: transparent;
+    outline: 0 !important;
+  }
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  color: white;
+`;
+
+export const LoginImg = styled.img`
+  margin: 0 0.4rem;
+`;
+
 export const ItemContainer = styled.div`
   width: 100%;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   :hover {
     background: #2d6ac2;
     color: white;
