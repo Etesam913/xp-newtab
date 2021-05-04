@@ -47,14 +47,17 @@ function Header({ windowObj, windowItem }) {
           suppressContentEditableWarning={true}
         >
         </HeaderComponent>
-        {isEditModeOn &&
-        <DeleteButton
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}>
-          Delete
-        </DeleteButton>}
       </FlexContainer>
+      {isEditModeOn &&
+        <FlexContainer width="100%" justifyContent="center" margin="0.5rem 0 0">
+          <DeleteButton
+            onClick={() => {
+              handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
+            }}>
+            Delete
+          </DeleteButton>
+        </FlexContainer>
+      }
     </div>
   );
 }
@@ -71,7 +74,7 @@ const HeaderComponent = styled.input`
 
   margin-right: 0.4rem;
   word-wrap: break-word;
-  width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
+  width: 100%;
   -webkit-user-select: text;
   user-select: text;
 `;

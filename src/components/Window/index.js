@@ -1,6 +1,7 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import styled, { css, withTheme } from "styled-components";
 import Draggable from "react-draggable";
+import maximizeSecond from "../../media/maximize-second.png";
 import {
   handleComponentCreation,
   RenderComponents,
@@ -21,15 +22,15 @@ function Window({ width, windowItem, windowId, theme }) {
     setFocusedWindow
   } = useContext(AppContext);
 
-  const componentData=["Header", "Image", "Video", "List", "Search Bar"]
-  const components = componentData.map((componentName, index)=>{
-    return(
+  const componentData = ["Header", "Image", "Video", "List", "Search Bar"];
+  const components = componentData.map((componentName, index) => {
+    return (
       <div className="field-row" key={index}>
         <input id={componentName.toLowerCase() + windowId} type="radio" name="radio-button" />
         <WindowLabel htmlFor={componentName.toLowerCase() + windowId}>{componentName}</WindowLabel>
       </div>
     );
-  })
+  });
 
   return (
     <Draggable
@@ -40,15 +41,18 @@ function Window({ width, windowItem, windowId, theme }) {
         parseInt(settingsData["draggingGrid"]) !== 0 &&
         [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
       }
+      position={windowItem["isMaximized"] ? { x: 0, y: 0 } : { x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       onStop={() => {
-        setDataProperty(
-          windowData,
-          setWindowData,
-          windowItem,
-          "position",
-          windowRef
-        );
+        {
+          !windowItem["isMaximized"] && setDataProperty(
+            windowData,
+            setWindowData,
+            windowItem,
+            "position",
+            windowRef
+          );
+        }
       }}
     >
       <WindowContainer
@@ -61,6 +65,7 @@ function Window({ width, windowItem, windowId, theme }) {
         width={width}
         className="window"
         hidden={windowItem["hidden"]}
+        isMaximized={windowItem["isMaximized"]}
       >
         <TitleBar className="title-bar" notFocused={focusedWindow !== windowItem["id"]}>
           {isEditModeOn
@@ -84,13 +89,33 @@ function Window({ width, windowItem, windowId, theme }) {
           }
 
           <ControlButtons className="title-bar-controls" notFocused={focusedWindow !== windowItem["id"]}>
-            <button
+            <TitleBarButton
               aria-label="Minimize"
               onClick={() => {
-                setDataProperty(windowData, setWindowData, windowItem, "hidden", true);
-              }} />
-
-            <button
+                setDataProperty(
+                  windowData,
+                  setWindowData,
+                  windowItem,
+                  "hidden",
+                  true
+                );
+              }}
+            />
+            <MaximizeButton
+              aria-label="Maximize"
+              isMaximized={windowItem["isMaximized"]}
+              maximizeSecond={maximizeSecond}
+              onClick={() => {
+                setDataProperty(
+                  windowData,
+                  setWindowData,
+                  windowItem,
+                  "isMaximized",
+                  !windowItem["isMaximized"]
+                );
+              }}
+            />
+            <TitleBarButton
               aria-label="Close"
               onClick={() => {
                 deleteDataItem(windowData, setWindowData, windowItem);
@@ -99,13 +124,13 @@ function Window({ width, windowItem, windowId, theme }) {
           </ControlButtons>
         </TitleBar>
 
-        <div className="window-body">
-          <WindowPanel role="tabpanel">
+        <WindowBody className="window-body">
+          <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
             <RenderComponents
               componentsArr={windowItem["items"]}
               windowObj={windowItem}
               moveCursor={theme.cursors.move}
-              autoCursor={theme.cursors.auto}/>
+              autoCursor={theme.cursors.auto} />
             {isEditModeOn &&
             <ComponentsPanel ref={componentsPanel}>
               <div className="field-row">Select one component to add:</div>
@@ -119,7 +144,7 @@ function Window({ width, windowItem, windowId, theme }) {
               </AddComponent>
             </ComponentsPanel>}
           </WindowPanel>
-        </div>
+        </WindowBody>
       </WindowContainer>
     </Draggable>
   );
@@ -138,6 +163,12 @@ const WindowContainer = styled.div`
   :focus {
     outline: none;
   }
+
+  ${props => props.isMaximized && css`
+    width: 100vw;
+    height: calc(100vh - 32px);
+    z-index: 4;
+  `};
 `;
 
 const TitleBar = styled.div`
@@ -167,16 +198,37 @@ const ComponentsPanel = styled.fieldset`
 
 const AddComponent = styled(ComponentsPanel)`
 `;
+const WindowBody = styled.div`
+  height: calc(100% - 2.8rem);
+`;
 
 const WindowLabel = styled.label`
   cursor: ${props => props.theme.cursors.pointer};
 `;
 
 const WindowPanel = styled.article`
-  max-height: 60vh;
   overflow-y: auto;
+  box-sizing: border-box;
   height: 100%;
 `;
+
+const TitleBarButton = styled.button`
+  height: 22px;
+  width: 22px;
+`;
+
+const MaximizeButton = styled(TitleBarButton)`
+  background-image: ${props => props.isMaximized && `url(${props.maximizeSecond})`} !important;
+
+  :hover {
+    filter: ${props => props.isMaximized && "brightness(120%)"};
+  }
+
+  :hover:active {
+    filter: ${props => props.isMaximized && "brightness(90%)"};
+  }
+`;
+
 
 export default withTheme(Window);
 

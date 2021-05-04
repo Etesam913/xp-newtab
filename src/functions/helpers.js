@@ -2,8 +2,15 @@ export function getDefaultValue(localStorageProperty) {
   let defaultValue = false;
   if (localStorageProperty === "windowData") {
     defaultValue = [
-      { id: 0, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] },
-      /*{ id: 1, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] }*/
+      {
+        id: 0,
+        windowTitle: "Insert Title Here",
+        xCoord: 0,
+        yCoord: 0,
+        hidden: false,
+        items: [],
+        isMaximized: false
+      },
     ];
   } else if (localStorageProperty === "iconData") {
     defaultValue = [
