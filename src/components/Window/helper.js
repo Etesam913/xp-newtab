@@ -9,6 +9,7 @@ import Video from "../Video";
 import List from "../List";
 import DragIndicator from "../DragIndicator";
 import arrayMove from "array-move";
+import SearchBar from "../SearchBar";
 
 
 export function handleComponentCreation(refToSearch, windowData, setWindowData, windowItem) {
@@ -37,7 +38,8 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       componentName: "Image",
       href: null,
       src: "https://via.placeholder.com/300x175",
-      justifyContent: "flex-start"
+      justifyContent: "flex-start",
+      imageWidth: "50%"
     });
   } else if (componentToAdd === "Video") {
     newItem["items"].push({
@@ -62,6 +64,14 @@ export function addComponent(componentToAdd, windowData, setWindowData, windowIt
       ]
     });
   }
+  else if(componentToAdd === "Search Bar"){
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "Search Bar",
+      engine: "Google",
+      action: "https://www.google.com/search"
+    });
+  }
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);
 }
@@ -75,7 +85,7 @@ const SortableContainer = sortableContainer(({ children }) => {
 });
 
 export function RenderComponents({componentsArr, windowObj, moveCursor, autoCursor}) {
-  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
+  const { windowData, setWindowData } = useContext(AppContext);
 
   const components = componentsArr.map((windowItem, index) => {
     function getComponent() {
@@ -94,6 +104,11 @@ export function RenderComponents({componentsArr, windowObj, moveCursor, autoCurs
       } else if (windowItem["componentName"] === "List") {
         return (
           <List windowItem={windowItem} windowObj={windowObj} />
+        );
+      }
+      else if (windowItem["componentName"] === "Search Bar"){
+        return(
+          <SearchBar windowItem={windowItem} windowObj={windowObj}  />
         );
       }
     }
@@ -182,50 +197,14 @@ export function setDataProperty(
 }
 
 export function changeItemProperty(windowObj, windowData, setWindowData, windowItem, propertyName, propertyValue) {
-  /*const windowId = windowItem["id"];*/
   let tempWindowData = [...windowData];
-  // Gets the current window
-  /*let desiredWindow = getDesiredItem(windowData, windowId);*/
   let tempWindow = { ...windowObj };
   let items = tempWindow["items"];
-  // Gets the current item
-  /*let desiredItem = getDesiredItem(items, item["id"]);*/
   let tempWindowItem = { ...windowItem };
   tempWindowItem[propertyName] = propertyValue;
   replaceDesiredWindowItem(items, tempWindowItem);
   replaceDesiredWindowItem(tempWindowData, tempWindow);
   setWindowData(tempWindowData);
-}
-
-// Good for adding selection class, bolding, underlining, etc..
-function replaceSelectionWithNode(node) {
-  let range, html;
-  if (window.getSelection && window.getSelection().getRangeAt) {
-    range = window.getSelection().getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(node);
-  } else if (document.selection && document.selection.createRange) {
-    range = document.selection.createRange();
-    html = (node.nodeType === 3) ? node.data : node.outerHTML;
-    range.pasteHTML(html);
-  }
-}
-
-export function highlightText(selection) {
-  if (selection) {
-    let elem = document.createElement("span");
-    elem.className = "selected";
-    elem.appendChild(document.createTextNode(selection));
-
-    /*const htmlToInsert = '<span class="selected">' + selection + '</span>';
-    const text = header.current.innerHTML;*/
-    const range = selection.getRangeAt(0);
-    const parent = range.commonAncestorContainer;
-    const grandParent = parent.parentElement;
-    if (grandParent.tagName !== "A") {
-      replaceSelectionWithNode(elem);
-    }
-  }
 }
 
 // For deleting an item

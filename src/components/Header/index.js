@@ -1,130 +1,37 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Header1 } from "../../styles/Headers";
-import { convertJustifyContentToTextAlign, getSelectionText } from "../../functions/helpers";
+import { convertJustifyContentToTextAlign } from "../../functions/helpers";
 import { AppContext } from "../../Contexts";
 import { FlexContainer } from "../../styles/Layout";
-import { TextAlignOptions, LinkOptions } from "../ComponentOptions";
+import { TextAlignOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
-import DragIndicator from "../DragIndicator";
 
 
-function Header({ windowObj, windowItem, }) {
+function Header({ windowObj, windowItem }) {
   const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
-  const [isTextSelected, setIsTextSelected] = useState(false);
-  const [showLinkInput, setShowLinkInput] = useState(false);
-  const [selectionObj, setSelectionObj] = useState(null);
-  const [cursorInHeader, setCursorInHeader] = useState(false)
-
   const header = useRef(null);
-
   useEffect(() => {
     header.current.innerHTML = windowItem["html"];
   }, [header, windowItem]);
 
-  useEffect(()=>{
-    console.log(cursorInHeader)
-  }, [cursorInHeader])
-
-  function createLink() {
-    // Can only select if nothing is currently selected.
-    if (getSelectionText() !== "" && document.getElementsByClassName("selected").length === 0) {
-      console.log('good')
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-      const parentTag = range.commonAncestorContainer.parentElement.tagName;
-
-      // Selection styling should only occur when the selection is not already in an a tag.
-      if (parentTag !== "A") {
-        setIsTextSelected(true);
-        setSelectionObj(selection);
-      } else {
-        setIsTextSelected(false);
-        setShowLinkInput(false);
-      }
-    } else {
-      setIsTextSelected(false);
-      setShowLinkInput(false);
-      // Removes the selection class if it exists
-      const selectedElem = document.getElementsByClassName("selected")[0];
-      if (selectedElem) {
-        const itemToReplaceWith = document.createTextNode(selectedElem.textContent);
-        const parent = selectedElem.parentNode;
-        parent.replaceChild(itemToReplaceWith, selectedElem);
-      }
-    }
-  }
-
-
-  function handleOptions() {
-    if (isEditModeOn) {
-      if (isTextSelected) {
-        return (
-          <LinkOptions
-            isTextSelected={isTextSelected}
-            setIsTextSelected={setIsTextSelected}
-            selectionObj={selectionObj}
-            componentRef={header}
-            showLinkInput={showLinkInput}
-            setShowLinkInput={setShowLinkInput}
-            windowObj={windowObj}
-            windowItem={windowItem}
-          />);
-      } else {
-        return <TextAlignOptions text windowItem={windowItem} windowObj={windowObj} />;
-      }
-    }
-  }
-
-  /*
-    function getCaretPosition(parent, cursorNode, relativeCurPosition) {
-      const children = parent.childNodes;
-      let currentLength = 0;
-      for (let i = 0; i < children.length; i++) {
-        if (children[i] === cursorNode) {
-          return currentLength + relativeCurPosition;
-        }
-        currentLength += children[i].textContent.length;
-      }
-    }
-  */
-
-  function handleKeyDown(e) {
-    if (e.keyCode === 13) {
-      e.preventDefault();
-    } else {
-      setIsTextSelected(false);
-    }
-  }
-
   return (
-    <div onMouseDown={()=>{!cursorInHeader && header.current.blur()}}>
+    <div>
       <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
-        {handleOptions()}
+        {isEditModeOn && <TextAlignOptions windowObj={windowObj} windowItem={windowItem} text />}
       </FlexContainer>
-      <FlexContainer justifyContent="flex-start">
+      <FlexContainer>
         <HeaderComponent
           isEditModeOn={isEditModeOn}
           ref={header}
           tabIndex={0}
-          onKeyDown={(e) => {
-            handleKeyDown(e);
-          }}
           key={"header-" + windowObj["id"] + "-" + windowItem["id"]}
           as={Header1}
           contentEditable={isEditModeOn ? "true" : "false"}
           width={"100%"}
           background={isEditModeOn ? "white" : "transparent"}
-          onClick={(e) => {
-            createLink(e);
-          }}
-          onMouseEnter={() => {
-            setCursorInHeader(true);
-          }}
-          onMouseLeave={() => {
-            setCursorInHeader(false);
-          }}
+          border={isEditModeOn ? "1px solid #cccccc" : "0px"}
           onBlur={() => {
             changeItemProperty(
               windowObj,
@@ -140,14 +47,17 @@ function Header({ windowObj, windowItem, }) {
           suppressContentEditableWarning={true}
         >
         </HeaderComponent>
-        {isEditModeOn &&
-        <DeleteButton
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}>
-          Delete
-        </DeleteButton>}
       </FlexContainer>
+      {isEditModeOn &&
+        <FlexContainer width="100%" justifyContent="center" margin="0.5rem 0 0">
+          <DeleteButton
+            onClick={() => {
+              handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
+            }}>
+            Delete
+          </DeleteButton>
+        </FlexContainer>
+      }
     </div>
   );
 }
@@ -164,10 +74,9 @@ const HeaderComponent = styled.input`
 
   margin-right: 0.4rem;
   word-wrap: break-word;
-  width: ${props => props.isEditModeOn ? "81.8%" : "100%"};
+  width: 100%;
   -webkit-user-select: text;
   user-select: text;
-  cursor: ${props => props.isEditModeOn ? "text" : props.theme.cursors.auto};
 `;
 
 export default Header;

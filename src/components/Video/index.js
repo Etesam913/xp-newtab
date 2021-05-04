@@ -14,7 +14,7 @@ function Video({ windowObj, windowItem }) {
   function handleOptions() {
     if (isEditModeOn && !isChangeUrlClicked) {
       return (
-        <FlexContainer margin={"0 0 0.5rem 0"}>
+        <FlexContainer margin={"0.5rem 0 0 0"}>
           <DeleteButton
             onClick={() => {
               handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
@@ -75,7 +75,6 @@ function Video({ windowObj, windowItem }) {
 
   return (
     <FlexContainer flexDirection={"column"}>
-      {handleOptions()}
       <VideoContainer>
         <VideoComponent
           src={windowItem["src"]}
@@ -84,6 +83,7 @@ function Video({ windowObj, windowItem }) {
           allowFullScreen
         />
       </VideoContainer>
+      {handleOptions()}
     </FlexContainer>
   );
 }
