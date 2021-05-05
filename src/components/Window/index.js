@@ -209,6 +209,7 @@ const WindowLabel = styled.label`
 const WindowPanel = styled.article`
   overflow-y: auto;
   box-sizing: border-box;
+  max-height: ${props=>props.isMaximized ? "100%" : "60vh"};
   height: 100%;
 `;
 
