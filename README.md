@@ -6,7 +6,7 @@
 <h3>🔗 Links</h3>
 <ul>
     <li>Firefox: https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/</li>
-    <li>Chrome: *Not added yet*</li>
+    <li>Chrome: https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke</li>
 </ul>
 
 <h3>✨ Features</h3>
