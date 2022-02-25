@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Bar,
   StartButton,
@@ -8,7 +8,8 @@ import {
   TabContainer,
   StartWindow,
   StartHeader,
-  StartBody, StartFooter, LoginButton, LoginImg
+  StartBody,
+  StartFooter,
 } from "./styles";
 import normalImg from "../../media/start-button.png";
 import pressedImg from "../../media/start-button-pressed.png";
@@ -17,21 +18,24 @@ import timeBarImg from "../../media/time-bar-img.png";
 import tabBackgroundImg from "../../media/tab-background.png";
 import startFooterImg from "../../media/start-footer.png";
 import startHeaderImg from "../../media/start-header.png";
-import { getTimePeriodName, getTimeUnits, getTwelveHourTime } from "../../functions/helpers";
-import { AppContext } from "../../Contexts";
+import {
+  getTimePeriodName,
+  getTimeUnits,
+  getTwelveHourTime,
+} from "../../functions/helpers";
 import { setDataProperty } from "../Window/helper";
 import { StartbarItem } from "./items";
+import { useStore } from "../../Store";
 
 function Startbar() {
   const [time, setTime] = useState("");
   const startButton = useRef(null);
   const startWindow = useRef(null);
   const [isStartWindowShowing, setIsStartWindowShowing] = useState(false);
-  const {
-    windowData,
-    setWindowData,
-    setFocusedWindow
-  } = useContext(AppContext);
+  const setFocusedWindow = useStore((state) => state.setFocusedWindow);
+
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
 
   const tabs = windowData.map((item, index) => {
     const windowItem = item;
@@ -41,7 +45,13 @@ function Startbar() {
         pressed={!item["hidden"]}
         onClick={() => {
           setFocusedWindow(item["id"]);
-          setDataProperty(windowData, setWindowData, windowItem, "hidden", !item["hidden"]);
+          setDataProperty(
+            windowData,
+            setWindowData,
+            windowItem,
+            "hidden",
+            !item["hidden"]
+          );
         }}
         key={`tab-${index}`}
       >
@@ -52,7 +62,10 @@ function Startbar() {
 
   function handleBlur(e) {
     if (startWindow.current) {
-      if (e.target !== startButton.current && !startWindow.current.contains(e.target)) {
+      if (
+        e.target !== startButton.current &&
+        !startWindow.current.contains(e.target)
+      ) {
         setIsStartWindowShowing(false);
       }
     }
@@ -67,11 +80,20 @@ function Startbar() {
 
   useEffect(() => {
     let timeUnits = getTimeUnits();
-    let timeText = getTwelveHourTime(timeUnits["hour"]) + ":" + timeUnits["minutes"] + " " + getTimePeriodName(timeUnits["hour"]);
+    let timeText =
+      getTwelveHourTime(timeUnits["hour"]) +
+      ":" +
+      timeUnits["minutes"] +
+      " " +
+      getTimePeriodName(timeUnits["hour"]);
     setTime(timeText);
     const interval = setInterval(() => {
       timeUnits = getTimeUnits();
-      timeText = getTwelveHourTime(timeUnits["hour"]) + ":" + timeUnits["minutes"] + getTimePeriodName(timeUnits["hour"]);
+      timeText =
+        getTwelveHourTime(timeUnits["hour"]) +
+        ":" +
+        timeUnits["minutes"] +
+        getTimePeriodName(timeUnits["hour"]);
       setTime(timeText);
     }, 1000);
     return () => clearInterval(interval);
@@ -88,34 +110,26 @@ function Startbar() {
           setIsStartWindowShowing(!isStartWindowShowing);
         }}
       />
-      {isStartWindowShowing &&
-      <StartWindow ref={startWindow}>
-        <StartHeader
-          image={startHeaderImg}
-        >
-          Administrator
-        </StartHeader>
-        <StartBody>
-          <StartbarItem
-            identifier="Settings"
-            setIsStartWindowShowing={setIsStartWindowShowing}
-          />
-          <StartbarItem identifier="Create A New Window" />
-          <StartbarItem identifier="Add Icon" />
-          <StartbarItem identifier="Edit Mode" />
-        </StartBody>
-        <StartFooter image={startFooterImg}>
-        </StartFooter>
-      </StartWindow>
-      }
+      {isStartWindowShowing && (
+        <StartWindow ref={startWindow}>
+          <StartHeader image={startHeaderImg}>Administrator</StartHeader>
+          <StartBody>
+            <StartbarItem
+              identifier="Settings"
+              setIsStartWindowShowing={setIsStartWindowShowing}
+            />
+            <StartbarItem identifier="Create A New Window" />
+            <StartbarItem identifier="Add Icon" />
+            <StartbarItem identifier="Edit Mode" />
+          </StartBody>
+          <StartFooter image={startFooterImg}></StartFooter>
+        </StartWindow>
+      )}
       <BlueSegment blueBarImg={blueBarImg} />
-      <TabContainer>
-        {tabs}
-      </TabContainer>
+      <TabContainer>{tabs}</TabContainer>
       <TimeSegment timeBarImg={timeBarImg}> {time} </TimeSegment>
     </Bar>
   );
 }
-
 
 export default Startbar;

@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { AppContext } from "../../Contexts";
 import { FlexContainer } from "../../styles/Layout";
 import { MagnifyingGlass } from "../SvgMaster";
 import { replaceDesiredWindowItem } from "../../functions/helpers";
 import { handleDelete } from "../Window/helper";
+import { useStore } from "../../Store";
 
 function SearchBar({ windowItem, windowObj }) {
-  const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
 
+  const isEditModeOn = useStore((store) => store.isEditModeOn);
   function handleDropdown(e) {
     const dropdownValue = e.target.value;
     let tempWindowData = [...windowData];
@@ -31,28 +33,42 @@ function SearchBar({ windowItem, windowObj }) {
     <SearchForm method="get" action={windowItem["action"]}>
       <FlexContainer alignItems="center">
         <SearchInput name="q" placeholder={"Search " + windowItem["engine"]} />
-        <SearchButton><MagnifyingGlass /></SearchButton>
+        <SearchButton>
+          <MagnifyingGlass />
+        </SearchButton>
       </FlexContainer>
-      {isEditModeOn &&
-      <FlexContainer justifyContent="space-between" alignItems="center" margin="0.5rem 0 0">
+      {isEditModeOn && (
+        <FlexContainer
+          justifyContent="space-between"
+          alignItems="center"
+          margin="0.5rem 0 0"
+        >
           <span>
             Search Engine:
-            <SearchDropdown onChange={handleDropdown} value={windowItem["engine"]}>
+            <SearchDropdown
+              onChange={handleDropdown}
+              value={windowItem["engine"]}
+            >
               <option>Google</option>
               <option>DuckDuckGo</option>
               <option>Bing</option>
             </SearchDropdown>
           </span>
-        <button
-          type="button"
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}
-        >
-          Delete
-        </button>
-      </FlexContainer>
-      }
+          <button
+            type="button"
+            onClick={() => {
+              handleDelete(
+                windowData,
+                setWindowData,
+                windowObj,
+                windowItem["id"]
+              );
+            }}
+          >
+            Delete
+          </button>
+        </FlexContainer>
+      )}
     </SearchForm>
   );
 }

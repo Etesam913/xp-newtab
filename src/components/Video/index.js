@@ -1,15 +1,18 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { FlexContainer } from "../../styles/Layout";
-import { AppContext } from "../../Contexts";
 import { DeleteButton, OptionsButton } from "../../styles/StyledComponents";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton";
+import { useStore } from "../../Store";
 
 function Video({ windowObj, windowItem }) {
-  const { isEditModeOn, windowData, setWindowData } = useContext(AppContext);
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
+
   const [isChangeUrlClicked, setIsChangedUrlClicked] = useState(false);
   const srcInput = useRef(null);
+  const isEditModeOn = useStore((store) => store.isEditModeOn);
 
   function handleOptions() {
     if (isEditModeOn && !isChangeUrlClicked) {
@@ -24,7 +27,6 @@ function Video({ windowObj, windowItem }) {
             Change YouTube Video Url
           </button>
         </FlexContainer>
-
       );
     } else if (isEditModeOn && isChangeUrlClicked) {
       return (
@@ -43,7 +45,6 @@ function Video({ windowObj, windowItem }) {
           <OptionsButton onClick={setVideoSrc}> Set Video Link </OptionsButton>
         </FlexContainer>
       );
-
     }
   }
 
@@ -51,9 +52,10 @@ function Video({ windowObj, windowItem }) {
     const inputText = srcInput.current.value.trim();
     if (inputText !== "") {
       // Gets the youtube video id
-      let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      let regExp =
+        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       let match = inputText.match(regExp);
-      const videoId = (match && match[7].length === 11) ? match[7] : false;
+      const videoId = match && match[7].length === 11 ? match[7] : false;
       const valueToInsert = "https://www.youtube.com/embed/" + videoId;
       changeItemProperty(
         windowObj,
@@ -78,14 +80,20 @@ function Video({ windowObj, windowItem }) {
         />
       </VideoContainer>
       <FlexContainer margin="0.5rem 0 0">
-        {isEditModeOn &&
-        <DeleteButton
-          onClick={() => {
-            handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-          }}
-        >
-          Delete
-        </DeleteButton>}
+        {isEditModeOn && (
+          <DeleteButton
+            onClick={() => {
+              handleDelete(
+                windowData,
+                setWindowData,
+                windowObj,
+                windowItem["id"]
+              );
+            }}
+          >
+            Delete
+          </DeleteButton>
+        )}
       </FlexContainer>
     </FlexContainer>
   );

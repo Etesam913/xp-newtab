@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header1 } from "../../styles/Headers";
 import { FlexContainer } from "../../styles/Layout";
 import { HexColorPicker } from "react-colorful";
 import styled from "styled-components";
-import { AppContext } from "../../Contexts";
 import { updateSetting } from "../../functions/helpers";
-
+import { useStore } from "../../Store";
 
 export function ColorAndImageTab({ imageInput, colorInput }) {
-  const { settingsData, setSettingsData } = useContext(AppContext);
+  const settingsData = useStore((state) => state.settingsData);
+  const setSettingsData = useStore((state) => state.setSettingsData);
+
   const [color, setColor] = useState(settingsData["backgroundColor"]);
 
   function handleColorInputEnter(e) {
@@ -41,18 +42,17 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
   }
 
   useEffect(() => {
-    updateSetting(
-      settingsData,
-      setSettingsData,
-      "backgroundColor",
-      color
-    );
+    updateSetting(settingsData, setSettingsData, "backgroundColor", color);
   }, [color]);
 
   return (
     <article role="tabpanel">
       <Header1 margin={"1rem 0 1rem"}>Change Background Image</Header1>
-      <FlexContainer justifyContent={"flex-start"} alignItems={"flex-start"} tablet>
+      <FlexContainer
+        justifyContent={"flex-start"}
+        alignItems={"flex-start"}
+        tablet
+      >
         <TabInput
           ref={imageInput}
           defaultValue={settingsData["backgroundImage"]}
@@ -60,7 +60,8 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
           width={"70%"}
           onKeyDown={(e) => {
             handleImageInputEnter(e);
-          }} />
+          }}
+        />
         <FlexContainer flexDirection="column" alignItems={"flex-start"}>
           <button
             onClick={() => {
@@ -87,11 +88,14 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
             Remove Image
           </RemoveButton>
         </FlexContainer>
-
       </FlexContainer>
 
       <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
-      <FlexContainer tablet justifyContent={"flex-start"} alignItems={"flex-start"}>
+      <FlexContainer
+        tablet
+        justifyContent={"flex-start"}
+        alignItems={"flex-start"}
+      >
         <TabInput
           placeholder={"Enter Hex Color Code"}
           ref={colorInput}
@@ -108,14 +112,13 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
         />
         <HexColorPicker color={color} onChange={setColor} />
       </FlexContainer>
-
     </article>
   );
 }
 
 const TabInput = styled.input`
   margin-right: 1rem;
-  width: ${props => props.width};
+  width: ${(props) => props.width};
   @media only screen and (max-width: 768px) {
     margin-bottom: 1rem;
     width: 80%;
@@ -129,8 +132,10 @@ export function InfoTab() {
   return (
     <article role="tabpanel">
       <Header1 margin={"0 0 1rem"}>Windows XP New Tab</Header1>
-      <InfoParagraph>This extension was created by Etesam Ansari using React.js, Styled Components, and the XP.css
-        GitHub repo.</InfoParagraph>
+      <InfoParagraph>
+        This extension was created by Etesam Ansari using React.js, Styled
+        Components, and the XP.css GitHub repo.
+      </InfoParagraph>
       <InfoGrid>
         <p style={{ marginRight: "0.5rem" }}>GitHub Link: </p>
         <a href={"https://github.com/Etesam913/xp-newtab"}>
@@ -157,7 +162,7 @@ const InfoGrid = styled.div`
   grid-template-columns: auto auto;
   grid-auto-rows: auto auto auto;
   align-self: center;
-  row-gap: .75rem;
+  row-gap: 0.75rem;
   @media only screen and (max-width: 768px) {
     grid-template-columns: auto;
   }
@@ -170,7 +175,8 @@ const InfoParagraph = styled.p`
 
 // Allows user to set settings such as grid, icon size
 export function MiscTab() {
-  const { settingsData, setSettingsData } = useContext(AppContext);
+  const settingsData = useStore((state) => state.settingsData);
+  const setSettingsData = useStore((state) => state.setSettingsData);
 
   return (
     <article role="tabpanel">
@@ -194,4 +200,3 @@ export function MiscTab() {
     </article>
   );
 }
-

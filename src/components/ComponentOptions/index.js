@@ -1,14 +1,16 @@
-import React, { useContext, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import { AppContext } from "../../Contexts";
-import { changeItemProperty, highlightText } from "../Window/helper";
-import { convertJustifyContentToTextAlign, convertTextAlignToJustifyContent } from "../../functions/helpers";
-import { FlexContainer } from "../../styles/Layout";
-import BackButton from "../BackButton/index";
 
+import { changeItemProperty } from "../Window/helper";
+import {
+  convertJustifyContentToTextAlign,
+  convertTextAlignToJustifyContent,
+} from "../../functions/helpers";
+import { useStore } from "../../Store";
 
 export function TextAlignOptions({ windowObj, windowItem, text }) {
-  const { windowData, setWindowData } = useContext(AppContext);
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
 
   return (
     <div>
@@ -24,13 +26,15 @@ export function TextAlignOptions({ windowObj, windowItem, text }) {
             convertTextAlignToJustifyContent(e.target.value)
           )
         }
-        defaultValue={convertJustifyContentToTextAlign(windowItem["justifyContent"])}>
+        defaultValue={convertJustifyContentToTextAlign(
+          windowItem["justifyContent"]
+        )}
+      >
         <option>left</option>
         <option>center</option>
         <option>right</option>
       </select>
     </div>
-
   );
 }
 

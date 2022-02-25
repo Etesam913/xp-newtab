@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ColorAndImageTab, InfoTab, MiscTab } from "./Tabs";
+import { useStore } from "../../Store";
 
-function SettingsWindow(
-  {
-    setIsSettingsShowing,
-    settingsData
-  }) {
+function SettingsWindow({ settingsData }) {
+  const setIsSettingsShowing = useStore((state) => state.setIsSettingsShowing);
   const [currentTab, setCurrentTab] = useState("Appearance");
   const imageInput = useRef(null);
   const colorInput = useRef(null);
@@ -38,29 +36,30 @@ function SettingsWindow(
         <div className="title-bar">
           <div className="title-bar-text"> Settings</div>
           <div className="title-bar-controls">
-            <button aria-label="Close" onClick={() => {
-              setIsSettingsShowing(false);
-            }} />
+            <button
+              aria-label="Close"
+              onClick={() => {
+                setIsSettingsShowing(false);
+              }}
+            />
           </div>
         </div>
         <div className="window-body">
-          <menu role="tablist">
-            {tabs}
-          </menu>
+          <menu role="tablist">{tabs}</menu>
 
-          {currentTab === "Appearance" &&
-          <ColorAndImageTab
-            imageInput={imageInput}
-            colorInput={colorInput}
-          />}
+          {currentTab === "Appearance" && (
+            <ColorAndImageTab imageInput={imageInput} colorInput={colorInput} />
+          )}
 
           {currentTab === "Information" && <InfoTab />}
           {currentTab === "Miscellaneous" && <MiscTab />}
         </div>
       </Window>
-      <GrayShade onClick={() => {
-        setIsSettingsShowing(false);
-      }} />
+      <GrayShade
+        onClick={() => {
+          setIsSettingsShowing(false);
+        }}
+      />
     </div>
   );
 }
@@ -72,7 +71,7 @@ const Window = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: ${props => props.theme.fonts.primary};
+  font-family: ${(props) => props.theme.fonts.primary};
   z-index: 6;
   @media only screen and (max-width: 768px) {
     width: 80% !important;

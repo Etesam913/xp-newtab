@@ -1,28 +1,26 @@
-import React, { useContext } from "react";
+import React from "react";
 import Toggle from "../Toggle";
 import { StartItemIcon, StartItemName, ItemContainer } from "./styles";
 import { FlexContainer } from "../../styles/Layout";
-import { AppContext } from "../../Contexts";
 import newWindowImg from "../../media/new-window-icon.png";
-import newIconImg from '../../media/new-icon-icon.png';
+import newIconImg from "../../media/new-icon-icon.png";
 import { addDataItem } from "../../functions/helpers";
-
+import { useStore } from "../../Store";
 
 export function StartbarItem({ identifier, setIsStartWindowShowing }) {
-  const {
-    isEditModeOn,
-    setIsEditModeOn,
-    setIsSettingsShowing,
-    windowData,
-    setWindowData,
-    setFocusedWindow,
-    iconData,
-    setIconData
-  } = useContext(AppContext);
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
+
+  const iconData = useStore((state) => state.iconData);
+  const setIconData = useStore((state) => state.setIconData);
+
+  const setFocusedWindow = useStore((state) => state.setFocusedWindow);
+  const isEditModeOn = useStore((state) => state.isEditModeOn);
+  const toggleEditMode = useStore((state) => state.toggleEditMode);
+  const setIsSettingsShowing = useStore((state) => state.setIsSettingsShowing);
 
   function handleClick() {
-    if (identifier === "Edit Mode")
-      setIsEditModeOn(!isEditModeOn);
+    if (identifier === "Edit Mode") toggleEditMode();
     else if (identifier === "Settings") {
       setIsSettingsShowing(true);
       setIsStartWindowShowing(false);
@@ -37,26 +35,32 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
     <ItemContainer
       onClick={() => {
         handleClick();
-      }}>
+      }}
+    >
       <FlexContainer
         width={"max-content"}
         cursor={"pointer"}
         padding={"0.5rem"}
-        justifyContent={"flex-start"}>
-        {identifier === "Edit Mode" && <Toggle stateVal={isEditModeOn} />}
-        {identifier === "Settings" &&
-        <StartItemIcon
-          width={"32px"}
-          height={"32px"}
-          src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico" />
-        }
-        {identifier === "Create A New Window" && <StartItemIcon width={"32px"} height={"32px"} src={newWindowImg} />}
-        {identifier === "Add Icon" && <StartItemIcon width={"32px"} height={"32px"} src={newIconImg} />}
+        justifyContent={"flex-start"}
+      >
+        {identifier === "Edit Mode" && (
+          <Toggle stateVal={isEditModeOn} toggleStateVal={toggleEditMode} />
+        )}
+        {identifier === "Settings" && (
+          <StartItemIcon
+            width={"32px"}
+            height={"32px"}
+            src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico"
+          />
+        )}
+        {identifier === "Create A New Window" && (
+          <StartItemIcon width={"32px"} height={"32px"} src={newWindowImg} />
+        )}
+        {identifier === "Add Icon" && (
+          <StartItemIcon width={"32px"} height={"32px"} src={newIconImg} />
+        )}
         <StartItemName>{identifier}</StartItemName>
       </FlexContainer>
     </ItemContainer>
   );
 }
-
-
-

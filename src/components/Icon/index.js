@@ -1,15 +1,17 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import styled, { withTheme } from "styled-components";
 import Draggable from "react-draggable";
 import { setDataProperty } from "../Window/helper";
-import { AppContext } from "../../Contexts";
 import { deleteDataItem } from "../../functions/helpers";
+import { useStore } from "../../Store";
 
-
-function Index({ iconItem, theme, id }) {
-  const { iconData, setIconData, isEditModeOn, settingsData } = useContext(AppContext);
+function Index({ iconItem, theme }) {
+  const iconData = useStore((state) => state.iconData);
+  const setIconData = useStore((state) => state.setIconData);
   const iconRef = useRef(null);
 
+  const settingsData = useStore((state) => state.settingsData);
+  const isEditModeOn = useStore((store) => store.isEditModeOn);
   function handleDoubleClick() {
     if (!isEditModeOn) {
       document.body.style.cursor = theme.cursors.wait;
@@ -22,28 +24,18 @@ function Index({ iconItem, theme, id }) {
       bounds="#wrapper"
       nodeRef={iconRef}
       grid={
-        parseInt(settingsData["draggingGrid"]) !== 0 &&
-        [parseInt(settingsData["draggingGrid"]), parseInt(settingsData["draggingGrid"])]
+        parseInt(settingsData["draggingGrid"]) !== 0 && [
+          parseInt(settingsData["draggingGrid"]),
+          parseInt(settingsData["draggingGrid"]),
+        ]
       }
       position={{ x: iconItem["xCoord"], y: iconItem["yCoord"] }}
       onStop={() => {
-         setDataProperty(
-            iconData,
-            setIconData,
-            iconItem,
-            "position",
-            iconRef
-          );
-        }
-      }
+        setDataProperty(iconData, setIconData, iconItem, "position", iconRef);
+      }}
     >
-      <IconWrapper
-        ref={iconRef}
-        tabIndex={0}
-        onDoubleClick={handleDoubleClick}
-      >
-        {isEditModeOn
-          ?
+      <IconWrapper ref={iconRef} tabIndex={0} onDoubleClick={handleDoubleClick}>
+        {isEditModeOn ? (
           <header>
             <IconText>Img Url</IconText>
             <IconInput
@@ -59,11 +51,11 @@ function Index({ iconItem, theme, id }) {
               }}
             />
           </header>
-          : <IconImg src={iconItem["src"]} />
-        }
+        ) : (
+          <IconImg src={iconItem["src"]} />
+        )}
 
-        {isEditModeOn
-          ?
+        {isEditModeOn ? (
           <section>
             <IconText>Icon Title</IconText>
             <IconTextArea
@@ -79,34 +71,37 @@ function Index({ iconItem, theme, id }) {
               }}
             />
           </section>
-          : <IconText> {iconItem["title"]} </IconText>}
-        {isEditModeOn &&
-        <footer>
-          <section>
-            <IconText>Redirect Url</IconText>
-            <IconInput
-              defaultValue={iconItem["redirect"]}
-              onBlur={(e) => {
-                setDataProperty(
-                  iconData,
-                  setIconData,
-                  iconItem,
-                  "redirect",
-                  e.target.value
-                );
-              }}
-            />
-          </section>
-          <DeleteRow>
-            <button
-              onClick={() => {
-                deleteDataItem(iconData, setIconData, iconItem);
-              }}
-            >
-              Delete Icon
-            </button>
-          </DeleteRow>
-        </footer>}
+        ) : (
+          <IconText> {iconItem["title"]} </IconText>
+        )}
+        {isEditModeOn && (
+          <footer>
+            <section>
+              <IconText>Redirect Url</IconText>
+              <IconInput
+                defaultValue={iconItem["redirect"]}
+                onBlur={(e) => {
+                  setDataProperty(
+                    iconData,
+                    setIconData,
+                    iconItem,
+                    "redirect",
+                    e.target.value
+                  );
+                }}
+              />
+            </section>
+            <DeleteRow>
+              <button
+                onClick={() => {
+                  deleteDataItem(iconData, setIconData, iconItem);
+                }}
+              >
+                Delete Icon
+              </button>
+            </DeleteRow>
+          </footer>
+        )}
       </IconWrapper>
     </Draggable>
   );
@@ -149,7 +144,7 @@ const DeleteRow = styled.section`
 `;
 
 const IconText = styled.p`
-  font-family: ${props => props.theme.fonts.primary};
+  font-family: ${(props) => props.theme.fonts.primary};
   margin-top: 0.35rem;
   color: white;
   text-align: center;

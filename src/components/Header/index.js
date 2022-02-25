@@ -1,25 +1,34 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Header1 } from "../../styles/Headers";
 import { convertJustifyContentToTextAlign } from "../../functions/helpers";
-import { AppContext } from "../../Contexts";
 import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import { DeleteButton } from "../../styles/StyledComponents";
-
+import { useStore } from "../../Store";
 
 function Header({ windowObj, windowItem }) {
-  const { windowData, setWindowData, isEditModeOn } = useContext(AppContext);
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
+
   const header = useRef(null);
   useEffect(() => {
     header.current.innerHTML = windowItem["html"];
   }, [header, windowItem]);
 
+  const isEditModeOn = useStore((state) => state.isEditModeOn);
+
   return (
     <div>
       <FlexContainer margin={isEditModeOn ? "0 0 .5rem 0" : "0"}>
-        {isEditModeOn && <TextAlignOptions windowObj={windowObj} windowItem={windowItem} text />}
+        {isEditModeOn && (
+          <TextAlignOptions
+            windowObj={windowObj}
+            windowItem={windowItem}
+            text
+          />
+        )}
       </FlexContainer>
       <FlexContainer>
         <HeaderComponent
@@ -42,29 +51,36 @@ function Header({ windowObj, windowItem }) {
               header.current.innerHTML
             );
           }}
-          textAlign={convertJustifyContentToTextAlign(windowItem["justifyContent"])}
+          textAlign={convertJustifyContentToTextAlign(
+            windowItem["justifyContent"]
+          )}
           margin={"0"}
           suppressContentEditableWarning={true}
-        >
-        </HeaderComponent>
+        ></HeaderComponent>
       </FlexContainer>
-      {isEditModeOn &&
+      {isEditModeOn && (
         <FlexContainer width="100%" justifyContent="center" margin="0.5rem 0 0">
           <DeleteButton
             onClick={() => {
-              handleDelete(windowData, setWindowData, windowObj, windowItem["id"]);
-            }}>
+              handleDelete(
+                windowData,
+                setWindowData,
+                windowObj,
+                windowItem["id"]
+              );
+            }}
+          >
             Delete
           </DeleteButton>
         </FlexContainer>
-      }
+      )}
     </div>
   );
 }
 
 const HeaderComponent = styled.input`
   :hover {
-    outline: ${props => !props.isEditModeOn && "0px"};
+    outline: ${(props) => !props.isEditModeOn && "0px"};
   }
 
   p::selection {
