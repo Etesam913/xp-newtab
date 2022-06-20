@@ -1,14 +1,13 @@
 import React, { useRef } from "react";
 import styled, { css, withTheme } from "styled-components";
 import Draggable from "react-draggable";
-import maximizeSecond from "../../media/maximize-second.png";
 import {
   handleComponentCreation,
   RenderComponents,
   setDataProperty,
 } from "./helper";
-import { deleteDataItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import WindowTitleBar from "../WindowTitleBar";
 
 function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
@@ -24,7 +23,14 @@ function Window({ width, windowItem, windowId, theme }) {
 
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
-  const componentData = ["Header", "Image", "Video", "List", "Search Bar"];
+  const componentData = [
+    "Header",
+    "Paragraph",
+    "Image",
+    "Video",
+    "List",
+    "Search Bar",
+  ];
   const components = componentData.map((componentName, index) => {
     return (
       <div className="field-row" key={index}>
@@ -58,16 +64,14 @@ function Window({ width, windowItem, windowId, theme }) {
       }
       defaultPosition={{ x: windowItem["xCoord"], y: windowItem["yCoord"] }}
       onStop={() => {
-        {
-          !windowItem["isMaximized"] &&
-            setDataProperty(
-              windowData,
-              setWindowData,
-              windowItem,
-              "position",
-              windowRef
-            );
-        }
+        !windowItem["isMaximized"] &&
+          setDataProperty(
+            windowData,
+            setWindowData,
+            windowItem,
+            "position",
+            windowRef
+          );
       }}
     >
       <WindowContainer
@@ -82,67 +86,7 @@ function Window({ width, windowItem, windowId, theme }) {
         hidden={windowItem["hidden"]}
         isMaximized={windowItem["isMaximized"]}
       >
-        <TitleBar
-          className="title-bar"
-          notFocused={focusedWindow !== windowItem["id"]}
-        >
-          {isEditModeOn ? (
-            <TitleInput
-              className="title-bar-text"
-              value={windowItem["windowTitle"]}
-              onChange={(e) => {
-                setDataProperty(
-                  windowData,
-                  setWindowData,
-                  windowItem,
-                  "windowTitle",
-                  e.target.value
-                );
-              }}
-            />
-          ) : (
-            <div className="title-bar-text">{windowItem["windowTitle"]}</div>
-          )}
-
-          <ControlButtons
-            className="title-bar-controls"
-            notFocused={focusedWindow !== windowItem["id"]}
-          >
-            <TitleBarButton
-              aria-label="Minimize"
-              onClick={() => {
-                setDataProperty(
-                  windowData,
-                  setWindowData,
-                  windowItem,
-                  "hidden",
-                  true
-                );
-              }}
-            />
-            <MaximizeButton
-              aria-label="Maximize"
-              isMaximized={windowItem["isMaximized"]}
-              maximizeSecond={maximizeSecond}
-              onClick={() => {
-                setDataProperty(
-                  windowData,
-                  setWindowData,
-                  windowItem,
-                  "isMaximized",
-                  !windowItem["isMaximized"]
-                );
-              }}
-            />
-            <TitleBarButton
-              aria-label="Close"
-              onClick={() => {
-                deleteDataItem(windowData, setWindowData, windowItem);
-              }}
-            />
-          </ControlButtons>
-        </TitleBar>
-
+        <WindowTitleBar windowItem={windowItem} />
         <WindowBody className="window-body">
           <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
             <RenderComponents
@@ -151,6 +95,8 @@ function Window({ width, windowItem, windowId, theme }) {
               moveCursor={theme.cursors.move}
               autoCursor={theme.cursors.auto}
             />
+            <FormattingButton>s</FormattingButton>
+            <div contentEditable={true} />
             {isEditModeOn && (
               <ComponentsPanel ref={componentsPanel}>
                 <div className="field-row">Select one component to add:</div>
@@ -201,38 +147,6 @@ const WindowContainer = styled.div`
     `};
 `;
 
-const TitleBar = styled.div`
-  cursor: ${(props) => props.theme.cursors.move};
-  ${(props) =>
-    props.notFocused &&
-    css`
-      background: linear-gradient(
-        180deg,
-        #9db4f6,
-        #8296e3 8%,
-        #8394e0 40%,
-        #8da6eb 88%,
-        #8da6eb 93%,
-        #a3b5e6 95%,
-        #93bbdd 96%,
-        #a8c0ff
-      );
-      border: 0;
-    `}
-`;
-const TitleInput = styled.input`
-  color: black !important;
-  font-family: ${(props) => props.theme.fonts.secondary};
-  font-weight: 700;
-  font-size: 13px;
-  width: 100%;
-`;
-
-const ControlButtons = styled.div`
-  filter: ${(props) => props.notFocused && "contrast(50%) brightness(120%)"};
-  pointer-events: ${(props) => props.notFocused && "none"};
-`;
-
 const ComponentsPanel = styled.fieldset`
   margin-top: 0.75rem;
 `;
@@ -253,22 +167,9 @@ const WindowPanel = styled.article`
   height: 100%;
 `;
 
-const TitleBarButton = styled.button`
-  height: 22px;
-  width: 22px;
-`;
-
-const MaximizeButton = styled(TitleBarButton)`
-  background-image: ${(props) =>
-    props.isMaximized && `url(${props.maximizeSecond})`} !important;
-
-  :hover {
-    filter: ${(props) => props.isMaximized && "brightness(120%)"};
-  }
-
-  :hover:active {
-    filter: ${(props) => props.isMaximized && "brightness(90%)"};
-  }
+const FormattingButton = styled.button`
+  min-width: 0 !important;
+  min-height: 0 !important;
 `;
 
 export default withTheme(Window);

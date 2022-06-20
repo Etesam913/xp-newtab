@@ -56,7 +56,7 @@ function Header({ windowObj, windowItem }) {
           )}
           margin={"0"}
           suppressContentEditableWarning={true}
-        ></HeaderComponent>
+        />
       </FlexContainer>
       {isEditModeOn && (
         <FlexContainer width="100%" justifyContent="center" margin="0.5rem 0 0">
