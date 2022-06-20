@@ -8,6 +8,7 @@ import {
 } from "./helper";
 import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
+import Editor from "../Editor";
 
 function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
@@ -89,14 +90,13 @@ function Window({ width, windowItem, windowId, theme }) {
         <WindowTitleBar windowItem={windowItem} />
         <WindowBody className="window-body">
           <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
+            <Editor />
             <RenderComponents
               componentsArr={windowItem["items"]}
               windowObj={windowItem}
               moveCursor={theme.cursors.move}
               autoCursor={theme.cursors.auto}
             />
-            <FormattingButton>s</FormattingButton>
-            <div contentEditable={true} />
             {isEditModeOn && (
               <ComponentsPanel ref={componentsPanel}>
                 <div className="field-row">Select one component to add:</div>
@@ -165,11 +165,6 @@ const WindowPanel = styled.article`
   box-sizing: border-box;
   max-height: ${(props) => (props.isMaximized ? "100%" : "60vh")};
   height: 100%;
-`;
-
-const FormattingButton = styled.button`
-  min-width: 0 !important;
-  min-height: 0 !important;
 `;
 
 export default withTheme(Window);
