@@ -9,7 +9,7 @@ export function getDefaultValue(localStorageProperty) {
         yCoord: 0,
         hidden: false,
         items: [],
-        isMaximized: false
+        isMaximized: false,
       },
     ];
   } else if (localStorageProperty === "iconData") {
@@ -20,20 +20,22 @@ export function getDefaultValue(localStorageProperty) {
         title: "Email",
         xCoord: 0,
         yCoord: 0,
-        redirect: "https://www.gmail.com"
-      }
+        redirect: "https://www.gmail.com",
+      },
     ];
   } else if (localStorageProperty === "settingsData") {
     defaultValue = {
       backgroundColor: "#ffffff",
-      backgroundImage: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
-      draggingGrid: "0px"
+      backgroundImage:
+        "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
+      draggingGrid: "0px",
     };
   }
 
-  const propertyValue = JSON.parse(window.localStorage.getItem(localStorageProperty));
-  if (propertyValue !== null)
-    defaultValue = propertyValue;
+  const propertyValue = JSON.parse(
+    window.localStorage.getItem(localStorageProperty)
+  );
+  if (propertyValue !== null) defaultValue = propertyValue;
   return defaultValue;
 }
 
@@ -42,7 +44,7 @@ export function getTranslateXY(element) {
   const matrix = new DOMMatrixReadOnly(style.transform);
   return {
     translateX: matrix.m41,
-    translateY: matrix.m42
+    translateY: matrix.m42,
   };
 }
 
@@ -68,11 +70,17 @@ export function replaceDesiredWindowItem(windowData, windowObj) {
 export function addDataItem(data, setData, useCase, setFocusedWindow) {
   const tempData = [...data];
   const newId = getMaxId(data) + 1;
-  if (setFocusedWindow)
-    setFocusedWindow(newId);
+  if (setFocusedWindow) setFocusedWindow(newId);
   let newItem = {};
   if (useCase === "window") {
-    newItem = { id: newId, windowTitle: "Insert Title Here", xCoord: 0, yCoord: 0, hidden: false, items: [] };
+    newItem = {
+      id: newId,
+      windowTitle: "Insert Title Here",
+      xCoord: 0,
+      yCoord: 0,
+      hidden: false,
+      items: [],
+    };
   } else if (useCase === "icon") {
     newItem = {
       id: newId,
@@ -80,7 +88,7 @@ export function addDataItem(data, setData, useCase, setFocusedWindow) {
       title: "Insert Title Here",
       xCoord: 0,
       yCoord: 0,
-      redirect: "/"
+      redirect: "/",
     };
   }
 
@@ -126,13 +134,14 @@ export function getSelectionText() {
       let activeElement = document.activeElement;
       if (activeElement && activeElement.value) {
         // firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=85686
-        return activeElement.value.substring(activeElement.selectionStart, activeElement.selectionEnd);
+        return activeElement.value.substring(
+          activeElement.selectionStart,
+          activeElement.selectionEnd
+        );
       } else {
         return window.getSelection().toString();
       }
-
-    } catch (e) {
-    }
+    } catch (e) {}
   } else if (document.selection && document.selection.type !== "Control") {
     // For IE
     return document.selection.createRange().text;
@@ -191,6 +200,3 @@ export function updateSetting(
   tempSettingsData[propertyName] = propertyValue;
   setSettingsData(tempSettingsData);
 }
-
-
-

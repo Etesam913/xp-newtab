@@ -23,14 +23,7 @@ function Window({ width, windowItem, windowId, theme }) {
 
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
-  const componentData = [
-    "Header",
-    "Text",
-    "Image",
-    "Video",
-    "List",
-    "Search Bar",
-  ];
+  const componentData = ["Text", "Image", "Video", "Search Bar"];
   const components = componentData.map((componentName, index) => {
     return (
       <div className="field-row" key={index}>

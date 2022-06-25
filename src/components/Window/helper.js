@@ -5,14 +5,12 @@ import {
   sortableElement,
   sortableHandle,
 } from "react-sortable-hoc";
-import Header from "../Header";
 import {
   getTranslateXY,
   replaceDesiredWindowItem,
 } from "../../functions/helpers";
 import Image from "../Image";
 import Video from "../Video";
-import List from "../List";
 import DragIndicator from "../DragIndicator";
 import arrayMove from "array-move";
 import SearchBar from "../SearchBar";
@@ -41,17 +39,11 @@ export function addComponent(
   for (let i = 0; i < newItem["items"].length; i++) {
     if (newItem["items"][i]["id"] > maxId) maxId = newItem["items"][i]["id"];
   }
-  if (componentToAdd === "Header") {
-    newItem["items"].push({
-      id: maxId + 1,
-      componentName: "Header",
-      html: "<p>Header Text</p>",
-      justifyContent: "flex-start",
-    });
-  } else if (componentToAdd === "Text") {
+  if (componentToAdd === "Text") {
     newItem["items"].push({
       id: maxId + 1,
       componentName: "Text",
+      editorState: null,
     });
   } else if (componentToAdd === "Image") {
     newItem["items"].push({
@@ -67,22 +59,6 @@ export function addComponent(
       id: maxId + 1,
       componentName: "Video",
       src: "https://www.youtube.com/embed/5pzM_pFNWak",
-    });
-  } else if (componentToAdd === "List") {
-    newItem["items"].push({
-      id: maxId + 1,
-      componentName: "List",
-      children: [
-        {
-          id: 0,
-          html:
-            '<li contenteditable="true" class="list-item">first child</li>' +
-            "<div class='list-item-options show'>" +
-            "<button class='list-delete-button'>Delete</button>" +
-            "<button class='list-strikethrough-button'>Strikethrough</button>" +
-            "</div>",
-        },
-      ],
     });
   } else if (componentToAdd === "Search Bar") {
     newItem["items"].push({
@@ -120,16 +96,12 @@ export function RenderComponents({
 
   const components = componentsArr.map((windowItem, index) => {
     function getComponent() {
-      if (windowItem["componentName"] === "Header") {
-        return <Header windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "Text") {
+      if (windowItem["componentName"] === "Text") {
         return <Editor windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Image") {
         return <Image windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Video") {
         return <Video windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "List") {
-        return <List windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Search Bar") {
         return <SearchBar windowItem={windowItem} windowObj={windowObj} />;
       }
@@ -219,6 +191,7 @@ export function setDataProperty(
   }
 
   replaceDesiredWindowItem(tempData, itemToInsert);
+
   setData(tempData);
   return tempData;
 }

@@ -1,5 +1,5 @@
 import { $getRoot, $getSelection } from "lexical";
-import { useEffect } from "react";
+import { Fragment, useCallback, useMemo, useRef } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HeadingNode } from "@lexical/rich-text";
@@ -9,40 +9,15 @@ import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import Index from "./Plugins/ToolbarPlugins";
 import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { AutoLinkPlugin } from "@lexical/react/LexicalAutoLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { ListItemNode, ListNode } from "@lexical/list";
-
-// When the editor changes, you can get notified via the
-// LexicalOnChangePlugin!
-function onChange(editorState) {
-  editorState.read(() => {
-    // Read the contents of the EditorState here.
-    const root = $getRoot();
-    const selection = $getSelection();
-
-    /*console.log(root, selection);*/
-  });
-}
-
-// Lexical React plugins are React components, which makes them
-// highly composable. Furthermore, you can lazy load plugins if
-// desired, so you don't pay the cost for plugins until you
-// actually use them.
-function MyCustomAutoFocusPlugin() {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    // Focus the editor when the effect fires!
-    editor.focus();
-  }, [editor]);
-
-  return null;
-}
+import ToolbarPlugins from "./Plugins/ToolbarPlugins";
+import { changeItemProperty } from "../Window/helper";
+import { useStore } from "../../Store";
+import ReadOnlyPlugin from "./Plugins/ReadOnlyPlugin";
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -51,21 +26,10 @@ function onError(error) {
   console.error(error);
 }
 
-function Editor() {
-  const initialConfig = {
-    namespace: "MyEditor",
-    theme,
-    onError,
-    nodes: [
-      HeadingNode,
-      CodeHighlightNode,
-      CodeNode,
-      LinkNode,
-      AutoLinkNode,
-      ListNode,
-      ListItemNode,
-    ],
-  };
+function Editor({ windowItem, windowObj }) {
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
+  const isEditModeOn = useStore((state) => state.isEditModeOn);
 
   const URL_MATCHER =
     /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
@@ -84,22 +48,53 @@ function Editor() {
     },
   ];
 
-  return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <Index />
-      <RichTextPlugin
-        contentEditable={<ContentEditable className="rich-text-editor" />}
-        placeholder={<div>Enter text above</div>}
-      />
-      <LinkPlugin />
-      <ListPlugin />
-      <AutoLinkPlugin matchers={MATCHERS} />
-      <CodeHighlightPlugin />
-      <OnChangePlugin onChange={onChange} />
-      <HistoryPlugin />
-      <MyCustomAutoFocusPlugin />
-    </LexicalComposer>
-  );
+  return useMemo(() => {
+    return (
+      <LexicalComposer
+        initialConfig={{
+          namespace: "MyEditor",
+          theme,
+          editorState: windowItem["editorState"],
+          onError,
+          nodes: [
+            HeadingNode,
+            CodeHighlightNode,
+            CodeNode,
+            LinkNode,
+            AutoLinkNode,
+            ListNode,
+            ListItemNode,
+          ],
+        }}
+      >
+        {isEditModeOn ? <ToolbarPlugins /> : <Fragment />}
+        <RichTextPlugin
+          contentEditable={<ContentEditable className="rich-text-editor" />}
+          placeholder={<div>Enter text above</div>}
+        />
+        <OnChangePlugin
+          ignoreInitialChange={true}
+          ignoreSelectionChange={true}
+          onChange={(editorState) =>
+            changeItemProperty(
+              windowObj,
+              windowData,
+              setWindowData,
+              windowItem,
+              "editorState",
+              JSON.stringify(editorState)
+            )
+          }
+        />
+        <LinkPlugin />
+        <ListPlugin />
+        <ReadOnlyPlugin isEditModeOn={isEditModeOn} />
+        <AutoLinkPlugin matchers={MATCHERS} />
+        <CodeHighlightPlugin />
+        <HistoryPlugin />
+      </LexicalComposer>
+    );
+  }, [isEditModeOn]);
 }
 
 export default Editor;

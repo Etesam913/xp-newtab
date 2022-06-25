@@ -71,7 +71,7 @@ export function getSelectedNode(selection) {
   }
 }
 
-export default function Index() {
+export default function ToolbarPlugins() {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
