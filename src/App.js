@@ -33,7 +33,7 @@ function App() {
         backgroundImage={settingsData["backgroundImage"]}
       />
       {isSettingsShowing && <SettingsWindow settingsData={settingsData} />}
-      <Wrapper onKeyDown={(e) => console.log(e.key)} id="wrapper">
+      <Wrapper id="wrapper">
         <RenderWindows />
         <RenderIcons />
       </Wrapper>

@@ -68,9 +68,41 @@ button{
     text-decoration: underline;
     text-decoration-thickness: 2px;
 }
+.editor-strikethrough{
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
+.editor-text-underline-strikethrough {
+    text-decoration: underline line-through;
+    text-decoration-thickness: 2px;
+}
 .editor-paragraph{
     font-size: 1.25em;
 }
+
+
+.editor-text-bold {
+    font-weight: bold;
+}
+
+.editor-text-italic {
+    font-style: italic;
+}
+
+.editor-code {
+    background-color: rgb(232, 234, 234);
+    font-family: Menlo, Consolas, Monaco, monospace;
+    display: block;
+    padding: 0.5rem 1rem;
+    line-height: 1.53;
+    font-size: 13px;
+    margin: 0.5rem 0;
+    tab-size: 2;
+    /* white-space: pre; */
+    overflow-x: auto;
+    position: relative;
+}
+
 
 i.strikethrough{
     background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/strike-through.svg");
@@ -82,6 +114,12 @@ i.underline{
     background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/underline.svg");
 }
 
+i.undo{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/undo.svg");
+}
+i.redo{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/redo.svg");
+}
 i.left-align {
     background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/left-align.svg");
 }
@@ -94,15 +132,106 @@ i.center-align {
     background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/center-align.svg");
 }
 
+i.italic{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/italic.svg");
+}
+i.link{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/link.svg");
+}
+.link-editor{
+    position: absolute;
+    z-index: 999;
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+    box-shadow: 10px 10px 65px 2px rgba(0, 0, 0, 0.39)
+}
+.link-input{
+    font-size: 1.1em;
+    font-family: "MS Sans Serif", serif
+}
+.link-edit{
+    margin-left: 0.5rem;
+}
+
 .format{
     display: block;
     height: 23px;
     background-repeat: no-repeat;
     background-position: center;
 }
+.toolbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .toolbar-item{
     width: 36px;
     padding: 0;
 }
 
+.block-controls{
+    width: 6rem;
+}
 
+h1{
+    font-weight: normal;
+    font-size: 2.5em !important;
+    margin: 0 0 0.5rem 0;
+}
+
+h2{
+    font-weight: normal;
+    font-size: 1.75em !important;
+    margin: 0 0 0.5rem 0;
+}
+
+.editor-tokenComment {
+    color: slategray;
+}
+
+.editor-tokenPunctuation {
+    color: #999;
+}
+
+.editor-tokenProperty {
+    color: #905;
+}
+
+.editor-tokenSelector {
+    color: #690;
+}
+
+.editor-tokenOperator {
+    color: #9a6e3a;
+}
+
+.editor-tokenAttr {
+    color: #07a;
+}
+
+.editor-tokenVariable {
+    color: #e90;
+}
+
+.editor-tokenFunction {
+    color: #dd4a68;
+}
+
+.editor-list-ol {
+    padding: 0;
+    margin: 0 0 0 1.5rem;
+}
+
+.editor-list-ul {
+    padding: 0;
+    margin: 0 0 0 1.5rem;
+    list-style: disc;
+}
+
+.editor-listitem {
+    font-size: 0.95rem;
+}
+
+.editor-nested-listitem {
+    list-style-type: none;
+}

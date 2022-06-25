@@ -2,20 +2,20 @@ import { $getRoot, $getSelection } from "lexical";
 import { useEffect } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { HeadingNode } from "@lexical/rich-text";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import theme from "./Theme";
+import { AutoLinkNode, LinkNode } from "@lexical/link";
+import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import ToolbarPlugin from "./ToolbarPlugin";
-import styled from "styled-components";
-
-const theme = {
-  // Theme styling goes here
-  text: {
-    underline: "editor-underline",
-  },
-  paragraph: "editor-paragraph",
-};
+import Index from "./Plugins/ToolbarPlugins";
+import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { AutoLinkPlugin } from "@lexical/react/LexicalAutoLinkPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { ListItemNode, ListNode } from "@lexical/list";
 
 // When the editor changes, you can get notified via the
 // LexicalOnChangePlugin!
@@ -25,7 +25,7 @@ function onChange(editorState) {
     const root = $getRoot();
     const selection = $getSelection();
 
-    console.log(root, selection);
+    /*console.log(root, selection);*/
   });
 }
 
@@ -56,15 +56,45 @@ function Editor() {
     namespace: "MyEditor",
     theme,
     onError,
+    nodes: [
+      HeadingNode,
+      CodeHighlightNode,
+      CodeNode,
+      LinkNode,
+      AutoLinkNode,
+      ListNode,
+      ListItemNode,
+    ],
   };
+
+  const URL_MATCHER =
+    /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+
+  const MATCHERS = [
+    (text) => {
+      const match = URL_MATCHER.exec(text);
+      return (
+        match && {
+          index: match.index,
+          length: match[0].length,
+          text: match[0],
+          url: match[0],
+        }
+      );
+    },
+  ];
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <ToolbarPlugin />
+      <Index />
       <RichTextPlugin
         contentEditable={<ContentEditable className="rich-text-editor" />}
         placeholder={<div>Enter text above</div>}
       />
+      <LinkPlugin />
+      <ListPlugin />
+      <AutoLinkPlugin matchers={MATCHERS} />
+      <CodeHighlightPlugin />
       <OnChangePlugin onChange={onChange} />
       <HistoryPlugin />
       <MyCustomAutoFocusPlugin />
