@@ -8,7 +8,6 @@ import {
 } from "./helper";
 import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
-import Editor from "../Editor";
 
 function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
@@ -26,7 +25,7 @@ function Window({ width, windowItem, windowId, theme }) {
 
   const componentData = [
     "Header",
-    "Paragraph",
+    "Text",
     "Image",
     "Video",
     "List",
@@ -90,7 +89,6 @@ function Window({ width, windowItem, windowId, theme }) {
         <WindowTitleBar windowItem={windowItem} />
         <WindowBody className="window-body">
           <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
-            <Editor />
             <RenderComponents
               componentsArr={windowItem["items"]}
               windowObj={windowItem}

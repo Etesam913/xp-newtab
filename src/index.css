@@ -15,43 +15,94 @@ code {
     color: white;
 }
 
-[contenteditable="true"]{
-    border: 1px solid #cccccc;
+.rich-text-editor{
+    padding: 0.25rem;
+    margin: 0.5rem 0;
 }
-[contenteditable="false"]{
+[contenteditable="true"] {
+    border: 1px solid #9e9e9e;
+}
+[contenteditable="false"] {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
 }
 
-.show{
+.show {
     display: flex !important;
 }
-.hide{
+
+.hide {
     display: none !important;
 }
 
-.list-item-options{
+.list-item-options {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding: 0.4rem 0;
 }
 
-.strikethrough{
+.strikethrough {
     text-decoration: line-through;
 }
 
 
-.list-delete-button{
+.list-delete-button {
 }
 
-.list-strikethrough-button{
+.list-strikethrough-button {
 }
 
-.list-item{
+.list-item {
     font-size: 13px;
     margin: 0.15rem 0;
     padding: 0.075rem 0;
     cursor: text;
+}
+
+button{
+    min-width: 0 !important;
+}
+
+
+.editor-underline{
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+.editor-paragraph{
+    font-size: 1.25em;
+}
+
+i.strikethrough{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/strike-through.svg");
+}
+i.bold{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/bold.svg");
+}
+i.underline{
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/underline.svg");
+}
+
+i.left-align {
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/left-align.svg");
+}
+
+i.right-align {
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/right-align.svg");
+}
+
+i.center-align {
+    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/center-align.svg");
+}
+
+.format{
+    display: block;
+    height: 23px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.toolbar-item{
+    width: 36px;
+    padding: 0;
 }
 
 

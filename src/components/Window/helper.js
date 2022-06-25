@@ -17,6 +17,7 @@ import DragIndicator from "../DragIndicator";
 import arrayMove from "array-move";
 import SearchBar from "../SearchBar";
 import { useStore } from "../../Store";
+import Editor from "../Editor";
 
 export function handleComponentCreation(
   refToSearch,
@@ -46,6 +47,11 @@ export function addComponent(
       componentName: "Header",
       html: "<p>Header Text</p>",
       justifyContent: "flex-start",
+    });
+  } else if (componentToAdd === "Text") {
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "Text",
     });
   } else if (componentToAdd === "Image") {
     newItem["items"].push({
@@ -116,6 +122,8 @@ export function RenderComponents({
     function getComponent() {
       if (windowItem["componentName"] === "Header") {
         return <Header windowItem={windowItem} windowObj={windowObj} />;
+      } else if (windowItem["componentName"] === "Text") {
+        return <Editor windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Image") {
         return <Image windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Video") {
