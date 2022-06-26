@@ -19,7 +19,6 @@ function WindowTitleBar({ windowItem }) {
       {isEditModeOn ? (
         <TitleInput
           className="title-bar-text"
-          value={windowItem["windowTitle"]}
           onChange={(e) => {
             setDataProperty(
               windowData,

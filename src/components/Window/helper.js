@@ -211,6 +211,7 @@ export function changeItemProperty(
   tempWindowItem[propertyName] = propertyValue;
   replaceDesiredWindowItem(items, tempWindowItem);
   replaceDesiredWindowItem(tempWindowData, tempWindow);
+
   setWindowData(tempWindowData);
 }
 

@@ -12,10 +12,7 @@ import {
 import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
 import { $createCodeNode } from "@lexical/code";
 import { Fragment, useEffect, useRef } from "react";
-
-function Divider() {
-  return <div className="divider" />;
-}
+import styled from "styled-components";
 
 function BlockOptions() {
   return (
@@ -97,18 +94,6 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
     }
   };
 
-  const formatQuote = () => {
-    if (blockType !== "quote") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createQuoteNode());
-        }
-      });
-    }
-  };
-
   const formatCode = () => {
     if (blockType !== "code") {
       editor.update(() => {
@@ -136,7 +121,7 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
 
   return (
     <Fragment>
-      <select
+      <BlockOptionsDropdown
         ref={dropdownRef}
         onChange={(e) => {
           if (e.target.value === "normal") formatParagraph();
@@ -146,13 +131,10 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
           else if (e.target.value === "numbered-list") formatNumberedList();
           else if (e.target.value === "code-block") formatCode();
         }}
-        className="toolbar-item block-controls"
         aria-label="Formatting Options"
       >
         <BlockOptions />
-      </select>
-
-      <Divider />
+      </BlockOptionsDropdown>
     </Fragment>
   );
 }
@@ -168,3 +150,8 @@ const blockTypeToBlockName = {
   ul: "bulleted-list",
   paragraph: "normal",
 };
+
+const BlockOptionsDropdown = styled.select`
+  width: 6rem;
+  padding: 0 0.25rem;
+`;

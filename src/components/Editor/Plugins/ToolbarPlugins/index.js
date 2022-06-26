@@ -25,6 +25,8 @@ import {
 } from "@lexical/code";
 import { BlockOptionsDropdownList } from "./BlockOptions";
 import FloatingLinkEditor from "./FloatingLinkEditor";
+import styled from "styled-components";
+import { FlexContainer } from "../../../../styles/Layout";
 
 const LowPriority = 1;
 
@@ -38,20 +40,16 @@ const supportedBlockTypes = new Set([
   "ol",
 ]);
 
-function Divider() {
-  return <div className="divider" />;
-}
-
-function Select({ onChange, className, options, value }) {
+function Select({ options, value, onChange }) {
   return (
-    <select className={className} onChange={onChange} value={value}>
+    <LanguagesDropdown value={value} onChange={onChange}>
       <option hidden={true} value="" />
       {options.map((option) => (
         <option key={option} value={option}>
           {option}
         </option>
       ))}
-    </select>
+    </LanguagesDropdown>
   );
 }
 
@@ -193,119 +191,172 @@ export default function ToolbarPlugins() {
 
   return (
     <div className="toolbar" ref={toolbarRef}>
-      <button
-        disabled={!canUndo}
-        onClick={() => {
-          editor.dispatchCommand(UNDO_COMMAND);
-        }}
-        className="toolbar-item spaced"
-        aria-label="Undo"
+      <FlexContainer as="span" margin="0 0.15rem 0 0">
+        <button
+          disabled={!canUndo}
+          onClick={() => {
+            editor.dispatchCommand(UNDO_COMMAND);
+          }}
+          className="toolbar-item spaced"
+          aria-label="Undo"
+        >
+          <UndoIcon className="format" />
+        </button>
+        <button
+          style={{ marginLeft: "0.25rem" }}
+          disabled={!canRedo}
+          onClick={() => {
+            editor.dispatchCommand(REDO_COMMAND);
+          }}
+          className="toolbar-item"
+          aria-label="Redo"
+        >
+          <RedoIcon className="format" />
+        </button>
+      </FlexContainer>
+      <FlexContainer
+        as="span"
+        flex={1}
+        justifyContent={blockType === "code" ? "flex-end" : "space-around"}
       >
-        <i className="format undo" />
-      </button>
-      <button
-        disabled={!canRedo}
-        onClick={() => {
-          editor.dispatchCommand(REDO_COMMAND);
-        }}
-        className="toolbar-item"
-        aria-label="Redo"
-      >
-        <i className="format redo" />
-      </button>
-      <Divider />
-      {supportedBlockTypes.has(blockType) && (
-        <BlockOptionsDropdownList editor={editor} blockType={blockType} />
-      )}
-      {blockType === "code" ? (
-        <>
+        {supportedBlockTypes.has(blockType) && (
+          <BlockOptionsDropdownList editor={editor} blockType={blockType} />
+        )}
+        {blockType === "code" ? (
           <Select
             className="toolbar-item block-controls"
             onChange={onCodeLanguageSelect}
             options={codeLanguages}
             value={codeLanguage}
           />
-          <i className="chevron-down inside" />
-        </>
-      ) : (
-        <>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
-            }}
-            className={"toolbar-item spaced " + (isBold ? "active" : "")}
-            aria-label="Format Bold"
-          >
-            <i className="format bold" />
-          </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
-            }}
-            className={"toolbar-item spaced " + (isItalic ? "active" : "")}
-            aria-label="Format Italics"
-          >
-            <i className="format italic" />
-          </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
-            }}
-            className={"toolbar-item spaced " + (isUnderline ? "active" : "")}
-            aria-label="Format Underline"
-          >
-            <i className="format underline" />
-          </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
-            }}
-            className={
-              "toolbar-item spaced " + (isStrikethrough ? "active" : "")
-            }
-            aria-label="Format Strikethrough"
-          >
-            <i className="format strikethrough" />
-          </button>
-          <button
-            onClick={insertLink}
-            className={"toolbar-item spaced " + (isLink ? "active" : "")}
-            aria-label="Insert Link"
-          >
-            <i className="format link" />
-          </button>
-          {isLink &&
-            createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
-          <Divider />
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
-            }}
-            className="toolbar-item spaced"
-            aria-label="Left Align"
-          >
-            <i className="format left-align" />
-          </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
-            }}
-            className="toolbar-item spaced"
-            aria-label="Center Align"
-          >
-            <i className="format center-align" />
-          </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
-            }}
-            className="toolbar-item spaced"
-            aria-label="Right Align"
-          >
-            <i className="format right-align" />
-          </button>
-        </>
-      )}
+        ) : (
+          <>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+              }}
+              className={"toolbar-item spaced " + (isBold ? "active" : "")}
+              aria-label="Format Bold"
+            >
+              <BoldIcon className="format" />
+            </button>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
+              }}
+              className={"toolbar-item spaced " + (isItalic ? "active" : "")}
+              aria-label="Format Italics"
+            >
+              <ItalicIcon className="format" />
+            </button>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
+              }}
+              className={"toolbar-item spaced " + (isUnderline ? "active" : "")}
+              aria-label="Format Underline"
+            >
+              <UnderlineIcon className="format" />
+            </button>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
+              }}
+              className={
+                "toolbar-item spaced " + (isStrikethrough ? "active" : "")
+              }
+              aria-label="Format Strikethrough"
+            >
+              <StrikethroughIcon className="format" />
+            </button>
+            <button
+              onClick={insertLink}
+              className={"toolbar-item spaced " + (isLink ? "active" : "")}
+              aria-label="Insert Link"
+            >
+              <LinkIcon className="format" />
+            </button>
+            {isLink &&
+              createPortal(
+                <FloatingLinkEditor editor={editor} />,
+                document.body
+              )}
+
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
+              }}
+              className="toolbar-item spaced"
+              aria-label="Left Align"
+            >
+              <LeftAlignIcon className="format" />
+            </button>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
+              }}
+              className="toolbar-item spaced"
+              aria-label="Center Align"
+            >
+              <CenterAlignIcon className="format" />
+            </button>
+            <button
+              onClick={() => {
+                editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
+              }}
+              className="toolbar-item spaced"
+              aria-label="Right Align"
+            >
+              <RightAlignIcon className="format" />
+            </button>
+          </>
+        )}
+      </FlexContainer>
     </div>
   );
 }
+const LanguagesDropdown = styled.select`
+  width: 6rem;
+  padding: 0 0.25rem;
+  margin-left: 0.35rem;
+`;
+
+const UnderlineIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/underline.svg");
+`;
+
+const BoldIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/bold.svg");
+`;
+
+const UndoIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/undo.svg");
+`;
+
+const RedoIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/redo.svg");
+`;
+
+const StrikethroughIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/strike-through.svg");
+`;
+
+const LinkIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/link.svg");
+`;
+
+const ItalicIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/italic.svg");
+`;
+
+const LeftAlignIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/left-align.svg");
+`;
+
+const RightAlignIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/right-align.svg");
+`;
+
+const CenterAlignIcon = styled.i`
+  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/center-align.svg");
+`;

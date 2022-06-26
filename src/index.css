@@ -21,6 +21,8 @@ code {
 }
 [contenteditable="true"] {
     border: 1px solid #9e9e9e;
+    -webkit-user-select: text;
+    user-select: text;
 }
 [contenteditable="false"] {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
@@ -103,41 +105,6 @@ button{
     position: relative;
 }
 
-
-i.strikethrough{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/strike-through.svg");
-}
-i.bold{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/bold.svg");
-}
-i.underline{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/underline.svg");
-}
-
-i.undo{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/undo.svg");
-}
-i.redo{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/redo.svg");
-}
-i.left-align {
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/left-align.svg");
-}
-
-i.right-align {
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/right-align.svg");
-}
-
-i.center-align {
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/center-align.svg");
-}
-
-i.italic{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/italic.svg");
-}
-i.link{
-    background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/link.svg");
-}
 .link-editor{
     position: absolute;
     z-index: 999;
@@ -169,9 +136,6 @@ i.link{
     padding: 0;
 }
 
-.block-controls{
-    width: 6rem;
-}
 
 h1{
     font-weight: normal;
@@ -230,6 +194,7 @@ h2{
 
 .editor-listitem {
     font-size: 0.95rem;
+    padding: 0.15rem 0;
 }
 
 .editor-nested-listitem {
