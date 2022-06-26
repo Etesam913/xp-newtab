@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "chai-colors": "^1.0.1",
     "cypress": "^10.2.0",
     "eslint-plugin-cypress": "^2.12.1",
     "prettier": "^2.5.1"

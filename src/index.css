@@ -23,6 +23,7 @@ code {
     border: 1px solid #9e9e9e;
     -webkit-user-select: text;
     user-select: text;
+    cursor: text;
 }
 [contenteditable="false"] {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
@@ -45,13 +46,6 @@ code {
 
 .strikethrough {
     text-decoration: line-through;
-}
-
-
-.list-delete-button {
-}
-
-.list-strikethrough-button {
 }
 
 .list-item {

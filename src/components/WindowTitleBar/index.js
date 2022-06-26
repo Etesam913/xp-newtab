@@ -21,6 +21,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         <TitleInput
           data-cy={`window-title-edit-${windowId}`}
           className="title-bar-text"
+          value={windowItem["windowTitle"]}
           onChange={(e) => {
             setDataProperty(
               windowData,

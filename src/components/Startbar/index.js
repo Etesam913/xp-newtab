@@ -119,10 +119,14 @@ function Startbar() {
             <StartbarItem
               identifier="Settings"
               setIsStartWindowShowing={setIsStartWindowShowing}
+              dataCy="settings-menu-item"
             />
-            <StartbarItem identifier="Create A New Window" />
-            <StartbarItem identifier="Add Icon" />
-            <StartbarItem identifier="Edit Mode" />
+            <StartbarItem
+              identifier="Create A New Window"
+              dataCy="create-window-menu-item"
+            />
+            <StartbarItem identifier="Add Icon" dataCy="add-icon-menu-item" />
+            <StartbarItem identifier="Edit Mode" dataCy="edit-mode-menu-item" />
           </StartBody>
           <StartFooter image={startFooterImg}></StartFooter>
         </StartWindow>

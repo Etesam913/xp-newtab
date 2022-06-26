@@ -44,8 +44,10 @@ function SearchBar({ windowItem, windowObj }) {
           margin="0.5rem 0 0"
         >
           <span>
-            Search Engine:
+            <label htmlFor="search-engine">Search Engine:</label>
+
             <SearchDropdown
+              id="search-engine"
               onChange={handleDropdown}
               value={windowItem["engine"]}
             >
@@ -82,8 +84,9 @@ const SearchForm = styled.form`
 const SearchInput = styled.input`
   width: 100%;
   height: 1.5rem;
-  font-size: 0.7rem;
-  padding-right: 1.6rem;
+  padding: 0.15rem 1.6rem 0.15rem 0.25rem;
+  box-sizing: content-box;
+  font-size: 1.15em;
 `;
 
 const SearchButton = styled.button`

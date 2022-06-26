@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { updateSetting } from "../../functions/helpers";
 import { useStore } from "../../Store";
 
-export function ColorAndImageTab({ imageInput, colorInput }) {
+export function AppearanceTab({ imageInput, colorInput }) {
   const settingsData = useStore((state) => state.settingsData);
   const setSettingsData = useStore((state) => state.setSettingsData);
 
@@ -64,6 +64,7 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
         />
         <FlexContainer flexDirection="column" alignItems={"flex-start"}>
           <button
+            data-cy="set-background-image-button"
             onClick={() => {
               updateSetting(
                 settingsData,
@@ -76,6 +77,7 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
             Set Image
           </button>
           <RemoveButton
+            data-cy="remove-background-image-button"
             onClick={() => {
               updateSetting(
                 settingsData,
@@ -97,6 +99,7 @@ export function ColorAndImageTab({ imageInput, colorInput }) {
         alignItems={"flex-start"}
       >
         <TabInput
+          data-cy="background-color-input"
           placeholder={"Enter Hex Color Code"}
           ref={colorInput}
           value={settingsData["backgroundColor"]}
@@ -137,19 +140,29 @@ export function InfoTab() {
         Components, and the XP.css GitHub repo.
       </InfoParagraph>
       <InfoGrid>
-        <p style={{ marginRight: "0.5rem" }}>GitHub Link: </p>
+        <p style={{ marginRight: "0.5rem" }} data-cy="github-text">
+          GitHub Link:{" "}
+        </p>
         <a href={"https://github.com/Etesam913/xp-newtab"}>
           https://github.com/Etesam913/xp-newtab
         </a>
 
-        <p style={{ marginRight: "0.5rem" }}>Firefox Addon Link: </p>
-        <a href={"https://github.com/Etesam913/windowsxp-newtab"}>
-          https://github.com/Etesam913/xp-newtab
+        <p style={{ marginRight: "0.5rem" }} data-cy="firefox-addon-text">
+          Firefox Addon Link:{" "}
+        </p>
+        <a href={"https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/"}>
+          https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/
         </a>
 
-        <p style={{ marginRight: "0.5rem" }}>Chrome Addon Link: </p>
-        <a href={"https://github.com/Etesam913/windowsxp-newtab"}>
-          https://github.com/Etesam913/xp-newtab
+        <p style={{ marginRight: "0.5rem" }} data-cy="chrome-addon-text">
+          Chrome Addon Link:{" "}
+        </p>
+        <a
+          href={
+            "https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke"
+          }
+        >
+          https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke
         </a>
       </InfoGrid>
     </article>
@@ -182,6 +195,7 @@ export function MiscTab() {
     <article role="tabpanel">
       <Header1>Change Dragging Grid</Header1>
       <select
+        data-cy="dragging-grid"
         onChange={(e) => {
           updateSetting(
             settingsData,

@@ -3059,6 +3059,13 @@
   "resolved" "https://registry.npmjs.org/caseless/-/caseless-0.12.0.tgz"
   "version" "0.12.0"
 
+"chai-colors@^1.0.1":
+  "integrity" "sha512-dHfkpLWbYx8jHxruZJWBO/TAh/kx6nK4FQ99bTGOxxChkGbq4x/1oOCbkoNo3CkyVZf5etG8qeaLaoAeCvC/mA=="
+  "resolved" "https://registry.npmjs.org/chai-colors/-/chai-colors-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "onecolor" "~2.4.2"
+
 "chalk@^2.0.0", "chalk@^2.4.1":
   "integrity" "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="
   "resolved" "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz"
@@ -6887,6 +6894,11 @@
   "version" "1.4.0"
   dependencies:
     "wrappy" "1"
+
+"onecolor@~2.4.2":
+  "integrity" "sha512-V2BitXZgajFyGmUNh+lYfoOQAKj31YhOBjqYVsVEkYUYUCr7MsVQbBKJdUWmLhu1c+y3imbdagOjbeC8ygrTyA=="
+  "resolved" "https://registry.npmjs.org/onecolor/-/onecolor-2.4.2.tgz"
+  "version" "2.4.2"
 
 "onetime@^5.1.0", "onetime@^5.1.2":
   "integrity" "sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg=="

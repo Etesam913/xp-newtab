@@ -7,7 +7,7 @@ import newIconImg from "../../media/new-icon-icon.png";
 import { addDataItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
 
-export function StartbarItem({ identifier, setIsStartWindowShowing }) {
+export function StartbarItem({ identifier, setIsStartWindowShowing, dataCy }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
 
@@ -32,7 +32,7 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
   }
 
   return (
-    <ItemContainer data-cy={identifier} onClick={handleClick}>
+    <ItemContainer data-cy={identifier} onClick={handleClick} data-cy={dataCy}>
       <FlexContainer
         width={"max-content"}
         cursor={"pointer"}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ColorAndImageTab, InfoTab, MiscTab } from "./Tabs";
+import { AppearanceTab, InfoTab, MiscTab } from "./Tabs";
 import { useStore } from "../../Store";
 
 function SettingsWindow({ settingsData }) {
@@ -19,6 +19,7 @@ function SettingsWindow({ settingsData }) {
     return (
       <button
         key={`tab-${index}`}
+        data-cy={`setting-tab-${index}`}
         aria-selected={currentTab === tab}
         onClick={() => {
           setCurrentTab(tab);
@@ -48,7 +49,7 @@ function SettingsWindow({ settingsData }) {
           <menu role="tablist">{tabs}</menu>
 
           {currentTab === "Appearance" && (
-            <ColorAndImageTab imageInput={imageInput} colorInput={colorInput} />
+            <AppearanceTab imageInput={imageInput} colorInput={colorInput} />
           )}
 
           {currentTab === "Information" && <InfoTab />}
