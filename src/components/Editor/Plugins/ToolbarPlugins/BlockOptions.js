@@ -9,7 +9,7 @@ import {
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
 } from "@lexical/list";
-import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
+import { $createHeadingNode } from "@lexical/rich-text";
 import { $createCodeNode } from "@lexical/code";
 import { Fragment, useEffect, useRef } from "react";
 import styled from "styled-components";

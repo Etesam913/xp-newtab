@@ -3,7 +3,7 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { changeItemProperty } from "../Window/helper";
 import { useStore } from "../../Store";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 function RichText({ windowItem, windowObj }) {
   const [editor] = useLexicalComposerContext();

@@ -1,5 +1,5 @@
 import "xp.css/dist/XP.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
@@ -13,7 +13,7 @@ function App() {
   const settingsData = useStore((state) => state.settingsData);
   const iconData = useStore((state) => state.iconData);
   const windowData = useStore((state) => state.windowData);
-  const [currentKeysDown, setCurrentKeysDown] = useState(new Set());
+
   useEffect(() => {
     localStorage.setItem("windowData", JSON.stringify(windowData));
   }, [windowData]);

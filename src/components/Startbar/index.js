@@ -54,6 +54,7 @@ function Startbar() {
           );
         }}
         key={`tab-${index}`}
+        data-cy={`tab-${index}`}
       >
         {item["windowTitle"]}
       </Tab>
@@ -102,6 +103,7 @@ function Startbar() {
   return (
     <Bar>
       <StartButton
+        data-cy="start-button"
         ref={startButton}
         normalImg={normalImg}
         pressedImg={pressedImg}

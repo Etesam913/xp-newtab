@@ -68,6 +68,7 @@ function Window({ width, windowItem, windowId, theme }) {
       }}
     >
       <WindowContainer
+        data-cy={`window-${windowId}`}
         tabIndex={0}
         onFocus={() => {
           setFocusedWindow(windowItem["id"]);
@@ -79,7 +80,7 @@ function Window({ width, windowItem, windowId, theme }) {
         hidden={windowItem["hidden"]}
         isMaximized={windowItem["isMaximized"]}
       >
-        <WindowTitleBar windowItem={windowItem} />
+        <WindowTitleBar windowItem={windowItem} windowId={windowId} />
         <WindowBody className="window-body">
           <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
             <RenderComponents

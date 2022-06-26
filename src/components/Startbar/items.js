@@ -32,11 +32,7 @@ export function StartbarItem({ identifier, setIsStartWindowShowing }) {
   }
 
   return (
-    <ItemContainer
-      onClick={() => {
-        handleClick();
-      }}
-    >
+    <ItemContainer data-cy={identifier} onClick={handleClick}>
       <FlexContainer
         width={"max-content"}
         cursor={"pointer"}

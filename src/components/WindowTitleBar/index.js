@@ -5,7 +5,7 @@ import { deleteDataItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
 import styled, { css } from "styled-components";
 
-function WindowTitleBar({ windowItem }) {
+function WindowTitleBar({ windowItem, windowId }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
   const focusedWindow = useStore((state) => state.focusedWindow);
   const windowData = useStore((state) => state.windowData);
@@ -13,11 +13,13 @@ function WindowTitleBar({ windowItem }) {
 
   return (
     <TitleBar
+      data-cy={`window-title-bar-${windowId}`}
       className="title-bar"
       notFocused={focusedWindow !== windowItem["id"]}
     >
       {isEditModeOn ? (
         <TitleInput
+          data-cy={`window-title-edit-${windowId}`}
           className="title-bar-text"
           onChange={(e) => {
             setDataProperty(
@@ -30,7 +32,12 @@ function WindowTitleBar({ windowItem }) {
           }}
         />
       ) : (
-        <div className="title-bar-text">{windowItem["windowTitle"]}</div>
+        <div
+          data-cy={`window-title-display-${windowId}`}
+          className="title-bar-text"
+        >
+          {windowItem["windowTitle"]}
+        </div>
       )}
 
       <ControlButtons
@@ -38,6 +45,7 @@ function WindowTitleBar({ windowItem }) {
         notFocused={focusedWindow !== windowItem["id"]}
       >
         <TitleBarButton
+          data-cy={`minimize-button-${windowId}`}
           aria-label="Minimize"
           onClick={() => {
             setDataProperty(
@@ -50,6 +58,7 @@ function WindowTitleBar({ windowItem }) {
           }}
         />
         <MaximizeButton
+          data-cy={`maximize-button-${windowId}`}
           aria-label="Maximize"
           isMaximized={windowItem["isMaximized"]}
           maximizeSecond={maximizeSecond}
@@ -64,6 +73,7 @@ function WindowTitleBar({ windowItem }) {
           }}
         />
         <TitleBarButton
+          data-cy={`close-button-${windowId}`}
           aria-label="Close"
           onClick={() => {
             deleteDataItem(windowData, setWindowData, windowItem);
