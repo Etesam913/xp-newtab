@@ -16,8 +16,8 @@ function Image({ windowObj, windowItem }) {
 
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
-
   const isEditModeOn = useStore((store) => store.isEditModeOn);
+
   function handleOptions() {
     function setImageUrl() {
       changeItemProperty(

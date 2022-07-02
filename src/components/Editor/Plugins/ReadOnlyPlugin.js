@@ -5,7 +5,6 @@ function ReadOnlyPlugin({ isEditModeOn }) {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    console.log(isEditModeOn);
     editor.setReadOnly(!isEditModeOn);
   }, [isEditModeOn]);
 

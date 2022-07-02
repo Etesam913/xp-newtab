@@ -108,7 +108,6 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
   // useEffect for blockType that modified selectIndex when blockType changes
 
   useEffect(() => {
-    console.log(blockType, blockTypeToBlockName[blockType]);
     if (dropdownRef && dropdownRef.current) {
       const children = dropdownRef.current.children;
       for (let i = 0; i < children.length; i++) {
