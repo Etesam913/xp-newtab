@@ -123,7 +123,8 @@ const WindowContainer = styled.div`
   font-family: ${(props) => props.theme.fonts.primary};
   position: absolute;
   box-shadow: ${(props) =>
-    props.notFocused && "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"};
+    props.notFocused &&
+    "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"} !important;
   z-index: ${(props) => (props.notFocused ? "2" : "3")};
 
   :focus {

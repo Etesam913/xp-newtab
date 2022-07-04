@@ -10,8 +10,10 @@ function SettingsWindow({ settingsData }) {
   const colorInput = useRef(null);
 
   useEffect(() => {
-    imageInput.current.value = settingsData["backgroundImage"];
-    colorInput.current.value = settingsData["backgroundColor"];
+    if (imageInput.current && colorInput.current) {
+      imageInput.current.value = settingsData["backgroundImage"];
+      colorInput.current.value = settingsData["backgroundColor"];
+    }
   }, [imageInput, colorInput]);
 
   const tabData = ["Appearance", "Miscellaneous", "Information"];
@@ -19,6 +21,7 @@ function SettingsWindow({ settingsData }) {
     return (
       <button
         key={`tab-${index}`}
+        role="tab"
         data-cy={`setting-tab-${index}`}
         aria-selected={currentTab === tab}
         onClick={() => {
@@ -45,8 +48,14 @@ function SettingsWindow({ settingsData }) {
             />
           </div>
         </div>
-        <div className="window-body">
-          <menu role="tablist">{tabs}</menu>
+        <section className="window-body tabs">
+          <menu
+            role="tablist"
+            aria-label="Settings Tabs"
+            style={{ padding: "0 0 0 3px" }}
+          >
+            {tabs}
+          </menu>
 
           {currentTab === "Appearance" && (
             <AppearanceTab imageInput={imageInput} colorInput={colorInput} />
@@ -54,7 +63,7 @@ function SettingsWindow({ settingsData }) {
 
           {currentTab === "Information" && <InfoTab />}
           {currentTab === "Miscellaneous" && <MiscTab />}
-        </div>
+        </section>
       </Window>
       <GrayShade
         onClick={() => {

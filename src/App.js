@@ -1,5 +1,5 @@
-import "xp.css/dist/XP.css";
-import React, { useEffect } from "react";
+//import windows98CSS from "xp.css/dist/98.css";
+import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
@@ -31,6 +31,11 @@ function App() {
       <GlobalStyle
         background={settingsData["backgroundColor"]}
         backgroundImage={settingsData["backgroundImage"]}
+      />
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href={settingsData["stylesheet"]}
       />
       {isSettingsShowing && <SettingsWindow settingsData={settingsData} />}
       <Wrapper id="wrapper">

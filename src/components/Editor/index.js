@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { HeadingNode } from "@lexical/rich-text";
 import theme from "./Theme";
@@ -13,7 +13,6 @@ import ToolbarPlugins from "./Plugins/ToolbarPlugins";
 import { useStore } from "../../Store";
 import ReadOnlyPlugin from "./Plugins/ReadOnlyPlugin";
 import RichText from "./RichText";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { DeleteButton } from "../../styles/StyledComponents";
 import { handleDelete } from "../Window/helper";
 import { FlexContainer } from "../../styles/Layout";

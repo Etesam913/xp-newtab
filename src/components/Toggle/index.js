@@ -17,6 +17,7 @@ const ToggleWrapper = styled.div`
   display: flex;
   box-sizing: border-box;
   align-items: center;
+  cursor: pointer;
   ${(props) =>
     props.on &&
     css`

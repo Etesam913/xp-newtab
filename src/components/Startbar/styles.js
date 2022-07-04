@@ -5,9 +5,10 @@ export const Bar = styled.div`
   display: flex;
   z-index: 4;
   position: absolute;
+  align-items: center;
 `;
 
-export const StartButton = styled.button`
+export const WindowsXPStartButton = styled.button`
   border: none !important;
   min-width: 99px !important;
   min-height: 30px !important;
@@ -17,36 +18,89 @@ export const StartButton = styled.button`
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   border-radius: 0 !important;
-  background-image: url(${props => props.normalImg});
+  background-image: url(${(props) => props.normalImg});
 
   :focus {
     outline: none !important;
   }
 
   :active {
-    background-image: url(${props => props.pressedImg}) !important;
+    background-image: url(${(props) => props.pressedImg}) !important;
   }
 
-  ${props => props.isPressed && css`
-    background-image: url(${props => props.pressedImg}) !important;
-  `}
+  ${(props) =>
+    props.isPressed &&
+    css`
+      background-image: url(${(props) => props.pressedImg}) !important;
+    `}
 `;
+
+export const Windows98StartButton = styled.button`
+  font-weight: bold;
+  height: 23px;
+  margin: 0 4px 0 4px;
+  min-width: 60px !important;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 5px;
+
+  &:active {
+    padding: 0 0 0 5px !important;
+  }
+`;
+
+export const Windows98Bar = styled.div`
+  display: inline-block;
+  box-sizing: border-box;
+  height: 20px;
+  width: 5px;
+  border-color: rgb(254, 254, 254) rgb(132, 133, 132) rgb(132, 133, 132)
+    rgb(254, 254, 254);
+  border-style: solid;
+  border-width: 2px;
+  background: rgb(198, 198, 198) none repeat scroll 0 0;
+`;
+
+export const Windows98Logo = styled.img`
+  height: 18px;
+  width: 18px;
+  margin-right: 2px;
+`;
+
 export const BlueSegment = styled.div`
-  background-image: url(${props => props.blueBarImg});
+  background-image: url(${(props) => props.blueBarImg});
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  z-index: -1;
+`;
+
+export const GraySegment = styled.div`
   width: 100%;
   position: absolute;
   height: 30px;
   z-index: -1;
+  border-style: solid;
+  border-width: 2px;
+  border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
+    rgb(254, 254, 254);
+  box-shadow: rgb(223, 223, 223) 1px 1px 0px 1px inset,
+    rgb(132, 133, 132) -1px -1px 0px 1px inset;
+  box-sizing: border-box;
+  background: rgb(198, 198, 198) none repeat scroll 0 0;
 `;
 
 export const TimeSegment = styled.div`
   width: 6rem;
-  background-image: url(${props => props.timeBarImg});
+  background-image: url(${(props) => props.timeBarImg});
   text-align: center;
   color: white;
-  padding-top: 10px;
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${(props) => props.theme.fonts.primary};
   margin-left: auto;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const TabContainer = styled.div`
@@ -55,11 +109,12 @@ export const TabContainer = styled.div`
   padding: 0 0.5rem;
   color: white;
   width: 100%;
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${(props) => props.theme.fonts.primary};
   overflow-x: auto;
+  height: 30px;
 `;
 
-export const Tab = styled.button`
+export const WindowsXPTab = styled.button`
   width: 8rem;
   min-width: 1rem;
   height: 80%;
@@ -68,7 +123,8 @@ export const Tab = styled.button`
   text-align: center;
   font-size: 11px;
   border: 1px solid #164ef7;
-  background: #397DF3 url(${props => props.tabBackgroundImg}) no-repeat 0 ${props => props.pressed ? "-75px" : "-7px"};
+  background: #397df3 url(${(props) => props.tabBackgroundImg}) no-repeat 0
+    ${(props) => (props.pressed ? "-75px" : "-7px")};
   white-space: nowrap;
   overflow: hidden;
   box-shadow: none !important;
@@ -81,7 +137,21 @@ export const Tab = styled.button`
   }
 
   :active {
-    background: #397DF3 url(${props => props.tabBackgroundImg}) no-repeat 0 -75px !important;
+    background: #397df3 url(${(props) => props.tabBackgroundImg}) no-repeat 0 -75px !important;
+  }
+`;
+
+export const Windows98Tab = styled.button`
+  width: 8rem;
+  min-width: 1rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 6px;
+
+  :active {
+    padding: 0 6px !important;
   }
 `;
 
@@ -98,12 +168,11 @@ export const StartWindow = styled.div`
   overflow: hidden;
   z-index: 4;
   box-shadow: 10px 10px 30px -17px rgba(0, 0, 0, 0.4);
-
 `;
 
 export const StartHeader = styled.header`
   height: 4rem;
-  background-image: url(${props => props.image});
+  background-image: url(${(props) => props.image});
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -111,7 +180,7 @@ export const StartHeader = styled.header`
   font-size: 1.15rem;
   text-shadow: 0.5px 0.5px 2px #165ba3;
   text-align: center;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
 `;
 
 export const StartBody = styled.div`
@@ -121,19 +190,19 @@ export const StartBody = styled.div`
 `;
 
 export const StartItemName = styled.span`
-  font-family: ${props=>props.theme.fonts.primary};
+  font-family: ${(props) => props.theme.fonts.primary};
   font-size: 0.9rem;
-  margin: ${props => props.margin ? props.margin : "0 0 0 0.5rem"};
+  margin: ${(props) => (props.margin ? props.margin : "0 0 0 0.5rem")};
 `;
 
 export const StartItemIcon = styled.img`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 `;
 
 export const StartFooter = styled.footer`
   height: 2.5rem;
-  background-image: url(${props => props.image});
+  background-image: url(${(props) => props.image});
   font-weight: bold;
   display: flex;
 `;
@@ -141,16 +210,16 @@ export const StartFooter = styled.footer`
 export const LoginButton = styled.button`
   border: 0;
   background: transparent;
-  :hover{
+  :hover {
     background: transparent;
     box-shadow: none !important;
     border: 0;
   }
   min-width: auto;
-  :active{
+  :active {
     background: transparent !important;
   }
-  :focus{
+  :focus {
     background: transparent;
     outline: 0 !important;
   }

@@ -29,6 +29,8 @@ export function getDefaultValue(localStorageProperty) {
       backgroundImage:
         "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
       draggingGrid: "0px",
+      stylesheet: "https://unpkg.com/xp.css",
+      isWindowsXP: true,
     };
   }
 
@@ -197,6 +199,12 @@ export function updateSetting(
   propertyValue
 ) {
   const tempSettingsData = { ...settingsData };
-  tempSettingsData[propertyName] = propertyValue;
+  if (Array.isArray(propertyName) && Array.isArray(propertyValue)) {
+    for (let i = 0; i < propertyValue.length; i++) {
+      tempSettingsData[propertyName[i]] = propertyValue[i];
+    }
+  } else {
+    tempSettingsData[propertyName] = propertyValue;
+  }
   setSettingsData(tempSettingsData);
 }

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Header1 } from "../../styles/Headers";
+import { Header1, Header5 } from "../../styles/Headers";
 import { FlexContainer } from "../../styles/Layout";
 import { HexColorPicker } from "react-colorful";
 import styled from "styled-components";
 import { updateSetting } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import Toggle from "../Toggle";
 
 export function AppearanceTab({ imageInput, colorInput }) {
   const settingsData = useStore((state) => state.settingsData);
   const setSettingsData = useStore((state) => state.setSettingsData);
-
   const [color, setColor] = useState(settingsData["backgroundColor"]);
 
   function handleColorInputEnter(e) {
@@ -91,7 +91,6 @@ export function AppearanceTab({ imageInput, colorInput }) {
           </RemoveButton>
         </FlexContainer>
       </FlexContainer>
-
       <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
       <FlexContainer
         tablet
@@ -114,6 +113,27 @@ export function AppearanceTab({ imageInput, colorInput }) {
           }}
         />
         <HexColorPicker color={color} onChange={setColor} />
+      </FlexContainer>
+      <Header1>Change Styles</Header1>
+      <FlexContainer justifyContent="flex-start">
+        <Header5 margin="0 0.5rem 0 0">Windows XP</Header5>
+        <Toggle
+          stateVal={!settingsData["isWindowsXP"]}
+          toggleStateVal={() => {
+            updateSetting(
+              settingsData,
+              setSettingsData,
+              ["isWindowsXP", "stylesheet"],
+              [
+                !settingsData["isWindowsXP"],
+                settingsData["isWindowsXP"]
+                  ? "https://unpkg.com/98.css"
+                  : "https://unpkg.com/xp.css",
+              ]
+            );
+          }}
+        />
+        <Header5 margin="0 0 0 0.5rem">Windows 98</Header5>
       </FlexContainer>
     </article>
   );

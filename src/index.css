@@ -24,6 +24,7 @@ code {
     -webkit-user-select: text;
     user-select: text;
     cursor: text;
+    background-color: white;
 }
 [contenteditable="false"] {
     cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;

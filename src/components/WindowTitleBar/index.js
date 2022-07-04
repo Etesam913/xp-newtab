@@ -10,6 +10,7 @@ function WindowTitleBar({ windowItem, windowId }) {
   const focusedWindow = useStore((state) => state.focusedWindow);
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
+  const settingsData = useStore((state) => state.settingsData);
 
   return (
     <TitleBar
@@ -46,6 +47,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         notFocused={focusedWindow !== windowItem["id"]}
       >
         <TitleBarButton
+          isWindowsXP={settingsData["isWindowsXP"]}
           data-cy={`minimize-button-${windowId}`}
           aria-label="Minimize"
           onClick={() => {
@@ -61,6 +63,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         <MaximizeButton
           data-cy={`maximize-button-${windowId}`}
           aria-label="Maximize"
+          isWindowsXP={settingsData["isWindowsXP"]}
           isMaximized={windowItem["isMaximized"]}
           maximizeSecond={maximizeSecond}
           onClick={() => {
@@ -74,6 +77,7 @@ function WindowTitleBar({ windowItem, windowId }) {
           }}
         />
         <TitleBarButton
+          isWindowsXP={settingsData["isWindowsXP"]}
           data-cy={`close-button-${windowId}`}
           aria-label="Close"
           onClick={() => {
@@ -100,8 +104,8 @@ const TitleBar = styled.div`
         #a3b5e6 95%,
         #93bbdd 96%,
         #a8c0ff
-      );
-      border: 0;
+      ) !important;
+      border: 0 !important;
     `}
 `;
 
@@ -119,21 +123,36 @@ const ControlButtons = styled.div`
 `;
 
 const TitleBarButton = styled.button`
-  height: 22px;
-  width: 22px;
+  ${(props) =>
+    props.isWindowsXP &&
+    css`
+      height: 22px;
+      width: 22px;
+    `}
+
+  ${(props) =>
+    !props.isWindowsXP &&
+    css`
+      height: 14px;
+      width: 16px;
+    `}
 `;
 
 const MaximizeButton = styled(TitleBarButton)`
-  background-image: ${(props) =>
-    props.isMaximized && `url(${props.maximizeSecond})`} !important;
+  ${(props) =>
+    props.isWindowsXP &&
+    css`
+      background-image: ${(props) =>
+        props.isMaximized && `url(${props.maximizeSecond})`} !important;
 
-  :hover {
-    filter: ${(props) => props.isMaximized && "brightness(120%)"};
-  }
+      :hover {
+        filter: ${(props) => props.isMaximized && "brightness(120%)"};
+      }
 
-  :hover:active {
-    filter: ${(props) => props.isMaximized && "brightness(90%)"};
-  }
+      :hover:active {
+        filter: ${(props) => props.isMaximized && "brightness(90%)"};
+      }
+    `}
 `;
 
 export default WindowTitleBar;
