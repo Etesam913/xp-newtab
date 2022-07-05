@@ -1,9 +1,13 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-function Toggle({ stateVal, toggleStateVal }) {
+function Toggle({ stateVal, toggleStateVal, pointerEvents }) {
   return (
-    <ToggleWrapper on={stateVal} onClick={toggleStateVal}>
+    <ToggleWrapper
+      on={stateVal}
+      onClick={toggleStateVal}
+      pointerEvents={pointerEvents}
+    >
       <ToggleCircle />
     </ToggleWrapper>
   );
@@ -31,6 +35,7 @@ const ToggleWrapper = styled.div`
       background-color: #dddddd;
       justify-content: flex-start;
     `};
+  pointer-events: ${(props) => props.pointerEvents};
 `;
 
 const ToggleCircle = styled.div`

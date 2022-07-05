@@ -32,7 +32,11 @@ function SearchBar({ windowItem, windowObj }) {
   return (
     <SearchForm method="get" action={windowItem["action"]}>
       <FlexContainer alignItems="center">
-        <SearchInput name="q" placeholder={"Search " + windowItem["engine"]} />
+        <SearchInput
+          type="text"
+          name="q"
+          placeholder={"Search " + windowItem["engine"]}
+        />
         <SearchButton>
           <MagnifyingGlass />
         </SearchButton>
@@ -83,24 +87,28 @@ const SearchForm = styled.form`
 
 const SearchInput = styled.input`
   width: 100%;
-  height: 1.5rem;
+  height: 1.8rem !important;
   padding: 0.15rem 1.6rem 0.15rem 0.25rem;
   box-sizing: content-box;
-  font-size: 1.15em;
+  font-size: 0.9rem;
 `;
 
 const SearchButton = styled.button`
   border: 0;
   padding: 0;
   background: transparent;
-
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
   :hover {
     background: transparent;
-    box-shadow: none !important;
   }
 
   :active {
     background: transparent !important;
+    padding: 0 !important;
   }
 
   :focus {

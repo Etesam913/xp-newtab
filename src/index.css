@@ -74,7 +74,7 @@ button{
     text-decoration-thickness: 2px;
 }
 .editor-paragraph{
-    font-size: 1.25em;
+    font-size: 1rem;
 }
 
 
@@ -188,10 +188,14 @@ h2{
 }
 
 .editor-listitem {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 0.15rem 0;
 }
 
 .editor-nested-listitem {
     list-style-type: none;
+}
+button.active{
+    box-shadow: inset -1px -1px #fff,inset 1px 1px #0a0a0a,inset -2px -2px #dfdfdf,inset 2px 2px grey;
+    padding: 2px 11px 0 13px;
 }

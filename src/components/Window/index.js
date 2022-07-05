@@ -122,11 +122,11 @@ const WindowContainer = styled.div`
   min-width: 30rem;
   font-family: ${(props) => props.theme.fonts.primary};
   position: absolute;
+  box-sizing: border-box;
   box-shadow: ${(props) =>
     props.notFocused &&
     "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"} !important;
   z-index: ${(props) => (props.notFocused ? "2" : "3")};
-
   :focus {
     outline: none;
   }

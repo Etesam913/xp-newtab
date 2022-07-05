@@ -6,6 +6,7 @@ export const FlexContainer = styled.div`
   margin: ${(props) => props.margin};
   cursor: ${(props) => props.cursor};
   width: ${(props) => props.width};
+  height: ${(props) => props.height};
   flex-direction: ${(props) =>
     props.flexDirection ? props.flexDirection : "row"};
   justify-content: ${(props) =>

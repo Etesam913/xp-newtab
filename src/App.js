@@ -29,6 +29,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle
+        isWindowsXP={settingsData["isWindowsXP"]}
         background={settingsData["backgroundColor"]}
         backgroundImage={settingsData["backgroundImage"]}
       />
@@ -61,8 +62,12 @@ const GlobalStyle = createGlobalStyle`
     background-size: cover;
     cursor: ${(props) => props.theme.cursors.auto};
     overflow: hidden;
+    
   }
-
+  ::selection{
+    background: ${(props) => (props.isWindowsXP ? "#1064cc" : "#010080")};
+    color: white;
+  }
   .window {
     font-size: 12px;
   }

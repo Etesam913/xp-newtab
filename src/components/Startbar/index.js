@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef, Fragment } from "react";
 import {
   Bar,
   BlueSegment,
-  TimeSegment,
   TabContainer,
-  StartWindow,
-  StartHeader,
-  StartBody,
-  StartFooter,
   WindowsXPStartButton,
   Windows98StartButton,
   GraySegment,
@@ -15,6 +10,8 @@ import {
   WindowsXPTab,
   Windows98Tab,
   Windows98Bar,
+  WindowsXPTimeSegment,
+  Windows98TimeSegment,
 } from "./styles";
 import windows98Logo from "../../media/windows98-logo.png";
 import normalImg from "../../media/start-button.png";
@@ -23,16 +20,14 @@ import blueBarImg from "../../media/blue-bar-img.png";
 import grayBarImg from "../../media/gray-bar-img.png";
 import timeBarImg from "../../media/time-bar-img.png";
 import tabBackgroundImg from "../../media/tab-background.png";
-import startFooterImg from "../../media/start-footer.png";
-import startHeaderImg from "../../media/start-header.png";
 import {
   getTimePeriodName,
   getTimeUnits,
   getTwelveHourTime,
 } from "../../functions/helpers";
 import { setDataProperty } from "../Window/helper";
-import { StartbarItem } from "./items";
 import { useStore } from "../../Store";
+import StartWindow from "./StartWindow";
 
 function Startbar() {
   const [time, setTime] = useState("");
@@ -153,30 +148,18 @@ function Startbar() {
             }}
           >
             <Windows98Logo src={windows98Logo} alt="98-logo" />
-            <span>Start</span>
+            Start
           </Windows98StartButton>
           <Windows98Bar />
         </Fragment>
       )}
 
       {isStartWindowShowing && (
-        <StartWindow ref={startWindow}>
-          <StartHeader image={startHeaderImg}>Administrator</StartHeader>
-          <StartBody>
-            <StartbarItem
-              identifier="Settings"
-              setIsStartWindowShowing={setIsStartWindowShowing}
-              dataCy="settings-menu-item"
-            />
-            <StartbarItem
-              identifier="Create A New Window"
-              dataCy="create-window-menu-item"
-            />
-            <StartbarItem identifier="Add Icon" dataCy="add-icon-menu-item" />
-            <StartbarItem identifier="Edit Mode" dataCy="edit-mode-menu-item" />
-          </StartBody>
-          <StartFooter image={startFooterImg}></StartFooter>
-        </StartWindow>
+        <StartWindow
+          isWindowsXP={settingsData["isWindowsXP"]}
+          startWindow={startWindow}
+          setIsStartWindowShowing={setIsStartWindowShowing}
+        />
       )}
       {settingsData["isWindowsXP"] ? (
         <BlueSegment blueBarImg={blueBarImg} />
@@ -185,7 +168,16 @@ function Startbar() {
       )}
 
       <TabContainer>{tabs}</TabContainer>
-      <TimeSegment timeBarImg={timeBarImg}> {time} </TimeSegment>
+      {settingsData["isWindowsXP"] ? (
+        <WindowsXPTimeSegment timeBarImg={timeBarImg}>
+          {time}
+        </WindowsXPTimeSegment>
+      ) : (
+        <Fragment>
+          <Windows98Bar />
+          <Windows98TimeSegment>{time}</Windows98TimeSegment>
+        </Fragment>
+      )}
     </Bar>
   );
 }

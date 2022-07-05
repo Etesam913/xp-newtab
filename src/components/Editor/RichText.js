@@ -37,7 +37,6 @@ function RichText({ windowItem, windowObj }) {
     >
       <RichTextPlugin
         contentEditable={<ContentEditable className="rich-text-editor" />}
-        placeholder=""
       />
     </div>
   );

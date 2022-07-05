@@ -62,7 +62,11 @@ function WindowTitleBar({ windowItem, windowId }) {
         />
         <MaximizeButton
           data-cy={`maximize-button-${windowId}`}
-          aria-label="Maximize"
+          aria-label={
+            !settingsData["isWindowsXP"] && windowItem["isMaximized"]
+              ? "Restore"
+              : "Maximize"
+          }
           isWindowsXP={settingsData["isWindowsXP"]}
           isMaximized={windowItem["isMaximized"]}
           maximizeSecond={maximizeSecond}

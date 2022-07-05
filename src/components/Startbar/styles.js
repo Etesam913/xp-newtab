@@ -65,6 +65,7 @@ export const Windows98Logo = styled.img`
   height: 18px;
   width: 18px;
   margin-right: 2px;
+  pointer-events: none;
 `;
 
 export const BlueSegment = styled.div`
@@ -90,7 +91,7 @@ export const GraySegment = styled.div`
   background: rgb(198, 198, 198) none repeat scroll 0 0;
 `;
 
-export const TimeSegment = styled.div`
+export const WindowsXPTimeSegment = styled.div`
   width: 6rem;
   background-image: url(${(props) => props.timeBarImg});
   text-align: center;
@@ -103,10 +104,27 @@ export const TimeSegment = styled.div`
   justify-content: center;
 `;
 
+export const Windows98TimeSegment = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  font-family: ${(props) => props.theme.fonts.primary};
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(128, 128, 128) rgb(255, 255, 255) rgb(255, 255, 255)
+    rgb(128, 128, 128);
+  height: 20px;
+  box-sizing: border-box;
+  margin: 0 8px 0 4px;
+  padding: 0 10px;
+  white-space: nowrap;
+`;
+
 export const TabContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 0.5rem;
+  padding: 0 4px;
   color: white;
   width: 100%;
   font-family: ${(props) => props.theme.fonts.primary};
@@ -149,13 +167,47 @@ export const Windows98Tab = styled.button`
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 6px;
+  margin: 0 2px;
 
   :active {
     padding: 0 6px !important;
   }
+
+  ${(props) =>
+    props.pressed &&
+    css`
+      box-sizing: border-box;
+      background-repeat: repeat;
+      background-attachment: scroll;
+      background-origin: padding-box;
+      background-clip: border-box;
+      border-style: solid;
+      border-width: 2px;
+      border-color: rgb(45, 45, 45) rgb(254, 254, 254) rgb(254, 254, 254)
+        rgb(77, 77, 77);
+      box-shadow: rgb(132, 133, 132) 1px 1px 0px 1px inset,
+        rgb(223, 223, 223) -1px -1px 0px 1px inset;
+      background-image: linear-gradient(
+          45deg,
+          rgb(198, 198, 198) 25%,
+          transparent 25%,
+          transparent 75%,
+          rgb(198, 198, 198) 75%
+        ),
+        linear-gradient(
+          45deg,
+          rgb(198, 198, 198) 25%,
+          transparent 25%,
+          transparent 75%,
+          rgb(198, 198, 198) 75%
+        );
+      background-color: rgb(254, 254, 254);
+      background-size: 4px 4px;
+      background-position: 0px 0px, 2px 2px;
+    `}
 `;
 
-export const StartWindow = styled.div`
+export const WindowsXPStartWindow = styled.div`
   position: absolute;
   height: 30rem;
   width: 14rem;
@@ -170,7 +222,7 @@ export const StartWindow = styled.div`
   box-shadow: 10px 10px 30px -17px rgba(0, 0, 0, 0.4);
 `;
 
-export const StartHeader = styled.header`
+export const WindowsXPStartHeader = styled.header`
   height: 4rem;
   background-image: url(${(props) => props.image});
   font-weight: bold;
@@ -183,7 +235,7 @@ export const StartHeader = styled.header`
   padding: 0 0.5rem;
 `;
 
-export const StartBody = styled.div`
+export const WindowsXPStartBody = styled.div`
   height: 23.5rem;
   display: flex;
   flex-direction: column;
@@ -200,11 +252,53 @@ export const StartItemIcon = styled.img`
   height: ${(props) => props.height};
 `;
 
-export const StartFooter = styled.footer`
+export const WindowsXPStartFooter = styled.footer`
   height: 2.5rem;
   background-image: url(${(props) => props.image});
   font-weight: bold;
   display: flex;
+`;
+
+export const Windows98StartWindow = styled.div`
+  position: absolute;
+  height: 23rem;
+  width: 14rem;
+  background: #bfc7c9;
+  bottom: 1.8rem;
+  border-top-right-radius: 0.35rem;
+  border-top-left-radius: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 4;
+  box-shadow: 10px 10px 30px -17px rgba(0, 0, 0, 0.4);
+`;
+
+export const Windows98BlueStripe = styled.div`
+  width: 2.25rem;
+  height: 100%;
+  background: linear-gradient(
+    360deg,
+    rgba(0, 0, 156, 1) 0%,
+    rgba(33, 33, 223, 1) 14%,
+    rgba(0, 0, 124, 1) 38%,
+    rgba(0, 0, 124, 1) 100%
+  );
+  writing-mode: sideways-lr;
+  text-orientation: upright;
+  color: white;
+  font-size: 1.5rem;
+
+  display: flex;
+  align-items: center;
+`;
+
+export const Windows98StartBody = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const Windows98BoldText = styled.b`
+  padding-bottom: 1rem;
 `;
 
 export const LoginButton = styled.button`
@@ -233,14 +327,22 @@ export const LoginImg = styled.img`
   margin: 0 0.4rem;
 `;
 
-export const ItemContainer = styled.div`
+export const WindowsXPItemContainer = styled.div`
   width: 100%;
   height: 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
   :hover {
     background: #2d6ac2;
+    color: white;
+  }
+`;
+
+export const Windows98ItemContainer = styled(WindowsXPItemContainer)`
+  :hover {
+    background: #010080;
     color: white;
   }
 `;
