@@ -20,6 +20,7 @@ function WindowTitleBar({ windowItem, windowId }) {
     >
       {isEditModeOn ? (
         <TitleInput
+          type="text"
           data-cy={`window-title-edit-${windowId}`}
           className="title-bar-text"
           value={windowItem["windowTitle"]}
@@ -115,7 +116,6 @@ const TitleBar = styled.div`
 
 const TitleInput = styled.input`
   color: black !important;
-  font-family: ${(props) => props.theme.fonts.secondary};
   font-weight: 700;
   font-size: 13px;
   width: 100%;
