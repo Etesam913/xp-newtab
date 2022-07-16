@@ -126,7 +126,7 @@ const ControlButtons = styled.div`
   pointer-events: ${(props) => props.notFocused && "none"};
 `;
 
-const TitleBarButton = styled.button`
+export const TitleBarButton = styled.button`
   ${(props) =>
     props.isWindowsXP &&
     css`

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { AppearanceTab, InfoTab, MiscTab } from "./Tabs";
 import { useStore } from "../../Store";
+import { TitleBarButton } from "../WindowTitleBar";
 
 function SettingsWindow({ settingsData }) {
   const setIsSettingsShowing = useStore((state) => state.setIsSettingsShowing);
@@ -40,7 +41,7 @@ function SettingsWindow({ settingsData }) {
         <div className="title-bar">
           <div className="title-bar-text"> Settings</div>
           <div className="title-bar-controls">
-            <button
+            <TitleBarButton
               aria-label="Close"
               onClick={() => {
                 setIsSettingsShowing(false);

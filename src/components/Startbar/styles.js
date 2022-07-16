@@ -275,7 +275,6 @@ export const Windows98StartWindow = styled.div`
 `;
 
 export const Windows98BlueStripe = styled.div`
-  width: 2.25rem;
   height: 100%;
   background: linear-gradient(
     360deg,
@@ -284,21 +283,19 @@ export const Windows98BlueStripe = styled.div`
     rgba(0, 0, 124, 1) 38%,
     rgba(0, 0, 124, 1) 100%
   );
-  writing-mode: sideways-lr;
-  text-orientation: upright;
   color: white;
   font-size: 1.5rem;
-
-  display: flex;
-  align-items: center;
+  writing-mode: tb-rl;
+  transform: rotate(-180deg);
 `;
 
 export const Windows98StartBody = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 export const Windows98BoldText = styled.b`
-  padding-bottom: 1rem;
+  padding-top: 0.5rem;
 `;
 
 export const LoginButton = styled.button`
