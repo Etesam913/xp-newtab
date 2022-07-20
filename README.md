@@ -1,7 +1,11 @@
 <h1 align="center">✏️ XP-Newtab </h1>
 <h2 align="center">An extension that customizes your new-tab page in the style of Windows XP.</h2>
 
-https://user-images.githubusercontent.com/55665282/119553452-aad16f00-bd69-11eb-98ff-3240a7d1143c.mp4
+
+
+https://user-images.githubusercontent.com/55665282/179885872-df5fe387-7831-4ecc-ae0d-a62df45affcf.mp4
+
+
 
 <h3>🔗 Links</h3>
 <ul>
@@ -13,7 +17,7 @@ https://user-images.githubusercontent.com/55665282/119553452-aad16f00-bd69-11eb-
 <ul>
     <li>Create draggable icons that redirect to websites when double clicked</li>
     <li>Create draggable windows that can hold a plethora of components</li>
-    <li>Add search bars, images, videos, text, and lists to windows.</li>
+    <li>Add search bars, images, videos, and text to windows.</li>
     <li>Instantaneous saves</li>
 </ul>
 
