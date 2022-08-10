@@ -1,0 +1,40 @@
+name: Cypress E2E Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: 🔀 Checking out repo
+      uses: actions/checkout@v2
+
+    - name: 🪨 Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    
+    - name: ☝️ Install dependencies
+      run: npm install
+
+    - name: ✅ Running Cypress tests
+      uses: cypress-io/github-action@v3.1.0
+      with:
+        install: false
+        browser: chrome
+        config-file: cypress.config.js
+        start: npm start
+        wait-on: "http://localhost:3000"
+        command-prefix: yarn dlx
+        headless: true
+    
