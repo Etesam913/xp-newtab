@@ -1,5 +1,7 @@
 import chaiColors from "chai-colors";
 chai.use(chaiColors);
+const blissImageUrl =
+  "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg";
 
 describe("Settings Tests", () => {
   it("Opens/closes menu and checks for correct menu items", () => {
@@ -40,9 +42,9 @@ describe("Settings Tests", () => {
     cy.get("[data-cy='document-body']").as("documentBody");
 
     cy.get("@documentBody").should(
-      "have.css",
+      "not.have.css",
       "background-image",
-      'url("about:invalid")'
+      `url("${blissImageUrl}")`
     );
 
     cy.get("[data-cy='background-color-input']").as("backgroundColorInput");
@@ -56,7 +58,7 @@ describe("Settings Tests", () => {
     cy.get("@documentBody").should(
       "have.css",
       "background-image",
-      'url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg")'
+      `url("${blissImageUrl}")`
     );
   });
 
