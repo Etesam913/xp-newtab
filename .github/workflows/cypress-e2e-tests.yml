@@ -30,6 +30,5 @@ jobs:
         config-file: cypress.config.js
         start: npm start
         wait-on: "http://localhost:3000"
-        command-prefix: yarn dlx
         headless: true
     
