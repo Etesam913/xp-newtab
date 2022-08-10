@@ -24,7 +24,7 @@ function Window({ width, windowItem, windowId, theme }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
   const componentData = ["Text", "Image", "Video", "Search Bar"];
-  const components = componentData.map((componentName, index) => {
+  const componentOptions = componentData.map((componentName, index) => {
     return (
       <div className="field-row" key={index}>
         <input
@@ -32,7 +32,10 @@ function Window({ width, windowItem, windowId, theme }) {
           type="radio"
           name="radio-button"
         />
-        <WindowLabel htmlFor={componentName.toLowerCase() + windowId}>
+        <WindowLabel
+          data-cy={`${componentName.toLowerCase()}-option-${windowId}`}
+          htmlFor={componentName.toLowerCase() + windowId}
+        >
           {componentName}
         </WindowLabel>
       </div>
@@ -92,9 +95,10 @@ function Window({ width, windowItem, windowId, theme }) {
             {isEditModeOn && (
               <ComponentsPanel ref={componentsPanel}>
                 <div className="field-row">Select one component to add:</div>
-                {components}
+                {componentOptions}
                 <AddComponent
                   as={"button"}
+                  data-cy={`add-component-button-${windowId}`}
                   onClick={() => {
                     handleComponentCreation(
                       componentsPanel,

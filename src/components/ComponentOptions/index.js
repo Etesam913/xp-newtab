@@ -16,6 +16,7 @@ export function TextAlignOptions({ windowObj, windowItem, text }) {
     <div>
       <OptionTitle>{text ? "Text Align:" : "Align"} </OptionTitle>
       <select
+        data-cy={`align-image-${windowItem["id"]}`}
         onChange={(e) =>
           changeItemProperty(
             windowObj,
