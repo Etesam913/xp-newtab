@@ -10,7 +10,7 @@ import {
   replaceDesiredWindowItem,
 } from "../../functions/helpers";
 import Image from "../Image";
-import Video from "../Video";
+import YouTubeVideo from "../YouTubeVideo";
 import DragIndicator from "../DragIndicator";
 import arrayMove from "array-move";
 import SearchBar from "../SearchBar";
@@ -54,10 +54,10 @@ export function addComponent(
       justifyContent: "flex-start",
       imageWidth: "50%",
     });
-  } else if (componentToAdd === "Video") {
+  } else if (componentToAdd === "YouTube Video") {
     newItem["items"].push({
       id: maxId + 1,
-      componentName: "Video",
+      componentName: "YouTube Video",
       src: "https://www.youtube.com/embed/5pzM_pFNWak",
     });
   } else if (componentToAdd === "Search Bar") {
@@ -100,8 +100,8 @@ export function RenderComponents({
         return <Editor windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Image") {
         return <Image windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "Video") {
-        return <Video windowItem={windowItem} windowObj={windowObj} />;
+      } else if (windowItem["componentName"] === "YouTube Video") {
+        return <YouTubeVideo windowItem={windowItem} windowObj={windowObj} />;
       } else if (windowItem["componentName"] === "Search Bar") {
         return <SearchBar windowItem={windowItem} windowObj={windowObj} />;
       }

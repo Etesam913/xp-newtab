@@ -6,7 +6,7 @@ import { changeItemProperty, handleDelete } from "../Window/helper";
 import BackButton from "../BackButton";
 import { useStore } from "../../Store";
 
-function Video({ windowObj, windowItem }) {
+function YouTubeVideo({ windowObj, windowItem }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
 
@@ -114,4 +114,4 @@ const VideoComponent = styled.iframe`
   border: 0;
 `;
 
-export default Video;
+export default YouTubeVideo;
