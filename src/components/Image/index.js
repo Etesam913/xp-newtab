@@ -69,6 +69,7 @@ function Image({ windowObj, windowItem }) {
           <Slider className="field-row">
             <label htmlFor="range25">Size:</label>
             <input
+              data-cy={`image-size-slider-${windowItem["id"]}`}
               id="range25"
               type="range"
               min={1}
@@ -80,6 +81,7 @@ function Image({ windowObj, windowItem }) {
             />
           </Slider>
           <OptionsButton
+            data-cy={`set-image-url-${windowItem["id"]}`}
             onClick={() => {
               setIsRedirectClicked(true);
             }}
@@ -112,6 +114,7 @@ function Image({ windowObj, windowItem }) {
       return (
         <FlexContainer width={"100%"}>
           <BackButton
+            dataCy={`image-back-button-${windowItem["id"]}`}
             aria-label="back button"
             margin={"0 0.25rem 0 0"}
             onClick={() => {
@@ -123,9 +126,14 @@ function Image({ windowObj, windowItem }) {
             style={{ width: "87%" }}
             placeholder={"Enter image url"}
             defaultValue={windowItem["src"] !== null ? windowItem["src"] : ""}
+            data-cy={`image-url-input-${windowItem["id"]}`}
             /*onBlur={handleBlur}*/
           />
-          <OptionsButton onClick={setImageUrl} width="110px">
+          <OptionsButton
+            onClick={setImageUrl}
+            width="110px"
+            data-cy={`set-image-url-update-${windowItem["id"]}`}
+          >
             Set Image Url
           </OptionsButton>
         </FlexContainer>
@@ -168,7 +176,11 @@ function Image({ windowObj, windowItem }) {
         </FlexContainer>
       )}
 
-      <FlexContainer justifyContent={windowItem["justifyContent"]} width="100%">
+      <FlexContainer
+        data-cy={`image-container-${windowItem["id"]}`}
+        justifyContent={windowItem["justifyContent"]}
+        width="100%"
+      >
         <ImageWrapper
           href={
             isEditModeOn
@@ -187,11 +199,15 @@ function Image({ windowObj, windowItem }) {
           tabIndex={0}
           imageWidth={windowItem["imageWidth"]}
         >
-          <ImageComponent src={windowItem["src"]} />
+          <ImageComponent
+            data-cy={`image-${windowItem["id"]}`}
+            src={windowItem["src"]}
+          />
         </ImageWrapper>
       </FlexContainer>
       {isEditModeOn && (
         <DeleteButton
+          data-cy={`image-delete-${windowItem["id"]}`}
           margin={"0.5rem 0 0"}
           onClick={() => {
             handleDelete(

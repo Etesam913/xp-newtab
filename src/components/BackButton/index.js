@@ -1,16 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
-function BackButton({ margin, onClick }) {
+function BackButton({ margin, onClick, dataCy }) {
   function handleClick() {
-    if (onClick)
-      onClick();
+    if (onClick) onClick();
   }
 
   return (
     <ImageButton margin={margin}>
-      <BackImage onClick={handleClick} alt={"image of back button"}
-                 src={"https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/back.png"} />
+      <BackImage
+        data-cy={dataCy}
+        onClick={handleClick}
+        alt={"image of back button"}
+        src={
+          "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/back.png"
+        }
+      />
     </ImageButton>
   );
 }
@@ -29,7 +34,7 @@ const ImageButton = styled.button`
   width: 24px;
   height: 24px;
   padding: 0;
-  margin: ${props => props.margin ? props.margin : "0 0.25rem 0 0"};
+  margin: ${(props) => (props.margin ? props.margin : "0 0.25rem 0 0")};
 `;
 
 export default BackButton;
