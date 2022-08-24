@@ -87,19 +87,23 @@ function Window({ width, windowItem, windowId, theme }) {
         <WindowTitleBar windowItem={windowItem} windowId={windowId} />
         <Resizable
           size={{
-            width: windowItem["size"]["width"],
-            height: windowItem["size"]["height"],
+            width: windowItem["isMaximized"]
+              ? "100%"
+              : windowItem["size"]["width"],
+            height: windowItem["isMaximized"]
+              ? "100%"
+              : windowItem["size"]["height"],
           }}
           enable={{
             topRight: false,
             topLeft: false,
-            bottomRight: true,
+            bottomRight: !windowItem["isMaximized"],
             bottomLeft: false,
           }}
-          minWidth="400"
+          minWidth="275"
           minHeight={70 + 80 * windowItem["items"].length + ""}
-          maxWidth="70vw"
-          maxHeight="70vh"
+          maxWidth={windowItem["isMaximized"] ? "calc(100% - 0.15rem)" : "70vw"}
+          maxHeight={windowItem["isMaximized"] ? "calc(100% - 2rem)" : "70vh"}
           onResizeStop={(e, direction, ref, d) => {
             setDataProperty(windowData, setWindowData, windowItem, "size", {
               width: windowItem["size"]["width"] + d.width,
@@ -157,7 +161,7 @@ const WindowContainer = styled.div`
   display: ${(props) => props.hidden && "none"};
   // width: ${(props) => (props.width ? props.width : "35rem")};
   height: auto;
-  min-width: 25rem;
+
   font-family: ${(props) => props.theme.fonts.primary};
   position: absolute;
   box-sizing: border-box;

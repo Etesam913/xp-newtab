@@ -26,7 +26,7 @@ describe("Basic Window Tests", () => {
     cy.get("[data-cy='window-0']").should(
       "have.css",
       "transform",
-      "matrix(1, 0, 0, 1, 220, 86)"
+      "matrix(1, 0, 0, 1, 260, 86)"
     );
   });
   it("Renames the default window", () => {
@@ -55,7 +55,7 @@ describe("Basic Window Tests", () => {
     cy.get("@window").should("have.css", "width", "1000px");
     cy.get("@window").should("have.css", "height", "628px");
     cy.get("@maximizeButton").click();
-    cy.get("@window").should("have.css", "width", "560px");
+    cy.get("@window").should("have.css", "width", "480px");
 
     cy.get("@minimizeButton").click();
     cy.get("@window").should("not.be.visible");
