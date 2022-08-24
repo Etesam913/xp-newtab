@@ -10,6 +10,10 @@ export function getDefaultValue(localStorageProperty) {
         hidden: false,
         items: [],
         isMaximized: false,
+        size: {
+          width: 480,
+          height: 70,
+        },
       },
     ];
   } else if (localStorageProperty === "iconData") {
@@ -82,6 +86,10 @@ export function addDataItem(data, setData, useCase, setFocusedWindow) {
       yCoord: 0,
       hidden: false,
       items: [],
+      size: {
+        width: 480,
+        height: 70,
+      },
     };
   } else if (useCase === "icon") {
     newItem = {

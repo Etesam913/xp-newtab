@@ -227,3 +227,8 @@ export function handleDelete(windowData, setWindowData, windowItem, id) {
     tempItem["items"]
   );
 }
+
+export function handleResize(setHeight, setWidth, size) {
+  setHeight(size.height);
+  setWidth(size.width);
+}

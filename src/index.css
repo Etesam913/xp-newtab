@@ -129,6 +129,7 @@ button{
 .toolbar-item{
     width: 36px;
     padding: 0;
+    margin: 0.25rem 0.2rem;
 }
 
 

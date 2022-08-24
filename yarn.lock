@@ -7848,6 +7848,11 @@
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
 
+"re-resizable@^6.9.9":
+  "integrity" "sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA=="
+  "resolved" "https://registry.npmjs.org/re-resizable/-/re-resizable-6.9.9.tgz"
+  "version" "6.9.9"
+
 "react-app-polyfill@^3.0.0":
   "integrity" "sha512-sZ41cxiU5llIB003yxxQBYrARBqe0repqPTTYBTmMqTz9szeBbE37BehCE891NZsmdZqqP+xWKdT3eo3vOzN8w=="
   "resolved" "https://registry.npmjs.org/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz"
@@ -7895,7 +7900,7 @@
     "strip-ansi" "^6.0.1"
     "text-table" "^0.2.0"
 
-"react-dom@^16.3.0 || ^17.0.0", "react-dom@^17.0.1", "react-dom@>=17.x":
+"react-dom@^16.13.1 || ^17.0.0 || ^18.0.0", "react-dom@^16.3.0 || ^17.0.0", "react-dom@^17.0.1", "react-dom@>=17.x":
   "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -7996,7 +8001,7 @@
     "invariant" "^2.2.4"
     "prop-types" "^15.5.7"
 
-"react@^16.3.0 || ^17.0.0", "react@^17.0.1", "react@>= 16", "react@>=16.8", "react@>=17.x":
+"react@^16.13.1 || ^17.0.0 || ^18.0.0", "react@^16.3.0 || ^17.0.0", "react@^17.0.1", "react@>= 16", "react@>=16.8", "react@>=17.x":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"

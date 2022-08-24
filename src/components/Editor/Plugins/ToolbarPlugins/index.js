@@ -1,5 +1,12 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -191,7 +198,7 @@ export default function ToolbarPlugins() {
 
   return (
     <div className="toolbar" ref={toolbarRef}>
-      <FlexContainer as="span" margin="0 0.15rem 0 0">
+      <FlexContainer flexWrap="wrap" as="span" margin="0 0.15rem 0 0">
         <button
           disabled={!canUndo}
           onClick={() => {
@@ -214,11 +221,7 @@ export default function ToolbarPlugins() {
           <RedoIcon className="format" />
         </button>
       </FlexContainer>
-      <FlexContainer
-        as="span"
-        flex={1}
-        justifyContent={blockType === "code" ? "flex-end" : "space-around"}
-      >
+      <FlexContainer flexWrap="wrap" as="span" justifyContent="flex-start">
         {supportedBlockTypes.has(blockType) && (
           <BlockOptionsDropdownList editor={editor} blockType={blockType} />
         )}

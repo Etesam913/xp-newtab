@@ -8,6 +8,7 @@ import {
 } from "./helper";
 import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
+import { Resizable } from "re-resizable";
 
 function Window({ width, windowItem, windowId, theme }) {
   const windowRef = useRef(null);
@@ -84,46 +85,79 @@ function Window({ width, windowItem, windowId, theme }) {
         isMaximized={windowItem["isMaximized"]}
       >
         <WindowTitleBar windowItem={windowItem} windowId={windowId} />
-        <WindowBody className="window-body">
-          <WindowPanel isMaximized={windowItem["isMaximized"]} role="tabpanel">
-            <RenderComponents
-              componentsArr={windowItem["items"]}
-              windowObj={windowItem}
-              moveCursor={theme.cursors.move}
-              autoCursor={theme.cursors.auto}
-            />
-            {isEditModeOn && (
-              <ComponentsPanel ref={componentsPanel}>
-                <div className="field-row">Select one component to add:</div>
-                {componentOptions}
-                <AddComponent
-                  as={"button"}
-                  data-cy={`add-component-button-${windowId}`}
-                  onClick={() => {
-                    handleComponentCreation(
-                      componentsPanel,
-                      windowData,
-                      setWindowData,
-                      windowItem
-                    );
-                  }}
-                >
-                  Add Component
-                </AddComponent>
-              </ComponentsPanel>
-            )}
-          </WindowPanel>
-        </WindowBody>
+        <Resizable
+          size={{
+            width: windowItem["size"]["width"],
+            height: windowItem["size"]["height"],
+          }}
+          enable={{
+            topRight: false,
+            topLeft: false,
+            bottomRight: true,
+            bottomLeft: false,
+          }}
+          minWidth="400"
+          minHeight={70 + 80 * windowItem["items"].length + ""}
+          maxWidth="70vw"
+          maxHeight="70vh"
+          onResizeStop={(e, direction, ref, d) => {
+            setDataProperty(windowData, setWindowData, windowItem, "size", {
+              width: windowItem["size"]["width"] + d.width,
+              height: windowItem["size"]["height"] + d.height,
+            });
+          }}
+          handleComponent={{
+            bottomRight: <BottomRightHandle settingsData={settingsData} />,
+          }}
+        >
+          <WindowBody className="window-body">
+            <WindowPanel
+              isMaximized={windowItem["isMaximized"]}
+              role="tabpanel"
+            >
+              <RenderComponents
+                componentsArr={windowItem["items"]}
+                windowObj={windowItem}
+                moveCursor={theme.cursors.move}
+                autoCursor={theme.cursors.auto}
+              />
+              {isEditModeOn && (
+                <ComponentsPanel ref={componentsPanel}>
+                  <div className="field-row">Select one component to add:</div>
+                  {componentOptions}
+                  <AddComponent
+                    as={"button"}
+                    data-cy={`add-component-button-${windowId}`}
+                    onClick={() => {
+                      handleComponentCreation(
+                        componentsPanel,
+                        windowData,
+                        setWindowData,
+                        windowItem
+                      );
+                    }}
+                  >
+                    Add Component
+                  </AddComponent>
+                </ComponentsPanel>
+              )}
+            </WindowPanel>
+          </WindowBody>
+        </Resizable>
       </WindowContainer>
     </Draggable>
   );
 }
 
+function BottomRightHandle({ settingsData }) {
+  return <ResizableDots isWindowsXP={settingsData["isWindowsXP"]} />;
+}
+
 const WindowContainer = styled.div`
   display: ${(props) => props.hidden && "none"};
-  width: ${(props) => (props.width ? props.width : "35rem")};
+  // width: ${(props) => (props.width ? props.width : "35rem")};
   height: auto;
-  min-width: 30rem;
+  min-width: 25rem;
   font-family: ${(props) => props.theme.fonts.primary};
   position: absolute;
   box-sizing: border-box;
@@ -150,7 +184,7 @@ const ComponentsPanel = styled.fieldset`
 
 const AddComponent = styled(ComponentsPanel)``;
 const WindowBody = styled.div`
-  height: calc(100% - 2.8rem);
+  height: calc(100% - 0.65rem);
 `;
 
 const WindowLabel = styled.label`
@@ -160,8 +194,50 @@ const WindowLabel = styled.label`
 const WindowPanel = styled.article`
   overflow-y: auto;
   box-sizing: border-box;
-  max-height: ${(props) => (props.isMaximized ? "100%" : "60vh")};
   height: 100%;
+`;
+
+const ResizableDots = styled.div`
+  position: relative;
+  ${(props) =>
+    props.isWindowsXP &&
+    css`
+      width: 2px;
+      height: 2px;
+
+      right: 27%;
+      bottom: -34%;
+      box-shadow: rgba(0, 0, 0, 0.25) 2px 0, rgba(0, 0, 0, 0.25) 5.5px 0,
+        rgba(0, 0, 0, 0.25) 9px 0, rgba(0, 0, 0, 0.25) 5.5px -3.5px,
+        rgba(0, 0, 0, 0.25) 9px -3.5px, rgba(0, 0, 0, 0.25) 9px -7px,
+        rgb(255, 255, 255) 3px 1px, rgb(255, 255, 255) 6.5px 1px,
+        rgb(255, 255, 255) 10px 1px, rgb(255, 255, 255) 10px -2.5px,
+        rgb(255, 255, 255) 10px -6px;
+    `}
+  ${(props) =>
+    !props.isWindowsXP &&
+    css`
+      width: 12.5px;
+      height: 12.5px;
+      background-image: linear-gradient(
+        135deg,
+        rgb(254, 254, 254) 16.67%,
+        rgb(198, 198, 198) 16.67%,
+        rgb(198, 198, 198) 33.33%,
+        rgb(132, 133, 132) 33.33%,
+        rgb(132, 133, 132) 50%,
+        rgb(254, 254, 254) 50%,
+        rgb(254, 254, 254) 66.67%,
+        rgb(198, 198, 198) 66.67%,
+        rgb(198, 198, 198) 83.33%,
+        rgb(132, 133, 132) 83.33%,
+        rgb(132, 133, 132) 100%
+      );
+      background-size: 5px 5px;
+      clip-path: polygon(100% 0px, 0px 100%, 100% 100%);
+      bottom: 10%;
+      right: 12%;
+    `}
 `;
 
 export default withTheme(Window);
