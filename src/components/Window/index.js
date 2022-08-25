@@ -117,7 +117,7 @@ function Window({ width, windowItem, windowId }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
-              {/*<KanbanBoard />*/}
+              <KanbanBoard />
 
               <RenderWindowComponents
                 componentsArr={windowItem["items"]}

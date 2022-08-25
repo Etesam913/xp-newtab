@@ -18,8 +18,13 @@ function SortableItem({ children, id }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
-      <DragHandle isEditModeOn={isEditModeOn} {...listeners} {...attributes}>
+    <div style={style}>
+      <DragHandle
+        ref={setNodeRef}
+        isEditModeOn={isEditModeOn}
+        {...listeners}
+        {...attributes}
+      >
         <DragIndicator />
       </DragHandle>
       {children}
@@ -27,11 +32,18 @@ function SortableItem({ children, id }) {
   );
 }
 
-const DragHandle = styled.button`
+export const DragHandle = styled.button`
   border: 0;
   background: transparent;
-  display: ${(props) => !props.isEditModeOn && "none"};
+  display: ${(props) => (!props.isEditModeOn ? "none" : "flex")};
   padding: 0;
+  box-shadow: none;
+  align-items: center;
+
+  :active {
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
 `;
 
 export default SortableItem;
