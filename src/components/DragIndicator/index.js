@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useStore } from "../../Store";
 
 function DragIndicator() {
-  const isEditModeOn = useStore((state) => state.isEditModeOn);
-
   return (
     <Indicator
       width="16"
@@ -12,7 +9,6 @@ function DragIndicator() {
       viewBox="0 0 24 24"
       fill="black"
       xmlns="http://www.w3.org/2000/svg"
-      isEditModeOn={isEditModeOn}
     >
       <path d="M8 6C8 7.10457 7.10457 8 6 8C4.89543 8 4 7.10457 4 6C4 4.89543 4.89543 4 6 4C7.10457 4 8 4.89543 8 6Z" />
       <path d="M8 12C8 13.1046 7.10457 14 6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12Z" />
@@ -28,7 +24,6 @@ function DragIndicator() {
 }
 
 const Indicator = styled.svg`
-  display: ${(props) => !props.isEditModeOn && "none"};
   cursor: ${(props) => props.theme.cursors.move};
 `;
 

@@ -1,21 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import {
-  sortableContainer,
-  sortableElement,
-  sortableHandle,
-} from "react-sortable-hoc";
 import {
   getTranslateXY,
   replaceDesiredWindowItem,
 } from "../../functions/helpers";
-import Image from "../Image";
-import YouTubeVideo from "../YouTubeVideo";
-import DragIndicator from "../DragIndicator";
-import arrayMove from "array-move";
-import SearchBar from "../SearchBar";
-import { useStore } from "../../Store";
-import Editor from "../Editor";
 
 export function handleComponentCreation(
   refToSearch,
@@ -35,7 +21,7 @@ export function addComponent(
 ) {
   let newItem = { ...windowItem };
   let tempData = [...windowData];
-  let maxId = -1;
+  let maxId = 0;
   for (let i = 0; i < newItem["items"].length; i++) {
     if (newItem["items"][i]["id"] > maxId) maxId = newItem["items"][i]["id"];
   }
@@ -71,88 +57,6 @@ export function addComponent(
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);
 }
-
-const DragHandle = sortableHandle(() => <DragIndicator />);
-
-const SortableItem = sortableElement(({ children }) => (
-  <ComponentItem>
-    <DragHandle />
-    {children}
-  </ComponentItem>
-));
-
-const SortableContainer = sortableContainer(({ children }) => {
-  return <ComponentList>{children}</ComponentList>;
-});
-
-export function RenderComponents({
-  componentsArr,
-  windowObj,
-  moveCursor,
-  autoCursor,
-}) {
-  const windowData = useStore((state) => state.windowData);
-  const setWindowData = useStore((state) => state.setWindowData);
-
-  const components = componentsArr.map((windowItem, index) => {
-    function getComponent() {
-      if (windowItem["componentName"] === "Text") {
-        return <Editor windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "Image") {
-        return <Image windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "YouTube Video") {
-        return <YouTubeVideo windowItem={windowItem} windowObj={windowObj} />;
-      } else if (windowItem["componentName"] === "Search Bar") {
-        return <SearchBar windowItem={windowItem} windowObj={windowObj} />;
-      }
-    }
-
-    return (
-      <SortableItem key={"item-" + windowObj["id"] + "-" + index} index={index}>
-        {getComponent()}
-      </SortableItem>
-    );
-  });
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    let tempComponentsArr = [...componentsArr];
-    tempComponentsArr = arrayMove(tempComponentsArr, oldIndex, newIndex);
-    let tempWindowObj = { ...windowObj };
-    tempWindowObj["items"] = tempComponentsArr;
-    let tempWindowData = [...windowData];
-    replaceDesiredWindowItem(tempWindowData, tempWindowObj);
-    setWindowData(tempWindowData);
-    document.body.style.cursor = autoCursor;
-    /*this.setState(({items}) => ({
-      items: arrayMove(items, oldIndex, newIndex),
-    }));*/
-  };
-
-  return (
-    <SortableContainer
-      useDragHandle
-      onSortEnd={onSortEnd}
-      onSortMove={() => {
-        document.body.style.cursor = moveCursor;
-      }}
-    >
-      {components}
-    </SortableContainer>
-  );
-}
-
-const ComponentList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const ComponentItem = styled.li`
-  padding: 0.25rem 0;
-  z-index: 5;
-  list-style-type: none;
-  font-family: ${(props) => props.theme.fonts.primary};
-`;
 
 // For radio buttons
 export function getSelectedComponent(componentsParent) {

@@ -66,6 +66,7 @@ export function deleteDataItem(data, setData, dataItem) {
 
 export function replaceDesiredWindowItem(windowData, windowObj) {
   for (let i = 0; i < windowData.length; i++) {
+    console.log(windowData[i]["id"], windowObj["id"]);
     if (windowData[i]["id"] === windowObj["id"]) {
       windowData[i] = windowObj;
     }

@@ -1,16 +1,14 @@
 import React, { useRef } from "react";
-import styled, { css, withTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import Draggable from "react-draggable";
-import {
-  handleComponentCreation,
-  RenderComponents,
-  setDataProperty,
-} from "./helper";
+import { handleComponentCreation, setDataProperty } from "./helper";
 import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
 import { Resizable } from "re-resizable";
+import KanbanBoard from "../KanbanBoard";
+import RenderWindowComponents from "./RenderWindowComponents";
 
-function Window({ width, windowItem, windowId, theme }) {
+function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
 
@@ -119,12 +117,13 @@ function Window({ width, windowItem, windowId, theme }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
-              <RenderComponents
+              {/*<KanbanBoard />*/}
+
+              <RenderWindowComponents
                 componentsArr={windowItem["items"]}
-                windowObj={windowItem}
-                moveCursor={theme.cursors.move}
-                autoCursor={theme.cursors.auto}
+                windowItem={windowItem}
               />
+
               {isEditModeOn && (
                 <ComponentsPanel ref={componentsPanel}>
                   <div className="field-row">Select one component to add:</div>
@@ -244,4 +243,4 @@ const ResizableDots = styled.div`
     `}
 `;
 
-export default withTheme(Window);
+export default Window;

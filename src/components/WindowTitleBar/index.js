@@ -119,6 +119,7 @@ const TitleInput = styled.input`
   font-weight: 700;
   font-size: 13px;
   width: 100%;
+  padding: 0 0 0 3px !important;
 `;
 
 const ControlButtons = styled.div`
