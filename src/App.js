@@ -1,5 +1,5 @@
 //import windows98CSS from "xp.css/dist/98.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
@@ -7,12 +7,26 @@ import SettingsWindow from "./components/SettingsWindow";
 import Startbar from "./components/Startbar";
 import { theme } from "./styles/theme";
 import { useStore } from "./Store";
+import { toggleEditOnKeyPress } from "./functions/helpers";
 
 function App() {
   const isSettingsShowing = useStore((state) => state.isSettingsShowing);
   const settingsData = useStore((state) => state.settingsData);
   const iconData = useStore((state) => state.iconData);
   const windowData = useStore((state) => state.windowData);
+
+  const toggleEditMode = useStore((state) => state.toggleEditMode);
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) =>
+      toggleEditOnKeyPress(e, toggleEditMode)
+    );
+    return () => {
+      document.removeEventListener("keydown", (e) =>
+        toggleEditOnKeyPress(e, toggleEditMode)
+      );
+    };
+  }, [toggleEditMode]);
 
   useEffect(() => {
     localStorage.setItem("windowData", JSON.stringify(windowData));

@@ -217,3 +217,9 @@ export function updateSetting(
   }
   setSettingsData(tempSettingsData);
 }
+
+export function toggleEditOnKeyPress(e, toggleEditMode) {
+  if (e.metaKey && e.key === "e") {
+    toggleEditMode();
+  }
+}
