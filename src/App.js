@@ -8,6 +8,7 @@ import Startbar from "./components/Startbar";
 import { theme } from "./styles/theme";
 import { useStore } from "./Store";
 import { toggleEditOnKeyPress } from "./functions/helpers";
+import TopBanner from "./components/TopBanner";
 
 function App() {
   const isSettingsShowing = useStore((state) => state.isSettingsShowing);
@@ -53,6 +54,7 @@ function App() {
         href={settingsData["stylesheet"]}
       />
       {isSettingsShowing && <SettingsWindow settingsData={settingsData} />}
+      <TopBanner />
       <Wrapper id="wrapper">
         <RenderWindows />
         <RenderIcons />
