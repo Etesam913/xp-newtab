@@ -53,6 +53,21 @@ export function addComponent(
       engine: "Google",
       action: "https://www.google.com/search",
     });
+  } else if (componentToAdd === "Kanban Board") {
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "Kanban Board",
+      columnHeaders: {
+        A: "To Do",
+        B: "Doing",
+        C: "Done",
+      },
+      items: {
+        A: ["🐶 Walk the dog", "🖊 Give this app a review"],
+        B: ["📝 Finish my homework"],
+        C: [],
+      },
+    });
   }
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);

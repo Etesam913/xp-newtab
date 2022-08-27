@@ -22,7 +22,13 @@ function Window({ width, windowItem, windowId }) {
 
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
-  const componentData = ["Text", "Image", "YouTube Video", "Search Bar"];
+  const componentData = [
+    "Text",
+    "Image",
+    "Kanban Board",
+    "YouTube Video",
+    "Search Bar",
+  ];
   const componentOptions = componentData.map((componentName, index) => {
     return (
       <div className="field-row" key={index}>
@@ -100,8 +106,8 @@ function Window({ width, windowItem, windowId }) {
           }}
           minWidth="275"
           minHeight={70 + 80 * windowItem["items"].length + ""}
-          maxWidth={windowItem["isMaximized"] ? "calc(100% - 0.15rem)" : "70vw"}
-          maxHeight={windowItem["isMaximized"] ? "calc(100% - 2rem)" : "70vh"}
+          maxWidth={windowItem["isMaximized"] ? "calc(100% - 0.15rem)" : "80vw"}
+          maxHeight={windowItem["isMaximized"] ? "calc(100% - 2rem)" : "80vh"}
           onResizeStop={(e, direction, ref, d) => {
             setDataProperty(windowData, setWindowData, windowItem, "size", {
               width: windowItem["size"]["width"] + d.width,
@@ -117,7 +123,7 @@ function Window({ width, windowItem, windowId }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
-              <KanbanBoard />
+              {/*<KanbanBoard />*/}
 
               <RenderWindowComponents
                 componentsArr={windowItem["items"]}

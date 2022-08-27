@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   closestCorners,
@@ -12,12 +12,41 @@ import {
 import { sortableKeyboardCoordinates, arrayMove } from "@dnd-kit/sortable";
 import Column from "./Column";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
-function KanbanBoard() {
-  const [items, setItems] = useState({
-    A: [1, 2, 3],
-    B: [4, 5, 6],
-    C: [7, 8, 9],
-  });
+import KanbanHeader from "./KanbanHeader";
+import { useStore } from "../../Store";
+import { changeItemProperty, handleDelete } from "../Window/helper";
+
+function KanbanBoard({ componentObj, windowItem }) {
+  const windowData = useStore((state) => state.windowData);
+  const setWindowData = useStore((state) => state.setWindowData);
+  const isEditModeOn = useStore((store) => store.isEditModeOn);
+  const [items, setItems] = useState(componentObj["items"]);
+  const [columnHeaders, setColumnHeaders] = useState(
+    componentObj["columnHeaders"]
+  );
+
+  useEffect(() => {
+    changeItemProperty(
+      windowItem,
+      windowData,
+      setWindowData,
+      componentObj,
+      "items",
+      items
+    );
+  }, [items]);
+
+  useEffect(() => {
+    changeItemProperty(
+      windowItem,
+      windowData,
+      setWindowData,
+      componentObj,
+      "columnHeaders",
+      columnHeaders
+    );
+  }, [columnHeaders]);
+
   const columnContainer = useRef(null);
   const [activeId, setActiveId] = useState(null);
   const [dragOverlayWidth, setDragOverlayWidth] = useState(0);
@@ -28,33 +57,84 @@ function KanbanBoard() {
     })
   );
 
+  const columnHeaderContent = Object.keys(columnHeaders).map(
+    (columnKey, index) => {
+      return (
+        <KanbanHeader
+          margin={getColumnMargin(index)}
+          columnHeaders={columnHeaders}
+          setColumnHeaders={setColumnHeaders}
+          id={columnKey}
+          key={`header-${columnKey}`}
+        />
+      );
+    }
+  );
+
+  function getColumnMargin(index) {
+    if (index === 0) return "0 0.5rem 0 0";
+    if (index === Object.keys(items).length - 1) return "0 0 0 0.5rem";
+    return "0 0.5rem";
+  }
+
+  const columnContent = Object.keys(items).map((itemKey, index) => {
+    return (
+      <Column
+        key={`column-${index}`}
+        margin={getColumnMargin(index)}
+        id={itemKey}
+        items={items}
+        setItems={setItems}
+      />
+    );
+  });
+
   return (
-    <DndContext
-      modifiers={[snapCenterToCursor]}
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <ColumnContainer ref={columnContainer}>
-        <Column id="A" items={items.A} />
-        <Column id="B" items={items.B} />
-        <Column id="C" items={items.C} />
-        <DragOverlay>
-          {activeId && (
-            <div
-              style={{
-                opacity: 0.5,
-                width: dragOverlayWidth + "px",
+    <Wrapper>
+      <DndContext
+        modifiers={[snapCenterToCursor]}
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <ColumnContainer ref={columnContainer}>
+          {columnHeaderContent}
+          {columnContent}
+
+          <DragOverlay>
+            {activeId && (
+              <div
+                style={{
+                  opacity: 0,
+                  width: dragOverlayWidth + "px",
+                }}
+              >
+                <KanbanItem>{activeId}</KanbanItem>
+              </div>
+            )}
+          </DragOverlay>
+        </ColumnContainer>
+        {isEditModeOn && (
+          <DeleteButtonContainer>
+            <button
+              type="button"
+              onClick={() => {
+                handleDelete(
+                  windowData,
+                  setWindowData,
+                  windowItem,
+                  componentObj["id"]
+                );
               }}
             >
-              <KanbanItem>{activeId}</KanbanItem>
-            </div>
-          )}
-        </DragOverlay>
-      </ColumnContainer>
-    </DndContext>
+              Delete Board
+            </button>
+          </DeleteButtonContainer>
+        )}
+      </DndContext>
+    </Wrapper>
   );
 
   function findContainer(id) {
@@ -168,9 +248,17 @@ function KanbanBoard() {
 const ColumnContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 0.5rem;
 `;
-const KanbanItem = styled.div`
-  border: 2px solid black;
+const KanbanItem = styled.div``;
+
+const DeleteButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div`
+  margin: 0.5rem 0;
 `;
 
 export default KanbanBoard;

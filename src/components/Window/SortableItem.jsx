@@ -32,7 +32,7 @@ function SortableItem({ children, id }) {
   );
 }
 
-export const DragHandle = styled.button`
+const DragHandle = styled.button`
   border: 0;
   background: transparent;
   display: ${(props) => (!props.isEditModeOn ? "none" : "flex")};

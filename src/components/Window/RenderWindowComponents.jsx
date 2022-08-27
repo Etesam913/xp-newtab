@@ -21,6 +21,7 @@ import YouTubeVideo from "../YouTubeVideo";
 import SearchBar from "../SearchBar";
 import { replaceDesiredWindowItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import KanbanBoard from "../KanbanBoard";
 
 function getComponent(componentObj, windowItem) {
   if (componentObj["componentName"] === "Text") {
@@ -31,6 +32,8 @@ function getComponent(componentObj, windowItem) {
     return <YouTubeVideo windowItem={componentObj} windowObj={windowItem} />;
   } else if (componentObj["componentName"] === "Search Bar") {
     return <SearchBar windowItem={componentObj} windowObj={windowItem} />;
+  } else if (componentObj["componentName"] === "Kanban Board") {
+    return <KanbanBoard componentObj={componentObj} windowItem={windowItem} />;
   }
 }
 
