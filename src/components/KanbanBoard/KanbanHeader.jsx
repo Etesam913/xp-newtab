@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useStore } from "../../Store";
-import { Fragment } from "react";
 
 function updateColumnHeader(text, id, columnHeaders, setColumnHeaders) {
   const copyOfColumnHeaders = { ...columnHeaders };

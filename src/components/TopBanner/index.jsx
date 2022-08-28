@@ -12,7 +12,6 @@ function TopBanner() {
 
   useEffect(() => {
     const luckyNumber = parseInt((Math.random() * 15).toFixed());
-    console.log(luckyNumber);
     if (luckyNumber === 1) {
       setShouldShowBanner(true);
       const messageIndex = parseInt(
@@ -26,8 +25,10 @@ function TopBanner() {
     return (
       <Banner>
         <BannerText>{bannerText}</BannerText>
-
-        <CloseButton onClick={() => setShouldShowBanner(false)}>
+        <CloseButton
+          data-cy="close-banner-button"
+          onClick={() => setShouldShowBanner(false)}
+        >
           <svg
             width="16"
             height="16"

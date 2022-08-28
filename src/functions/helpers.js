@@ -1,12 +1,16 @@
-export function getDefaultValue(localStorageProperty) {
+export function getDefaultValue(
+  localStorageProperty = "",
+  lookForStoredValue = true,
+  id = 0
+) {
   let defaultValue = false;
   if (localStorageProperty === "windowData") {
     defaultValue = [
       {
-        id: 0,
+        id: id,
         windowTitle: "Insert Title Here",
-        xCoord: 0,
-        yCoord: 0,
+        xCoord: 30,
+        yCoord: 30,
         hidden: false,
         items: [],
         isMaximized: false,
@@ -19,12 +23,12 @@ export function getDefaultValue(localStorageProperty) {
   } else if (localStorageProperty === "iconData") {
     defaultValue = [
       {
-        id: 0,
-        src: "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Mail.ico",
-        title: "Email",
-        xCoord: 0,
-        yCoord: 0,
-        redirect: "https://www.gmail.com",
+        id: id,
+        src: "https://via.placeholder.com/48",
+        title: "Insert Title Here",
+        xCoord: 30,
+        yCoord: 30,
+        redirect: "/",
       },
     ];
   } else if (localStorageProperty === "settingsData") {
@@ -37,11 +41,13 @@ export function getDefaultValue(localStorageProperty) {
       isWindowsXP: true,
     };
   }
+  if (lookForStoredValue) {
+    const propertyValue = JSON.parse(
+      window.localStorage.getItem(localStorageProperty)
+    );
+    if (propertyValue !== null) defaultValue = propertyValue;
+  }
 
-  const propertyValue = JSON.parse(
-    window.localStorage.getItem(localStorageProperty)
-  );
-  if (propertyValue !== null) defaultValue = propertyValue;
   return defaultValue;
 }
 
@@ -80,27 +86,9 @@ export function addDataItem(data, setData, useCase, setFocusedWindow) {
   if (setFocusedWindow) setFocusedWindow(newId);
   let newItem = {};
   if (useCase === "window") {
-    newItem = {
-      id: newId,
-      windowTitle: "Insert Title Here",
-      xCoord: 0,
-      yCoord: 0,
-      hidden: false,
-      items: [],
-      size: {
-        width: 480,
-        height: 70,
-      },
-    };
+    newItem = getDefaultValue("windowData", false, newId)[0];
   } else if (useCase === "icon") {
-    newItem = {
-      id: newId,
-      src: "https://via.placeholder.com/48",
-      title: "Insert Title Here",
-      xCoord: 0,
-      yCoord: 0,
-      redirect: "/",
-    };
+    newItem = getDefaultValue("iconData", false, newId)[0];
   }
 
   tempData.push(newItem);

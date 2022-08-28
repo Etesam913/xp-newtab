@@ -27,7 +27,6 @@ function Column({ items, setItems, id, margin }) {
       }
     }
 
-    console.log(greatestId);
     copyOfItems[id].push({
       id: greatestId + 1,
       text: "✨ This is your new item",

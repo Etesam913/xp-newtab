@@ -54,6 +54,15 @@ describe("Basic Window Tests", () => {
     cy.get("[data-cy='window-0']").as("window");
     cy.get("@window").should("have.css", "width", "1000px");
     cy.get("@window").should("have.css", "height", "628px");
+
+    cy.get("body").then(($body) => {
+      const bannerButton = $body.find("button[data-cy=close-banner-button]");
+      if (bannerButton.length > 0) {
+        bannerButton.click();
+        //evaluates as true
+      }
+    });
+
     cy.get("@maximizeButton").click();
     cy.get("@window").should("have.css", "width", "480px");
 
@@ -77,16 +86,16 @@ describe("Image Tests", () => {
   it("Creates an image", () => {
     cy.get("[data-cy='image-option-0']").click();
     cy.get("[data-cy='add-component-button-0']").click();
-    cy.get("[data-cy='align-image-0']");
-    cy.get("[data-cy='image-delete-0']");
-    cy.get("[data-cy='set-image-url-0']");
-    cy.get("[data-cy='image-size-slider-0']");
+    cy.get("[data-cy='align-image-1']");
+    cy.get("[data-cy='image-delete-1']");
+    cy.get("[data-cy='set-image-url-1']");
+    cy.get("[data-cy='image-size-slider-1']");
   });
 
   it("Changes align property of image", () => {
-    cy.get("[data-cy='align-image-0']").as("imageAlign");
-    cy.get("[data-cy='image-0']");
-    cy.get("[data-cy='image-container-0']")
+    cy.get("[data-cy='align-image-1']").as("imageAlign");
+    cy.get("[data-cy='image-1']");
+    cy.get("[data-cy='image-container-1']")
       .as("imageContainer")
       .should("have.css", "justifyContent", "flex-start");
     cy.get("@imageAlign").select("center");
@@ -96,18 +105,18 @@ describe("Image Tests", () => {
   });
 
   it("Changes Image Url", () => {
-    cy.get("[data-cy='set-image-url-0']").click();
-    cy.get("[data-cy='image-url-input-0']")
+    cy.get("[data-cy='set-image-url-1']").click();
+    cy.get("[data-cy='image-url-input-1']")
       .as("imageUrlInput")
       .clear()
       .type(blissImageUrl);
-    cy.get("[data-cy='set-image-url-update-0']").click();
-    cy.get("[data-cy='image-0']")
+    cy.get("[data-cy='set-image-url-update-1']").click();
+    cy.get("[data-cy='image-1']")
       .invoke("attr", "src")
       .should("eq", blissImageUrl);
-    cy.get("[data-cy='image-back-button-0']").as("backButton").click();
+    cy.get("[data-cy='image-back-button-1']").as("backButton").click();
     cy.get("@imageUrlInput").should("not.exist");
-    cy.get("[data-cy='set-image-url-update-0']").should("not.exist");
+    cy.get("[data-cy='set-image-url-update-1']").should("not.exist");
     cy.get("@backButton").should("not.exist");
   });
   // it("Changes size of image", () => {

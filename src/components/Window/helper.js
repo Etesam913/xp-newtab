@@ -63,8 +63,11 @@ export function addComponent(
         C: "Done",
       },
       items: {
-        A: ["🐶 Walk the dog", "🖊 Give this app a review"],
-        B: ["📝 Finish my homework"],
+        A: [
+          { id: 1, text: "🐶 Walk the dog" },
+          { id: 2, text: "🖊 Give this app a review" },
+        ],
+        B: [{ id: 3, text: "📝 Finish my homework" }],
         C: [],
       },
     });

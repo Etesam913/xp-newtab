@@ -5,7 +5,6 @@ import { handleComponentCreation, setDataProperty } from "./helper";
 import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
 import { Resizable } from "re-resizable";
-import KanbanBoard from "../KanbanBoard";
 import RenderWindowComponents from "./RenderWindowComponents";
 
 function Window({ width, windowItem, windowId }) {
@@ -123,8 +122,6 @@ function Window({ width, windowItem, windowId }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
-              {/*<KanbanBoard />*/}
-
               <RenderWindowComponents
                 componentsArr={windowItem["items"]}
                 windowItem={windowItem}

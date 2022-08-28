@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   closestCorners,
@@ -13,49 +13,39 @@ import Column from "./Column";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import KanbanHeader from "./KanbanHeader";
 import { useStore } from "../../Store";
-import { handleDelete } from "../Window/helper";
+import { changeItemProperty, handleDelete } from "../Window/helper";
 import KanbanItemDragOverlay from "./KanbanItemOverlay";
 
 function KanbanBoard({ componentObj, windowItem }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
-  const [items, setItems] = useState({
-    A: [
-      { id: 1, text: "bob's burgers" },
-      { id: 2, text: "bob's burgers" },
-    ],
-    B: [
-      { id: 3, text: "cool" },
-      { id: 4, text: "not cool" },
-    ],
-    C: [],
-  });
+  const [items, setItems] = useState(componentObj["items"]);
   const [columnHeaders, setColumnHeaders] = useState(
     componentObj["columnHeaders"]
   );
 
-  // useEffect(() => {
-  //   changeItemProperty(
-  //     windowItem,
-  //     windowData,
-  //     setWindowData,
-  //     componentObj,
-  //     "items",
-  //     items
-  //   );
-  // }, [items]);
-  //
-  // useEffect(() => {
-  //   changeItemProperty(
-  //     windowItem,
-  //     windowData,
-  //     setWindowData,
-  //     componentObj,
-  //     "columnHeaders",
-  //     columnHeaders
-  //   );
-  // }, [columnHeaders]);
+  useEffect(() => {
+    changeItemProperty(
+      windowItem,
+      windowData,
+      setWindowData,
+      componentObj,
+      "items",
+      items
+    );
+  }, [items]);
+
+  useEffect(() => {
+    changeItemProperty(
+      windowItem,
+      windowData,
+      setWindowData,
+      componentObj,
+      "columnHeaders",
+      columnHeaders
+    );
+  }, [columnHeaders]);
 
   const columnContainer = useRef(null);
   const [activeId, setActiveId] = useState(null);
@@ -117,18 +107,6 @@ function KanbanBoard({ componentObj, windowItem }) {
             items={items}
             width={dragOverlayWidth}
           />
-          {/*<DragOverlay>*/}
-          {/*  {activeId && (*/}
-          {/*    <div*/}
-          {/*      style={{*/}
-          {/*        opacity: 0.8,*/}
-          {/*        width: dragOverlayWidth + "px",*/}
-          {/*      }}*/}
-          {/*    >*/}
-          {/*      <KanbanItem>{activeId}</KanbanItem>*/}
-          {/*    </div>*/}
-          {/*  )}*/}
-          {/*</DragOverlay>*/}
         </ColumnContainer>
         {isEditModeOn && (
           <DeleteButtonContainer>
@@ -170,7 +148,6 @@ function KanbanBoard({ componentObj, windowItem }) {
   function handleDragStart(event) {
     const { active } = event;
     const { id } = active;
-    console.log(active);
     setActiveId(id);
     const widthOfEachColumn =
       columnContainer.current.clientWidth / Object.keys(items).length;
