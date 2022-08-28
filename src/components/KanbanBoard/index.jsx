@@ -15,37 +15,48 @@ import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import KanbanHeader from "./KanbanHeader";
 import { useStore } from "../../Store";
 import { changeItemProperty, handleDelete } from "../Window/helper";
+import column from "./Column";
 
 function KanbanBoard({ componentObj, windowItem }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
-  const [items, setItems] = useState(componentObj["items"]);
+  const [items, setItems] = useState({
+    A: [
+      { id: 1, text: "bob's burgers" },
+      { id: 2, text: "bob's burgers" },
+    ],
+    B: [
+      { id: 3, text: "cool" },
+      { id: 4, text: "not cool" },
+    ],
+    C: [],
+  });
   const [columnHeaders, setColumnHeaders] = useState(
     componentObj["columnHeaders"]
   );
 
-  useEffect(() => {
-    changeItemProperty(
-      windowItem,
-      windowData,
-      setWindowData,
-      componentObj,
-      "items",
-      items
-    );
-  }, [items]);
-
-  useEffect(() => {
-    changeItemProperty(
-      windowItem,
-      windowData,
-      setWindowData,
-      componentObj,
-      "columnHeaders",
-      columnHeaders
-    );
-  }, [columnHeaders]);
+  // useEffect(() => {
+  //   changeItemProperty(
+  //     windowItem,
+  //     windowData,
+  //     setWindowData,
+  //     componentObj,
+  //     "items",
+  //     items
+  //   );
+  // }, [items]);
+  //
+  // useEffect(() => {
+  //   changeItemProperty(
+  //     windowItem,
+  //     windowData,
+  //     setWindowData,
+  //     componentObj,
+  //     "columnHeaders",
+  //     columnHeaders
+  //   );
+  // }, [columnHeaders]);
 
   const columnContainer = useRef(null);
   const [activeId, setActiveId] = useState(null);
@@ -142,17 +153,25 @@ function KanbanBoard({ componentObj, windowItem }) {
       return id;
     }
 
-    return Object.keys(items).find((key) => items[key].includes(id));
+    const keys = Object.keys(items);
+    for (let i = 0; i < keys.length; i++) {
+      const columnItems = items[keys[i]];
+      for (let j = 0; j < columnItems.length; j++) {
+        if (columnItems[j].id === id) {
+          return keys[i];
+        }
+      }
+    }
   }
 
   function handleDragStart(event) {
     const { active } = event;
     const { id } = active;
     setActiveId(id);
-    const widthOfEachColumn =
-      columnContainer.current.clientWidth / Object.keys(items).length;
-    const widthOfColumnPadding = 16 * Object.keys(items).length;
-    setDragOverlayWidth(widthOfEachColumn - widthOfColumnPadding);
+    // const widthOfEachColumn =
+    //   columnContainer.current.clientWidth / Object.keys(items).length;
+    // const widthOfColumnPadding = 16 * Object.keys(items).length;
+    // setDragOverlayWidth(widthOfEachColumn - widthOfColumnPadding);
     // setDragOverlayWidth(active.rect.current.translated.width);
   }
 
@@ -163,7 +182,6 @@ function KanbanBoard({ componentObj, windowItem }) {
     // Find the containers
     const activeContainer = findContainer(id);
     const overContainer = findContainer(overId);
-
     if (
       !activeContainer ||
       !overContainer ||
@@ -177,9 +195,8 @@ function KanbanBoard({ componentObj, windowItem }) {
       const overItems = prev[overContainer];
 
       // Find the indexes for the items
-      const activeIndex = activeItems.indexOf(id);
-      const overIndex = overItems.indexOf(overId);
-
+      const activeIndex = activeItems.findIndex((obj) => obj.id === id);
+      const overIndex = overItems.findIndex((obj) => obj.id === overId);
       let newIndex;
       if (overId in prev) {
         // We're at the root droppable of a container
@@ -200,7 +217,7 @@ function KanbanBoard({ componentObj, windowItem }) {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id),
+          ...prev[activeContainer].filter((item) => item.id !== active.id),
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
@@ -227,8 +244,12 @@ function KanbanBoard({ componentObj, windowItem }) {
       return;
     }
 
-    const activeIndex = items[activeContainer].indexOf(active.id);
-    const overIndex = items[overContainer].indexOf(overId);
+    const activeIndex = items[activeContainer].findIndex(
+      (obj) => obj.id === active.id
+    );
+    const overIndex = items[overContainer].findIndex(
+      (obj) => obj.id === overId
+    );
 
     if (activeIndex !== overIndex) {
       setItems((items) => ({

@@ -3,9 +3,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import styled from "styled-components";
 import { useStore } from "../../Store";
 
-function KanbanItem({ columnId, text = "🐛 🐛 🐛", items, setItems, index }) {
+function KanbanItem({
+  columnId,
+  text = "🐛 🐛 🐛",
+  items,
+  setItems,
+  index,
+  id,
+}) {
   const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: text,
+    id: id,
   });
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 

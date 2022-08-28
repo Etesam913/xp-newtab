@@ -17,15 +17,20 @@ function Column({ items, setItems, id, margin }) {
     copyOfItems[id].push("✨ This is your new item");
     setItems(copyOfItems);
   }
+  const columnValues = items[id].map((item) => item.text);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
   return (
     <KanbanColumn margin={margin}>
-      <SortableContext items={items[id]} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={columnValues}
+        strategy={verticalListSortingStrategy}
+      >
         <ItemsContainer ref={setNodeRef}>
-          {items[id].map((value, index) => (
+          {columnValues.map((text, index) => (
             <KanbanItem
-              text={value}
+              text={text}
               columnId={id}
+              id={items[id][index].id}
               key={`item-${index}`}
               items={items}
               setItems={setItems}
