@@ -14,7 +14,24 @@ function Column({ items, setItems, id, margin }) {
 
   function addItem() {
     const copyOfItems = { ...items };
-    copyOfItems[id].push("✨ This is your new item");
+    let greatestId = 0;
+
+    // have to get the greatest id out of every kanban item to prevent collisions
+    const keys = Object.keys(copyOfItems);
+    for (let i = 0; i < keys.length; i++) {
+      const currentColumn = copyOfItems[keys[i]];
+      for (let j = 0; j < currentColumn.length; j++) {
+        if (currentColumn[j].id > greatestId) {
+          greatestId = currentColumn[j].id;
+        }
+      }
+    }
+
+    console.log(greatestId);
+    copyOfItems[id].push({
+      id: greatestId + 1,
+      text: "✨ This is your new item",
+    });
     setItems(copyOfItems);
   }
   const columnValues = items[id].map((item) => item.text);

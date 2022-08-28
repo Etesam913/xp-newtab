@@ -21,10 +21,9 @@ function KanbanItem({
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
   };
-
   function updateKanbanItem(text) {
     const copyOfItems = { ...items };
-    copyOfItems[columnId][index] = text;
+    copyOfItems[columnId][index].text = text;
     setItems(copyOfItems);
   }
 
@@ -40,7 +39,7 @@ function KanbanItem({
         <div style={{ width: "100%" }}>
           <KanbanTextArea
             type="text"
-            value={items[columnId][index]}
+            value={items[columnId][index].text}
             onChange={(e) => updateKanbanItem(e.target.value)}
           />
           <DeleteButton onClick={deleteKanbanItem}>Delete Item</DeleteButton>
