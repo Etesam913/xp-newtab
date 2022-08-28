@@ -3,7 +3,7 @@ import { TwitchEmbed as TwitchEmbedComponent } from "react-twitch-embed";
 import styled from "styled-components";
 import { useStore } from "../../Store";
 import { FlexContainer } from "../../styles/Layout";
-import { changeItemProperty } from "../Window/helper";
+import { changeItemProperty, handleDelete } from "../Window/helper";
 import { convertToSliderWidth } from "../Image";
 
 function TwitchEmbed({ componentObj, windowItem }) {
@@ -18,73 +18,121 @@ function TwitchEmbed({ componentObj, windowItem }) {
 
   const [streamName, setStreamName] = useState(componentObj["channelName"]);
   const [streamSize, setStreamSize] = useState(componentObj["size"]);
+  const [updatedStreamName, setUpdatedStreamName] = useState(
+    componentObj["channelName"]
+  );
+
+  useEffect(() => {
+    changeItemProperty(
+      windowItem,
+      windowData,
+      setWindowData,
+      componentObj,
+      "size",
+      streamSize
+    );
+  }, [streamSize]);
+
+  function handleStreamNameSubmit() {
+    if (streamName !== "") {
+      setUpdatedStreamName(streamName);
+      changeItemProperty(
+        windowItem,
+        windowData,
+        setWindowData,
+        componentObj,
+        "channelName",
+        streamName
+      );
+    }
+  }
 
   function convertToStreamSize(e) {
     const sliderVal = e.target.value;
     const ratio = sliderVal / 20;
     const ratioPercentage = ratio * 100 + "%";
-    changeItemProperty(
-      componentObj,
-      windowData,
-      setWindowData,
-      windowItem,
-      "size",
-      ratioPercentage
-    );
+    setStreamSize(ratioPercentage);
   }
 
-  return useMemo(() => {
+  const twitch = useMemo(() => {
     return (
-      <TwitchContainer>
-        {isEditModeOn && (
-          <FlexContainer
-            width="100%"
-            margin="0.5rem 0"
-            flexWrap="wrap"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <OptionItem>
-              <label htmlFor="channel-input">Twitch Channel Name:</label>
-              <FlexContainer flexWrap="wrap" justifyContent="left">
-                <StreamNameInput
-                  id="channel-input"
-                  type="text"
-                  placeholder="Put twitch chanel name here..."
-                />
-                <button>Update Stream</button>
-              </FlexContainer>
-            </OptionItem>
-            <OptionItem>
-              <label htmlFor="stream-size">Stream Size:</label>
-              <StreamSizeSlider
-                id="stream-size"
-                type="range"
-                min={2}
-                max={20}
-                defaultValue={convertToSliderWidth(componentObj["size"])}
-                onChange={convertToStreamSize}
-              />
-            </OptionItem>
-          </FlexContainer>
-        )}
-        <TwitchEmbedComponent
-          channel={streamName}
-          autoplay
-          width={componentObj["channelName"]}
-          height="100%"
-          withChat
-          darkMode
-          muted
-          onReady={handleReady}
-        />
-      </TwitchContainer>
+      <TwitchEmbedComponent
+        channel={updatedStreamName}
+        autoplay
+        width="100%"
+        height="100%"
+        withChat
+        darkMode
+        muted
+        onReady={handleReady}
+      />
     );
-  }, [isEditModeOn, componentObj, windowData]);
+  }, [updatedStreamName]);
+
+  return (
+    <ComponentWrapper>
+      {isEditModeOn && (
+        <FlexContainer
+          width="100%"
+          margin="0.5rem 0"
+          flexWrap="wrap"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <OptionItem>
+            <label htmlFor="channel-input">Twitch Channel Name:</label>
+            <FlexContainer flexWrap="wrap" justifyContent="left">
+              <StreamNameInput
+                id="channel-input"
+                type="text"
+                placeholder="Put twitch chanel name here..."
+                value={streamName}
+                onChange={(e) => setStreamName(e.target.value)}
+              />
+              <button onClick={handleStreamNameSubmit}>Update Stream</button>
+            </FlexContainer>
+          </OptionItem>
+          <OptionItem>
+            <label htmlFor="stream-size">Stream Size:</label>
+            <StreamSizeSlider
+              id="stream-size"
+              type="range"
+              min={2}
+              max={20}
+              defaultValue={convertToSliderWidth(componentObj["size"])}
+              onChange={convertToStreamSize}
+            />
+          </OptionItem>
+        </FlexContainer>
+      )}
+      <TwitchContainer width={streamSize}>{twitch}</TwitchContainer>
+      {isEditModeOn && (
+        <FlexContainer margin="0.5rem">
+          <button
+            onClick={() => {
+              handleDelete(
+                windowData,
+                setWindowData,
+                windowItem,
+                componentObj["id"]
+              );
+            }}
+          >
+            Delete
+          </button>
+        </FlexContainer>
+      )}
+    </ComponentWrapper>
+  );
 }
 
-const TwitchContainer = styled.div`
+const ComponentWrapper = styled.div`
   height: calc(100% - 7rem);
+`;
+
+const TwitchContainer = styled.div`
+  width: ${(props) => props.width};
+  height: 100%;
 `;
 
 const OptionItem = styled.span`
