@@ -6,6 +6,7 @@ import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
 import { Resizable } from "re-resizable";
 import RenderWindowComponents from "./RenderWindowComponents";
+import TwitchEmbed from "../TwitchEmbed";
 
 function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
@@ -26,6 +27,7 @@ function Window({ width, windowItem, windowId }) {
     "Image",
     "Kanban Board",
     "YouTube Video",
+    "Twitch Stream",
     "Search Bar",
   ];
   const componentOptions = componentData.map((componentName, index) => {
@@ -122,6 +124,7 @@ function Window({ width, windowItem, windowId }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
+              {/*<TwitchEmbed />*/}
               <RenderWindowComponents
                 componentsArr={windowItem["items"]}
                 windowItem={windowItem}

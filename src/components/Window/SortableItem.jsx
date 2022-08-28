@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import DragIndicator from "../DragIndicator";
 import { useStore } from "../../Store";
 
-function SortableItem({ children, id }) {
+function SortableItem({ children, id, height }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -15,6 +15,7 @@ function SortableItem({ children, id }) {
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     transition,
+    height: height,
   };
 
   return (

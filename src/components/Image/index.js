@@ -56,11 +56,6 @@ function Image({ windowObj, windowItem }) {
         ratioPercentage
       );
     }
-    function convertToSliderWidth(valToConvert) {
-      const percentageNum = parseInt(valToConvert);
-      const ratioNum = percentageNum / 100;
-      return ratioNum * 20;
-    }
 
     if (!isImageFocused && !isRedirectClicked) {
       return (
@@ -166,8 +161,6 @@ function Image({ windowObj, windowItem }) {
     }
   }
 
-  // TODO: Get window size so that image can be resized correctly if the window size is changed.
-
   return (
     <FlexContainer flexDirection={"column"} alignItems="center">
       {isEditModeOn && (
@@ -256,5 +249,11 @@ const Slider = styled.div`
   width: 9.5rem;
   margin: 0 0.5rem;
 `;
+
+export function convertToSliderWidth(valToConvert) {
+  const percentageNum = parseInt(valToConvert);
+  const ratioNum = percentageNum / 100;
+  return ratioNum * 20;
+}
 
 export default Image;

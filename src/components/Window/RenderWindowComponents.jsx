@@ -22,6 +22,7 @@ import SearchBar from "../SearchBar";
 import { replaceDesiredWindowItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
 import KanbanBoard from "../KanbanBoard";
+import TwitchEmbed from "../TwitchEmbed";
 
 function getComponent(componentObj, windowItem) {
   if (componentObj["componentName"] === "Text") {
@@ -34,6 +35,8 @@ function getComponent(componentObj, windowItem) {
     return <SearchBar windowItem={componentObj} windowObj={windowItem} />;
   } else if (componentObj["componentName"] === "Kanban Board") {
     return <KanbanBoard componentObj={componentObj} windowItem={windowItem} />;
+  } else if (componentObj["componentName"] === "Twitch Stream") {
+    return <TwitchEmbed componentObj={componentObj} windowItem={windowItem} />;
   }
 }
 
@@ -51,7 +54,13 @@ function RenderWindowComponents({ componentsArr, windowItem }) {
     .map((item) => item["id"])
     .map((componentId, index) => {
       return (
-        <SortableItem id={componentId} key={componentId}>
+        <SortableItem
+          height={
+            componentsArr[index]["componentName"] === "Twitch Stream" && "100%"
+          }
+          id={componentId}
+          key={componentId}
+        >
           {getComponent(componentsArr[index], windowItem)}
         </SortableItem>
       );
@@ -59,11 +68,13 @@ function RenderWindowComponents({ componentsArr, windowItem }) {
 
   return (
     <DndContext
+      id="bob"
       onDragEnd={handleDragEnd}
       sensors={sensors}
       collisionDetection={closestCenter}
     >
       <SortableContext
+        style={{ color: "orange" }}
         items={componentsArr.map((item) => item["id"])}
         strategy={verticalListSortingStrategy}
       >

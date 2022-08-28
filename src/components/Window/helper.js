@@ -71,6 +71,13 @@ export function addComponent(
         C: [],
       },
     });
+  } else if (componentToAdd === "Twitch Stream") {
+    newItem["items"].push({
+      id: maxId + 1,
+      componentName: "Twitch Stream",
+      channelName: "xqc",
+      size: "100%",
+    });
   }
   replaceDesiredWindowItem(tempData, newItem);
   setWindowData(tempData);
