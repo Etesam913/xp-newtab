@@ -14,6 +14,7 @@ function KanbanItem({
   const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: id,
   });
+  const settingsData = useStore((state) => state.settingsData);
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
   const style = {
@@ -34,7 +35,10 @@ function KanbanItem({
   }
 
   return (
-    <KanbanItemContainer style={style}>
+    <KanbanItemContainer
+      style={style}
+      isWindowsXP={settingsData["isWindowsXP"]}
+    >
       {isEditModeOn ? (
         <div style={{ width: "100%" }}>
           <KanbanTextArea
@@ -64,7 +68,7 @@ const KanbanItemContainer = styled.div`
   display: flex;
   margin: 0.5rem 0;
   align-items: center;
-  background-color: #d5d1c1;
+  background-color: ${(props) => (props.isWindowsXP ? "#d5d1c1" : "#bdbdbd")};
 `;
 
 const TextContainer = styled.p`

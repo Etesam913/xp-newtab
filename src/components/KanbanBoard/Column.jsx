@@ -8,6 +8,7 @@ import KanbanItem from "./KanbanItem";
 import { useStore } from "../../Store";
 
 function Column({ items, setItems, id, margin }) {
+  const settingsData = useStore((state) => state.settingsData);
   const { setNodeRef } = useDroppable({
     id,
   });
@@ -36,7 +37,7 @@ function Column({ items, setItems, id, margin }) {
   const columnValues = items[id].map((item) => item.text);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
   return (
-    <KanbanColumn margin={margin}>
+    <KanbanColumn margin={margin} isWindowsXP={settingsData["isWindowsXP"]}>
       <SortableContext
         items={columnValues}
         strategy={verticalListSortingStrategy}
@@ -65,10 +66,9 @@ function Column({ items, setItems, id, margin }) {
 }
 
 const KanbanColumn = styled.div`
-  background-color: #f2eedc;
+  background-color: ${(props) => (props.isWindowsXP ? "#f2eedc" : "#dddddd")};
   padding: 0 0.6rem;
   margin: ${(props) => props.margin};
-  border-radius: 0 0 0.15rem 0.15rem;
 `;
 
 const ItemsContainer = styled.div`

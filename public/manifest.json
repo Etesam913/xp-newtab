@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "XP Newtab",
   "author": "Etesam Ansari",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A new tab extension that is in the style of Windows XP.",
   "chrome_url_overrides": {
     "newtab": "index.html"

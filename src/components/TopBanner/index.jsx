@@ -11,7 +11,7 @@ function TopBanner() {
   const [bannerText, setBannerText] = useState("");
 
   useEffect(() => {
-    const luckyNumber = parseInt((Math.random() * 15).toFixed());
+    const luckyNumber = parseInt((Math.random() * 10).toFixed());
     if (luckyNumber === 1) {
       setShouldShowBanner(true);
       const messageIndex = parseInt(

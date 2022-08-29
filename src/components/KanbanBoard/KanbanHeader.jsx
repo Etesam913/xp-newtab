@@ -9,8 +9,10 @@ function updateColumnHeader(text, id, columnHeaders, setColumnHeaders) {
 
 function KanbanHeader({ columnHeaders, id, setColumnHeaders, margin }) {
   const isEditModeOn = useStore((store) => store.isEditModeOn);
+  const settingsData = useStore((state) => state.settingsData);
+
   return (
-    <HeaderContainer margin={margin}>
+    <HeaderContainer isWindowsXP={settingsData["isWindowsXP"]} margin={margin}>
       {isEditModeOn ? (
         <KanbanTitleInput
           type="text"
@@ -33,10 +35,9 @@ function KanbanHeader({ columnHeaders, id, setColumnHeaders, margin }) {
 }
 
 const HeaderContainer = styled.div`
-  background-color: #f2eedc;
-  padding: 0.4rem 0.6rem;
+  background-color: ${(props) => (props.isWindowsXP ? "#f2eedc" : "#dddddd")};
+  padding: 0.75rem 0.6rem 0.4rem;
   margin: ${(props) => props.margin};
-  border-radius: 0.15rem 0.15rem 0 0;
 `;
 
 const KanbanTitle = styled.h2`

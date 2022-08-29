@@ -6,7 +6,6 @@ import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
 import { Resizable } from "re-resizable";
 import RenderWindowComponents from "./RenderWindowComponents";
-import TwitchEmbed from "../TwitchEmbed";
 
 function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
@@ -106,7 +105,9 @@ function Window({ width, windowItem, windowId }) {
             bottomLeft: false,
           }}
           minWidth="275"
-          minHeight={70 + 80 * windowItem["items"].length + ""}
+          minHeight={
+            isEditModeOn ? "250px" : 70 + 80 * windowItem["items"].length + "px"
+          }
           maxWidth={windowItem["isMaximized"] ? "calc(100% - 0.15rem)" : "80vw"}
           maxHeight={windowItem["isMaximized"] ? "calc(100% - 2rem)" : "80vh"}
           onResizeStop={(e, direction, ref, d) => {
