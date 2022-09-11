@@ -31,14 +31,17 @@ function StartWindow({ isWindowsXP, startWindow, setIsStartWindowShowing }) {
             <WindowsXPStartbarItem
               identifier="Create A New Window"
               dataCy="create-window-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Add Icon"
               dataCy="add-icon-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Edit Mode"
               dataCy="edit-mode-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
             />
           </WindowsXPStartBody>
           <WindowsXPStartFooter image={startFooterImg} />

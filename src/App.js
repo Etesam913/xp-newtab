@@ -77,7 +77,7 @@ const GlobalStyle = createGlobalStyle`
     background-size: cover; 
     height: 100%;
     width: 100%;
-    //background: ${(props) => props.background};
+    background: ${(props) => props.background};
     background-image: url(${(props) => props.backgroundImage}) ;
     background-repeat: no-repeat;
     background-position: center center;

@@ -29,8 +29,10 @@ function handleClick(
     setIsStartWindowShowing(false);
   } else if (identifier === "Create A New Window") {
     addDataItem(windowData, setWindowData, "window", setFocusedWindow);
+    setIsStartWindowShowing(false);
   } else if (identifier === "Add Icon") {
     addDataItem(iconData, setIconData, "icon");
+    setIsStartWindowShowing(false);
   }
 }
 
