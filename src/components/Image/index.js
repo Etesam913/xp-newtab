@@ -162,7 +162,11 @@ function Image({ windowObj, windowItem }) {
   }
 
   return (
-    <FlexContainer flexDirection={"column"} alignItems="center">
+    <FlexContainer
+      margin="0.5rem 0"
+      flexDirection={"column"}
+      alignItems="center"
+    >
       {isEditModeOn && (
         <FlexContainer margin={"0 0 .5rem 0"} width={"100%"}>
           {handleOptions()}

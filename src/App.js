@@ -72,12 +72,21 @@ const Wrapper = styled.div`
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${(props) => props.background};
-    background-image: url(${(props) => props.backgroundImage});
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover; 
+    height: 100%;
+    width: 100%;
+    //background: ${(props) => props.background};
+    background-image: url(${(props) => props.backgroundImage}) ;
     background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
     background-size: cover;
     cursor: ${(props) => props.theme.cursors.auto};
     overflow: hidden;
+    position: fixed;
+    
     
   }
   ::selection{

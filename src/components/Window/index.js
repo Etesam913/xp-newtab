@@ -26,7 +26,6 @@ function Window({ width, windowItem, windowId }) {
     "Image",
     "Kanban Board",
     "YouTube Video",
-    "Twitch Stream",
     "Search Bar",
   ];
   const componentOptions = componentData.map((componentName, index) => {
@@ -125,7 +124,6 @@ function Window({ width, windowItem, windowId }) {
               isMaximized={windowItem["isMaximized"]}
               role="tabpanel"
             >
-              {/*<TwitchEmbed />*/}
               <RenderWindowComponents
                 componentsArr={windowItem["items"]}
                 windowItem={windowItem}

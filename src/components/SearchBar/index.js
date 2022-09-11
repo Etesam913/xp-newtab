@@ -83,6 +83,7 @@ const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 0.5rem 0;
 `;
 
 const SearchInput = styled.input`
