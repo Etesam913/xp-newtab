@@ -4,11 +4,11 @@ import styled, { keyframes } from "styled-components";
 function TopBanner() {
   const messages = [
     "📝 Did you know that typing ctrl+e will toggle edit mode?",
-    "😉 It would be greatly appreciated if you could write a review for the extension:\n https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke",
+    "😉 It would be greatly appreciated if you could write a review for the extension: ",
     "✨ Did you know that you can switch the theme from Windows XP to Windows 98 in the settings menu?",
   ];
   const [shouldShowBanner, setShouldShowBanner] = useState(false);
-  const [bannerText, setBannerText] = useState("");
+  const [bannerIndex, setBannerIndex] = useState("");
 
   useEffect(() => {
     const luckyNumber = parseInt((Math.random() * 10).toFixed());
@@ -17,14 +17,25 @@ function TopBanner() {
       const messageIndex = parseInt(
         (Math.random() * (messages.length - 1)).toFixed()
       );
-      setBannerText(messages[messageIndex]);
+      setBannerIndex(messageIndex);
     }
   }, []);
 
   if (shouldShowBanner) {
     return (
       <Banner>
-        <BannerText>{bannerText}</BannerText>
+        <BannerText>
+          {bannerIndex === 0 && messages[0]}
+          {bannerIndex === 1 && (
+            <Fragment>
+              {messages[1]}
+              <BannerLink href="https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke">
+                here
+              </BannerLink>
+            </Fragment>
+          )}
+          {bannerIndex === 2 && messages[2]}
+        </BannerText>
         <CloseButton
           data-cy="close-banner-button"
           onClick={() => setShouldShowBanner(false)}
@@ -98,6 +109,10 @@ const CloseButton = styled.button`
   :focus {
     box-shadow: none !important;
   }
+`;
+
+const BannerLink = styled.a`
+  color: #1db6e9;
 `;
 
 export default TopBanner;
