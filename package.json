@@ -8,7 +8,6 @@
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
     "@lexical/react": "^0.3.5",
-    "array-move": "^3.0.1",
     "lexical": "^0.3.5",
     "re-resizable": "^6.9.9",
     "react": "18.2.0",
@@ -16,9 +15,7 @@
     "react-dom": "18.2.0",
     "react-draggable": "^4.4.3",
     "react-scripts": "^5.0.0",
-    "react-twitch-embed": "^3.0.1",
     "styled-components": "^5.3.5",
-    "web-vitals": "^1.0.1",
     "xp.css": "^0.2.4",
     "zustand": "^3.7.0"
   },
