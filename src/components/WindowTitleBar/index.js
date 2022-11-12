@@ -48,7 +48,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         notFocused={focusedWindow !== windowItem["id"]}
       >
         <TitleBarButton
-          isWindowsXP={settingsData["isWindowsXP"]}
+          windowsOS={settingsData["windowsOS"]}
           data-cy={`minimize-button-${windowId}`}
           aria-label="Minimize"
           onClick={() => {
@@ -64,11 +64,11 @@ function WindowTitleBar({ windowItem, windowId }) {
         <MaximizeButton
           data-cy={`maximize-button-${windowId}`}
           aria-label={
-            !settingsData["isWindowsXP"] && windowItem["isMaximized"]
+            settingsData["windowsOS"] === 1 && windowItem["isMaximized"]
               ? "Restore"
               : "Maximize"
           }
-          isWindowsXP={settingsData["isWindowsXP"]}
+          windowsOS={settingsData["windowsOS"]}
           isMaximized={windowItem["isMaximized"]}
           maximizeSecond={maximizeSecond}
           onClick={() => {
@@ -82,7 +82,7 @@ function WindowTitleBar({ windowItem, windowId }) {
           }}
         />
         <TitleBarButton
-          isWindowsXP={settingsData["isWindowsXP"]}
+          windowsOS={settingsData["windowsOS"]}
           data-cy={`close-button-${windowId}`}
           aria-label="Close"
           onClick={() => {
@@ -129,14 +129,14 @@ const ControlButtons = styled.div`
 
 export const TitleBarButton = styled.button`
   ${(props) =>
-    props.isWindowsXP &&
+    props.windowsOS === 0 &&
     css`
       height: 22px;
       width: 22px;
     `}
 
   ${(props) =>
-    !props.isWindowsXP &&
+    props.windowsOS === 1 &&
     css`
       height: 14px;
       width: 16px;
@@ -145,7 +145,7 @@ export const TitleBarButton = styled.button`
 
 const MaximizeButton = styled(TitleBarButton)`
   ${(props) =>
-    props.isWindowsXP &&
+    props.windowsOS === 0 &&
     css`
       background-image: ${(props) =>
         props.isMaximized && `url(${props.maximizeSecond})`} !important;

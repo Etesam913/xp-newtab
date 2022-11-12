@@ -44,7 +44,7 @@ function Startbar() {
     const windowItem = item;
     return (
       <Fragment>
-        {settingsData["isWindowsXP"] ? (
+        {settingsData["windowsOS"] === 0 && (
           <WindowsXPTab
             tabBackgroundImg={tabBackgroundImg}
             pressed={!item["hidden"]}
@@ -63,7 +63,8 @@ function Startbar() {
           >
             {item["windowTitle"]}
           </WindowsXPTab>
-        ) : (
+        )}
+        {settingsData["windowsOS"] === 1 && (
           <Windows98Tab
             data-cy={`tab-${index}`}
             pressed={!item["hidden"]}
@@ -128,7 +129,7 @@ function Startbar() {
 
   return (
     <Bar>
-      {settingsData["isWindowsXP"] ? (
+      {settingsData["windowsOS"] === 0 && (
         <WindowsXPStartButton
           data-cy="start-button"
           ref={startButton}
@@ -139,7 +140,8 @@ function Startbar() {
             setIsStartWindowShowing(!isStartWindowShowing);
           }}
         />
-      ) : (
+      )}
+      {settingsData["windowsOS"] === 1 && (
         <Fragment>
           <Windows98StartButton
             ref={startButton}
@@ -153,26 +155,27 @@ function Startbar() {
           <Windows98Bar />
         </Fragment>
       )}
-
       {isStartWindowShowing && (
         <StartWindow
-          isWindowsXP={settingsData["isWindowsXP"]}
+          windowsOS={settingsData["windowsOS"]}
           startWindow={startWindow}
           setIsStartWindowShowing={setIsStartWindowShowing}
         />
       )}
-      {settingsData["isWindowsXP"] ? (
+      {settingsData["windowsOS"] === 0 && (
         <BlueSegment blueBarImg={blueBarImg} />
-      ) : (
+      )}
+      {settingsData["windowsOS"] === 1 && (
         <GraySegment grayBarImg={grayBarImg} />
       )}
-
       <TabContainer>{tabs}</TabContainer>
-      {settingsData["isWindowsXP"] ? (
+
+      {settingsData["windowsOS"] === 0 && (
         <WindowsXPTimeSegment timeBarImg={timeBarImg}>
           {time}
         </WindowsXPTimeSegment>
-      ) : (
+      )}
+      {settingsData["windowsOS"] === 1 && (
         <Fragment>
           <Windows98Bar />
           <Windows98TimeSegment>{time}</Windows98TimeSegment>

@@ -14,10 +14,10 @@ import React, { Fragment } from "react";
 import { WindowsXPStartbarItem, Windows98StartbarItem } from "./items";
 import { FlexContainer } from "../../styles/Layout";
 
-function StartWindow({ isWindowsXP, startWindow, setIsStartWindowShowing }) {
+function StartWindow({ windowsOS, startWindow, setIsStartWindowShowing }) {
   return (
     <Fragment>
-      {isWindowsXP ? (
+      {windowsOS === 0 && (
         <WindowsXPStartWindow ref={startWindow}>
           <WindowsXPStartHeader image={startHeaderImg}>
             Administrator
@@ -46,7 +46,8 @@ function StartWindow({ isWindowsXP, startWindow, setIsStartWindowShowing }) {
           </WindowsXPStartBody>
           <WindowsXPStartFooter image={startFooterImg} />
         </WindowsXPStartWindow>
-      ) : (
+      )}
+      {windowsOS === 1 && (
         <Windows98StartWindow ref={startWindow}>
           <FlexContainer
             height="100%"

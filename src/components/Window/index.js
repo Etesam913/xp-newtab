@@ -158,7 +158,7 @@ function Window({ width, windowItem, windowId }) {
 }
 
 function BottomRightHandle({ settingsData }) {
-  return <ResizableDots isWindowsXP={settingsData["isWindowsXP"]} />;
+  return <ResizableDots windowsOS={settingsData["windowsOS"]} />;
 }
 
 const WindowContainer = styled.div`
@@ -208,7 +208,7 @@ const WindowPanel = styled.article`
 const ResizableDots = styled.div`
   position: relative;
   ${(props) =>
-    props.isWindowsXP &&
+    props.windowsOS === 0 &&
     css`
       width: 2px;
       height: 2px;
@@ -223,7 +223,7 @@ const ResizableDots = styled.div`
         rgb(255, 255, 255) 10px -6px;
     `}
   ${(props) =>
-    !props.isWindowsXP &&
+    props.windowsOS === 1 &&
     css`
       width: 12.5px;
       height: 12.5px;

@@ -42,7 +42,7 @@ function SettingsWindow({ settingsData }) {
           <div className="title-bar-text"> Settings</div>
           <div className="title-bar-controls">
             <TitleBarButton
-              isWindowsXP={settingsData["isWindowsXP"]}
+              windowsOS={settingsData["windowsOS"]}
               aria-label="Close"
               onClick={() => {
                 setIsSettingsShowing(false);

@@ -1,6 +1,10 @@
 //import windows98CSS from "xp.css/dist/98.css";
 import React, { useEffect } from "react";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import styled, {
+  createGlobalStyle,
+  css,
+  ThemeProvider,
+} from "styled-components";
 import RenderWindows from "./data/RenderWindows";
 import RenderIcons from "./data/RenderIcons";
 import SettingsWindow from "./components/SettingsWindow";
@@ -44,7 +48,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle
-        isWindowsXP={settingsData["isWindowsXP"]}
+        windowsOS={settingsData["windowsOS"]}
         background={settingsData["backgroundColor"]}
         backgroundImage={settingsData["backgroundImage"]}
       />
@@ -90,7 +94,18 @@ const GlobalStyle = createGlobalStyle`
     
   }
   ::selection{
-    background: ${(props) => (props.isWindowsXP ? "#1064cc" : "#010080")};
+    ${(props) =>
+      props.windowsOS === 0 &&
+      css`
+        background: #1064cc;
+      `};
+
+    ${(props) =>
+      props.windowsOS === 1 &&
+      css`
+        background: #010080;
+      `};
+
     color: white;
   }
   .window {

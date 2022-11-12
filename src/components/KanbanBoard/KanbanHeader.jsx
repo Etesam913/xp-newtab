@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useStore } from "../../Store";
 
 function updateColumnHeader(text, id, columnHeaders, setColumnHeaders) {
@@ -12,7 +12,7 @@ function KanbanHeader({ columnHeaders, id, setColumnHeaders, margin }) {
   const settingsData = useStore((state) => state.settingsData);
 
   return (
-    <HeaderContainer isWindowsXP={settingsData["isWindowsXP"]} margin={margin}>
+    <HeaderContainer windowsOS={settingsData["windowsOS"]} margin={margin}>
       {isEditModeOn ? (
         <KanbanTitleInput
           type="text"
@@ -35,9 +35,20 @@ function KanbanHeader({ columnHeaders, id, setColumnHeaders, margin }) {
 }
 
 const HeaderContainer = styled.div`
-  background-color: ${(props) => (props.isWindowsXP ? "#f2eedc" : "#dddddd")};
   padding: 0.75rem 0.6rem 0.4rem;
   margin: ${(props) => props.margin};
+
+  ${(props) =>
+    props.windowsOS === 0 &&
+    css`
+      background-color: #f2eedc;
+    `};
+
+  ${(props) =>
+    props.windowsOS === 1 &&
+    css`
+      background-color: #dddddd;
+    `};
 `;
 
 const KanbanTitle = styled.h2`

@@ -2,7 +2,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDroppable } from "@dnd-kit/core";
 import KanbanItem from "./KanbanItem";
 import { useStore } from "../../Store";
@@ -37,7 +37,7 @@ function Column({ items, setItems, id, margin }) {
   const columnValues = items[id].map((item) => item.text);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
   return (
-    <KanbanColumn margin={margin} isWindowsXP={settingsData["isWindowsXP"]}>
+    <KanbanColumn margin={margin} windowsOS={settingsData["windowsOS"]}>
       <SortableContext
         items={columnValues}
         strategy={verticalListSortingStrategy}
@@ -66,7 +66,18 @@ function Column({ items, setItems, id, margin }) {
 }
 
 const KanbanColumn = styled.div`
-  background-color: ${(props) => (props.isWindowsXP ? "#f2eedc" : "#dddddd")};
+  ${(props) =>
+    props.windowsOS === 0 &&
+    css`
+      background-color: #f2eedc;
+    `};
+
+  ${(props) =>
+    props.windowsOS === 1 &&
+    css`
+      background-color: #dddddd;
+    `};
+
   padding: 0 0.6rem;
   margin: ${(props) => props.margin};
 `;

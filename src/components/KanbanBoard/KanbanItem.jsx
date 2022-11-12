@@ -1,6 +1,6 @@
 import DragIndicator from "../DragIndicator";
 import { useSortable } from "@dnd-kit/sortable";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useStore } from "../../Store";
 
 function KanbanItem({
@@ -35,10 +35,7 @@ function KanbanItem({
   }
 
   return (
-    <KanbanItemContainer
-      style={style}
-      isWindowsXP={settingsData["isWindowsXP"]}
-    >
+    <KanbanItemContainer style={style} windowsOS={settingsData["windowsOS"]}>
       {isEditModeOn ? (
         <div style={{ width: "100%" }}>
           <KanbanTextArea
@@ -68,7 +65,17 @@ const KanbanItemContainer = styled.div`
   display: flex;
   margin: 0.5rem 0;
   align-items: center;
-  background-color: ${(props) => (props.isWindowsXP ? "#d5d1c1" : "#bdbdbd")};
+  ${(props) =>
+    props.windowsOS === 0 &&
+    css`
+      background-color: #d5d1c1;
+    `};
+
+  ${(props) =>
+    props.windowsOS === 1 &&
+    css`
+      background-color: #bdbdbd;
+    `};
 `;
 
 const TextContainer = styled.p`

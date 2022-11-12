@@ -41,6 +41,35 @@ export function AppearanceTab({ imageInput, colorInput }) {
     }
   }
 
+  function handleOSChange(e) {
+    const newOS = e.target.value;
+    if (newOS === "Windows XP") {
+      const stylesheet = "https://unpkg.com/xp.css";
+      updateSetting(
+        settingsData,
+        setSettingsData,
+        ["windowsOS", "stylesheet"],
+        [0, stylesheet]
+      );
+    } else if (newOS === "Windows 98") {
+      const stylesheet = "https://unpkg.com/98.css";
+      updateSetting(
+        settingsData,
+        setSettingsData,
+        ["windowsOS", "stylesheet"],
+        [1, stylesheet]
+      );
+    } else if (newOS === "Windows 7") {
+      const stylesheet = "https://unpkg.com/7.css";
+      updateSetting(
+        settingsData,
+        setSettingsData,
+        ["windowsOS", "stylesheet"],
+        [2, stylesheet]
+      );
+    }
+  }
+
   useEffect(() => {
     updateSetting(settingsData, setSettingsData, "backgroundColor", color);
   }, [color]);
@@ -116,8 +145,13 @@ export function AppearanceTab({ imageInput, colorInput }) {
       </FlexContainer>
       <Header1>Change Styles</Header1>
       <FlexContainer justifyContent="flex-start">
-        <Header5 margin="0 0.5rem 0 0">Windows XP</Header5>
-        <Toggle
+        <select onChange={handleOSChange}>
+          <option selected={settingsData["windowsOS"] === 0}>Windows XP</option>
+          <option selected={settingsData["windowsOS"] === 1}>Windows 98</option>
+          <option selected={settingsData["windowsOS"] === 2}>Windows 7</option>
+        </select>
+        {/*<Header5 margin="0 0.5rem 0 0">Windows XP</Header5>
+         <Toggle
           stateVal={!settingsData["isWindowsXP"]}
           toggleStateVal={() => {
             updateSetting(
@@ -132,8 +166,8 @@ export function AppearanceTab({ imageInput, colorInput }) {
               ]
             );
           }}
-        />
-        <Header5 margin="0 0 0 0.5rem">Windows 98</Header5>
+        /> 
+        <Header5 margin="0 0 0 0.5rem">Windows 98</Header5>*/}
       </FlexContainer>
     </article>
   );

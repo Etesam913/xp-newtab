@@ -38,7 +38,8 @@ export function getDefaultValue(
         "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
       draggingGrid: "0px",
       stylesheet: "https://unpkg.com/xp.css",
-      isWindowsXP: true,
+      // 0 -> windowsXP; 1-> windows98; 2-> windows 7
+      windowsOS: 0,
     };
   }
   if (lookForStoredValue) {

@@ -1,5 +1,5 @@
 import { DragOverlay } from "@dnd-kit/core";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useStore } from "../../Store";
 
 function KanbanItemDragOverlay({ activeId, items, width }) {
@@ -14,12 +14,13 @@ function KanbanItemDragOverlay({ activeId, items, width }) {
       }
     }
   }
+  console.log(settingsData["windowsOS"]);
 
   return (
     <DragOverlay>
       {activeId && (
         <KanbanItemContainer
-          isWindowsXP={settingsData["isWindowsXP"]}
+          windowsOS={settingsData["windowsOS"]}
           width={width + "px"}
         >
           {getText()}
@@ -32,7 +33,18 @@ function KanbanItemDragOverlay({ activeId, items, width }) {
 const KanbanItemContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.isWindowsXP ? "#d5d1c1" : "#bdbdbd")};
+
+  ${(props) =>
+    props.windowsOS === 0 &&
+    css`
+      background-color: #d5d1c1;
+    `};
+
+  ${(props) =>
+    props.windowsOS === 1 &&
+    css`
+      background-color: #bdbdbd;
+    `};
   opacity: 0.6;
   padding: 0.35rem;
   font-size: 0.8rem;
