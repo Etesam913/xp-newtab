@@ -7,6 +7,7 @@ import {
   Windows98Logo,
   WindowsXPTab,
   Windows98Tab,
+  Windows7Tab,
   Windows98Bar,
   WindowsXPTimeSegment,
   Windows98TimeSegment,
@@ -90,7 +91,7 @@ function Startbar() {
         )}
 
         {settingsData["windowsOS"] === 2 && (
-          <Windows98Tab
+          <Windows7Tab
             data-cy={`tab-${index}`}
             pressed={!item["hidden"]}
             onClick={() => {
@@ -107,7 +108,7 @@ function Startbar() {
             key={`tab-${index}`}
           >
             {item["windowTitle"]}
-          </Windows98Tab>
+          </Windows7Tab>
         )}
       </Fragment>
     );
@@ -209,7 +210,7 @@ function Startbar() {
       {settingsData["windowsOS"] === 2 && (
         <Windows7Segment grayBarImg={grayBarImg} />
       )}
-      <TabContainer>{tabs}</TabContainer>
+      <TabContainer windowsOS={settingsData["windowsOS"]}>{tabs}</TabContainer>
 
       {settingsData["windowsOS"] === 0 && (
         <WindowsXPTimeSegment timeBarImg={timeBarImg}>

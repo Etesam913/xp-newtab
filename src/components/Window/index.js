@@ -255,12 +255,7 @@ const ResizableDots = styled.div`
 
       right: 27%;
       bottom: -34%;
-      box-shadow: rgba(0, 0, 0, 0.25) 2px 0, rgba(0, 0, 0, 0.25) 5.5px 0,
-        rgba(0, 0, 0, 0.25) 9px 0, rgba(0, 0, 0, 0.25) 5.5px -3.5px,
-        rgba(0, 0, 0, 0.25) 9px -3.5px, rgba(0, 0, 0, 0.25) 9px -7px,
-        rgb(255, 255, 255) 3px 1px, rgb(255, 255, 255) 6.5px 1px,
-        rgb(255, 255, 255) 10px 1px, rgb(255, 255, 255) 10px -2.5px,
-        rgb(255, 255, 255) 10px -6px;
+      box-shadow: none;
     `}
 `;
 

@@ -68,18 +68,18 @@ export const Windows7StartButton = styled.button`
 
   background-image: url(${(props) => props.backgroundImage});
   padding: 0;
-  background-position-x: 4px;
+  background-position-x: 7px;
   background-position-y: -7px;
   &:hover {
     background-color: none !important;
-    background-position-x: 4px !important;
+    background-position-x: 7px !important;
     background-position-y: -60px !important;
     background-image: url(${(props) => props.backgroundImage}) !important;
   }
 
   &:active {
     background-color: none !important;
-    background-position-x: 4px !important;
+    background-position-x: 7px !important;
     background-position-y: -114px !important;
     background-image: url(${(props) => props.backgroundImage}) !important;
   }
@@ -189,12 +189,12 @@ export const Windows7TimeSegment = styled.div`
 export const TabContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 4px;
+  padding: 0 ${(props) => (props.windowsOS === 2 ? "0" : "4px")};
   color: white;
   width: 100%;
   font-family: ${(props) => props.theme.fonts.primary};
   overflow-x: auto;
-  height: 30px;
+  height: 100%;
 `;
 
 export const WindowsXPTab = styled.button`
@@ -270,6 +270,29 @@ export const Windows98Tab = styled.button`
       background-size: 4px 4px;
       background-position: 0px 0px, 2px 2px;
     `}
+`;
+
+export const Windows7Tab = styled.button`
+  height: 100%;
+  background: none;
+  color: white;
+  width: 8rem;
+  min-width: 1rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 0;
+  &:hover {
+    color: #343434;
+  }
+  ${(props) =>
+    props.pressed &&
+    css`
+      background: linear-gradient(180deg, #e5f4fd 45%, #b3e0f9 0);
+      color: #343434;
+      border-color: #72a2c5;
+    `};
 `;
 
 export const WindowsXPStartWindow = styled.div`
