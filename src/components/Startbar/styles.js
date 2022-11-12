@@ -6,6 +6,7 @@ export const Bar = styled.div`
   z-index: 4;
   position: absolute;
   align-items: center;
+  height: ${(props) => (props.windowsOS === 2 ? "47px" : "30px")};
 `;
 
 export const WindowsXPStartButton = styled.button`
@@ -61,6 +62,29 @@ export const Windows98Bar = styled.div`
   background: rgb(198, 198, 198) none repeat scroll 0 0;
 `;
 
+export const Windows7StartButton = styled.button`
+  height: 100%;
+  width: 80px;
+
+  background-image: url(${(props) => props.backgroundImage});
+  padding: 0;
+  background-position-x: 4px;
+  background-position-y: -7px;
+  &:hover {
+    background-color: none !important;
+    background-position-x: 4px !important;
+    background-position-y: -60px !important;
+    background-image: url(${(props) => props.backgroundImage}) !important;
+  }
+
+  &:active {
+    background-color: none !important;
+    background-position-x: 4px !important;
+    background-position-y: -114px !important;
+    background-image: url(${(props) => props.backgroundImage}) !important;
+  }
+`;
+
 export const Windows98Logo = styled.img`
   height: 18px;
   width: 18px;
@@ -68,7 +92,7 @@ export const Windows98Logo = styled.img`
   pointer-events: none;
 `;
 
-export const BlueSegment = styled.div`
+export const WindowsXPSegment = styled.div`
   background-image: url(${(props) => props.blueBarImg});
   width: 100%;
   position: absolute;
@@ -76,10 +100,10 @@ export const BlueSegment = styled.div`
   z-index: -1;
 `;
 
-export const GraySegment = styled.div`
+export const Windows98Segment = styled.div`
   width: 100%;
   position: absolute;
-  height: 30px;
+  height: 100%;
   z-index: -1;
   border-style: solid;
   border-width: 2px;
@@ -89,6 +113,28 @@ export const GraySegment = styled.div`
     rgb(132, 133, 132) -1px -1px 0px 1px inset;
   box-sizing: border-box;
   background: rgb(198, 198, 198) none repeat scroll 0 0;
+`;
+
+export const Windows7Segment = styled.div`
+  background: linear-gradient(
+      90deg,
+      hsla(0, 0%, 100%, 0.4),
+      rgba(0, 0, 0, 0.1),
+      hsla(0, 0%, 100%, 0.2)
+    ),
+    linear-gradient(
+      55deg,
+      transparent,
+      rgba(0, 0, 0, 0.1) 20%,
+      rgba(0, 0, 0, 0.1) 50%,
+      transparent 53%
+    ),
+    #4580c4cf;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  box-shadow: inset 0 0.5px #fff;
 `;
 
 export const WindowsXPTimeSegment = styled.div`
@@ -119,6 +165,25 @@ export const Windows98TimeSegment = styled.div`
   margin: 0 8px 0 4px;
   padding: 0 10px;
   white-space: nowrap;
+`;
+
+export const Windows7TimeSegment = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  font-family: "Helvetica";
+  box-sizing: border-box;
+  margin: 0 4px 0 4px;
+
+  white-space: nowrap;
+  height: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  justify-content: space-evenly;
 `;
 
 export const TabContainer = styled.div`

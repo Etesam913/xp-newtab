@@ -1,19 +1,23 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import {
   Bar,
-  BlueSegment,
   TabContainer,
   WindowsXPStartButton,
   Windows98StartButton,
-  GraySegment,
   Windows98Logo,
   WindowsXPTab,
   Windows98Tab,
   Windows98Bar,
   WindowsXPTimeSegment,
   Windows98TimeSegment,
+  WindowsXPSegment,
+  Windows98Segment,
+  Windows7Segment,
+  Windows7TimeSegment,
+  Windows7StartButton,
 } from "./styles";
 import windows98Logo from "../../media/windows98-logo.png";
+import windows7Logo from "../../media/windows7-logo.png";
 import normalImg from "../../media/start-button.png";
 import pressedImg from "../../media/start-button-pressed.png";
 import blueBarImg from "../../media/blue-bar-img.png";
@@ -84,6 +88,27 @@ function Startbar() {
             {item["windowTitle"]}
           </Windows98Tab>
         )}
+
+        {settingsData["windowsOS"] === 2 && (
+          <Windows98Tab
+            data-cy={`tab-${index}`}
+            pressed={!item["hidden"]}
+            onClick={() => {
+              setFocusedWindow(item["id"]);
+              setDataProperty(
+                windowData,
+                setWindowData,
+                windowItem,
+                "hidden",
+                !item["hidden"]
+              );
+            }}
+            active={true}
+            key={`tab-${index}`}
+          >
+            {item["windowTitle"]}
+          </Windows98Tab>
+        )}
       </Fragment>
     );
   });
@@ -128,7 +153,7 @@ function Startbar() {
   }, [setTime]);
 
   return (
-    <Bar>
+    <Bar windowsOS={settingsData["windowsOS"]}>
       {settingsData["windowsOS"] === 0 && (
         <WindowsXPStartButton
           data-cy="start-button"
@@ -155,6 +180,19 @@ function Startbar() {
           <Windows98Bar />
         </Fragment>
       )}
+
+      {settingsData["windowsOS"] === 2 && (
+        <Fragment>
+          <Windows7StartButton
+            backgroundImage={windows7Logo}
+            ref={startButton}
+            onClick={() => {
+              setIsStartWindowShowing(!isStartWindowShowing);
+            }}
+          ></Windows7StartButton>
+        </Fragment>
+      )}
+
       {isStartWindowShowing && (
         <StartWindow
           windowsOS={settingsData["windowsOS"]}
@@ -163,10 +201,13 @@ function Startbar() {
         />
       )}
       {settingsData["windowsOS"] === 0 && (
-        <BlueSegment blueBarImg={blueBarImg} />
+        <WindowsXPSegment blueBarImg={blueBarImg} />
       )}
       {settingsData["windowsOS"] === 1 && (
-        <GraySegment grayBarImg={grayBarImg} />
+        <Windows98Segment grayBarImg={grayBarImg} />
+      )}
+      {settingsData["windowsOS"] === 2 && (
+        <Windows7Segment grayBarImg={grayBarImg} />
       )}
       <TabContainer>{tabs}</TabContainer>
 
@@ -179,6 +220,14 @@ function Startbar() {
         <Fragment>
           <Windows98Bar />
           <Windows98TimeSegment>{time}</Windows98TimeSegment>
+        </Fragment>
+      )}
+      {settingsData["windowsOS"] === 2 && (
+        <Fragment>
+          <Windows7TimeSegment>
+            <div>{time}</div>
+            <div>6/18/2020</div>
+          </Windows7TimeSegment>
         </Fragment>
       )}
     </Bar>

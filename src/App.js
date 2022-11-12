@@ -59,7 +59,7 @@ function App() {
       />
       {isSettingsShowing && <SettingsWindow settingsData={settingsData} />}
       <TopBanner />
-      <Wrapper id="wrapper">
+      <Wrapper id="wrapper" windowsOS={settingsData["windowsOS"]}>
         <RenderWindows />
         <RenderIcons />
       </Wrapper>
@@ -69,7 +69,7 @@ function App() {
 }
 
 const Wrapper = styled.div`
-  height: calc(100vh - 30px);
+  height: calc(100vh - ${(props) => (props.windowsOS === 2 ? "42px" : "30px")});
   width: 100vw;
   overflow: hidden;
 `;
@@ -105,6 +105,13 @@ const GlobalStyle = createGlobalStyle`
       css`
         background: #010080;
       `};
+
+      ${(props) =>
+        props.windowsOS === 2 &&
+        css`
+          background: #1064cc;
+        `};
+      
 
     color: white;
   }

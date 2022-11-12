@@ -150,24 +150,6 @@ export function AppearanceTab({ imageInput, colorInput }) {
           <option selected={settingsData["windowsOS"] === 1}>Windows 98</option>
           <option selected={settingsData["windowsOS"] === 2}>Windows 7</option>
         </select>
-        {/*<Header5 margin="0 0.5rem 0 0">Windows XP</Header5>
-         <Toggle
-          stateVal={!settingsData["isWindowsXP"]}
-          toggleStateVal={() => {
-            updateSetting(
-              settingsData,
-              setSettingsData,
-              ["isWindowsXP", "stylesheet"],
-              [
-                !settingsData["isWindowsXP"],
-                settingsData["isWindowsXP"]
-                  ? "https://unpkg.com/98.css"
-                  : "https://unpkg.com/xp.css",
-              ]
-            );
-          }}
-        /> 
-        <Header5 margin="0 0 0 0.5rem">Windows 98</Header5>*/}
       </FlexContainer>
     </article>
   );

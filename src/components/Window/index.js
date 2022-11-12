@@ -83,7 +83,7 @@ function Window({ width, windowItem, windowId }) {
         notFocused={focusedWindow !== windowItem["id"]}
         ref={windowRef}
         width={width}
-        className="window"
+        className="window active"
         hidden={windowItem["hidden"]}
         isMaximized={windowItem["isMaximized"]}
       >
@@ -167,7 +167,7 @@ const WindowContainer = styled.div`
   height: auto;
 
   font-family: ${(props) => props.theme.fonts.primary};
-  position: absolute;
+  position: absolute !important;
   box-sizing: border-box;
   box-shadow: ${(props) =>
     props.notFocused &&
@@ -245,6 +245,22 @@ const ResizableDots = styled.div`
       clip-path: polygon(100% 0px, 0px 100%, 100% 100%);
       bottom: 10%;
       right: 12%;
+    `}
+
+    ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      width: 2px;
+      height: 2px;
+
+      right: 27%;
+      bottom: -34%;
+      box-shadow: rgba(0, 0, 0, 0.25) 2px 0, rgba(0, 0, 0, 0.25) 5.5px 0,
+        rgba(0, 0, 0, 0.25) 9px 0, rgba(0, 0, 0, 0.25) 5.5px -3.5px,
+        rgba(0, 0, 0, 0.25) 9px -3.5px, rgba(0, 0, 0, 0.25) 9px -7px,
+        rgb(255, 255, 255) 3px 1px, rgb(255, 255, 255) 6.5px 1px,
+        rgb(255, 255, 255) 10px 1px, rgb(255, 255, 255) 10px -2.5px,
+        rgb(255, 255, 255) 10px -6px;
     `}
 `;
 

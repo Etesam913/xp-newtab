@@ -64,7 +64,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         <MaximizeButton
           data-cy={`maximize-button-${windowId}`}
           aria-label={
-            settingsData["windowsOS"] === 1 && windowItem["isMaximized"]
+            settingsData["windowsOS"] !== 0 && windowItem["isMaximized"]
               ? "Restore"
               : "Maximize"
           }
@@ -140,6 +140,13 @@ export const TitleBarButton = styled.button`
     css`
       height: 14px;
       width: 16px;
+    `}
+
+    ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      height: 19px;
+      width: 29px;
     `}
 `;
 
