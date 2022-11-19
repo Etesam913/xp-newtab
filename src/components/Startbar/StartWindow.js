@@ -7,6 +7,7 @@ import {
   Windows98BlueStripe,
   Windows98StartBody,
   Windows98BoldText,
+  Windows7StartWindow,
 } from "./styles";
 import startHeaderImg from "../../media/start-header.png";
 import startFooterImg from "../../media/start-footer.png";
@@ -78,6 +79,33 @@ function StartWindow({ windowsOS, startWindow, setIsStartWindowShowing }) {
             </Windows98StartBody>
           </FlexContainer>
         </Windows98StartWindow>
+      )}
+
+      {windowsOS === 2 && (
+        <Windows7StartWindow ref={startWindow}>
+          <WindowsXPStartBody>
+            <WindowsXPStartbarItem
+              identifier="Settings"
+              setIsStartWindowShowing={setIsStartWindowShowing}
+              dataCy="settings-menu-item"
+            />
+            <WindowsXPStartbarItem
+              identifier="Create A New Window"
+              dataCy="create-window-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
+            />
+            <WindowsXPStartbarItem
+              identifier="Add Icon"
+              dataCy="add-icon-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
+            />
+            <WindowsXPStartbarItem
+              identifier="Edit Mode"
+              dataCy="edit-mode-menu-item"
+              setIsStartWindowShowing={setIsStartWindowShowing}
+            />
+          </WindowsXPStartBody>
+        </Windows7StartWindow>
       )}
     </Fragment>
   );

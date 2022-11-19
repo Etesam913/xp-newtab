@@ -137,6 +137,25 @@ export const Windows7Segment = styled.div`
   box-shadow: inset 0 0.5px #fff;
 `;
 
+export const Windows7Divider = styled.div`
+  width: 0.8rem;
+  height: 47px;
+  background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 100%, 0.65),
+      rgba(0, 0, 0, 0.1),
+      hsla(0, 0%, 100%, 0.2)
+    ),
+    linear-gradient(
+      0deg,
+      transparent,
+      rgba(0, 0, 0, 0.1) 20%,
+      rgba(0, 0, 0, 0.1) 50%,
+      transparent 53%
+    ),
+    #4580c4cf;
+`;
+
 export const WindowsXPTimeSegment = styled.div`
   width: 6rem;
   background-image: url(${(props) => props.timeBarImg});
@@ -174,15 +193,14 @@ export const Windows7TimeSegment = styled.div`
   text-align: right;
   font-family: "Helvetica";
   box-sizing: border-box;
-  margin: 0 4px 0 4px;
-
+  margin: 0 12px 0 4px;
   white-space: nowrap;
   height: 100%;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   justify-content: space-evenly;
 `;
 
@@ -282,6 +300,7 @@ export const Windows7Tab = styled.button`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   border: 0;
   &:hover {
     color: #343434;
@@ -327,6 +346,8 @@ export const WindowsXPStartBody = styled.div`
   height: 23.5rem;
   display: flex;
   flex-direction: column;
+  background: white;
+  border-radius: 0.15rem;
 `;
 
 export const StartItemName = styled.span`
@@ -345,6 +366,34 @@ export const WindowsXPStartFooter = styled.footer`
   background-image: url(${(props) => props.image});
   font-weight: bold;
   display: flex;
+`;
+
+export const Windows7StartWindow = styled.div`
+  position: absolute;
+  height: 23rem;
+  width: 14rem;
+  background: white;
+  bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 4;
+  background: linear-gradient(
+      0deg,
+      hsla(0, 0%, 100%, 0.4),
+      rgba(0, 0, 0, 0.1),
+      hsla(0, 0%, 100%, 0.2)
+    ),
+    linear-gradient(
+      55deg,
+      transparent,
+      rgba(0, 0, 0, 0.1) 20%,
+      rgba(0, 0, 0, 0.1) 50%,
+      transparent 53%
+    ),
+    #4580c4cf;
+  padding: 0.8rem;
+  border-radius: 0 0.8rem 0 0;
 `;
 
 export const Windows98StartWindow = styled.div`

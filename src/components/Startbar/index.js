@@ -16,6 +16,7 @@ import {
   Windows7Segment,
   Windows7TimeSegment,
   Windows7StartButton,
+  Windows7Divider,
 } from "./styles";
 import windows98Logo from "../../media/windows98-logo.png";
 import windows7Logo from "../../media/windows7-logo.png";
@@ -229,6 +230,7 @@ function Startbar() {
             <div>{time}</div>
             <div>6/18/2020</div>
           </Windows7TimeSegment>
+          <Windows7Divider />
         </Fragment>
       )}
     </Bar>

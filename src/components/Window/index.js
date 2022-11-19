@@ -172,7 +172,7 @@ const WindowContainer = styled.div`
   box-shadow: ${(props) =>
     props.notFocused &&
     "inset -3px -3px #c7d3e7, inset 3px 3px #c7d3e7"} !important;
-  z-index: ${(props) => (props.notFocused ? "2" : "3")};
+  z-index: ${(props) => (props.notFocused ? "2" : "3")} !important;
   :focus {
     outline: none;
   }
@@ -182,7 +182,7 @@ const WindowContainer = styled.div`
     css`
       width: 100vw;
       height: calc(100vh - 32px);
-      z-index: 4;
+      z-index: 4 !important;
     `};
 `;
 

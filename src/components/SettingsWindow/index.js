@@ -36,8 +36,8 @@ function SettingsWindow({ settingsData }) {
   });
 
   return (
-    <div>
-      <Window className={"window"}>
+    <>
+      <Window className="window active">
         <div className="title-bar">
           <div className="title-bar-text"> Settings</div>
           <div className="title-bar-controls">
@@ -72,19 +72,19 @@ function SettingsWindow({ settingsData }) {
           setIsSettingsShowing(false);
         }}
       />
-    </div>
+    </>
   );
 }
 
 const Window = styled.div`
   width: 37rem;
   height: auto;
-  position: absolute;
+  position: absolute !important ;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: ${(props) => props.theme.fonts.primary};
-  z-index: 6;
+  z-index: 6 !important;
   @media only screen and (max-width: 768px) {
     width: 80% !important;
   }
