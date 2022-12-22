@@ -98,8 +98,10 @@ const CloseButton = styled.button`
   background: 0;
   color: white;
   border: 0;
+  box-shadow: none !important;
   :hover {
     box-shadow: none !important;
+    background: transparent !important;
   }
 
   :active {

@@ -37,6 +37,7 @@ import StartWindow from "./StartWindow";
 
 function Startbar() {
   const [time, setTime] = useState("");
+  const [day, setDay] = useState("");
   const startButton = useRef(null);
   const startWindow = useRef(null);
   const [isStartWindowShowing, setIsStartWindowShowing] = useState(false);
@@ -142,6 +143,7 @@ function Startbar() {
       " " +
       getTimePeriodName(timeUnits["hour"]);
     setTime(timeText);
+
     const interval = setInterval(() => {
       timeUnits = getTimeUnits();
       timeText =
@@ -151,8 +153,14 @@ function Startbar() {
         getTimePeriodName(timeUnits["hour"]);
       setTime(timeText);
     }, 1000);
+    let currentDate = new Date();
+    let cDay = currentDate.getDate();
+    let cMonth = currentDate.getMonth() + 1;
+    let cYear = currentDate.getFullYear();
+    setDay(cMonth + "/" + cDay + "/" + cYear);
+
     return () => clearInterval(interval);
-  }, [setTime]);
+  }, [setTime, setDay]);
 
   return (
     <Bar windowsOS={settingsData["windowsOS"]}>
@@ -226,7 +234,7 @@ function Startbar() {
         <Fragment>
           <Windows7TimeSegment>
             <div>{time}</div>
-            <div>6/18/2020</div>
+            <div>{day}</div>
           </Windows7TimeSegment>
           <Windows7Divider />
         </Fragment>
