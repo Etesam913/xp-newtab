@@ -3,9 +3,9 @@ import styled, { keyframes } from "styled-components";
 
 function TopBanner() {
   const messages = [
-    "📝 Did you know that typing ctrl+e will toggle edit mode?",
+    "📝 Did you know that the text component supports markdown syntax?",
     "😉 It would be greatly appreciated if you could write a review for the extension: ",
-    "✨ Did you know that you can switch the theme from Windows XP to Windows 98 in the settings menu?",
+    "✨ Did you know that you can switch the theme from Windows XP to Windows 98 or Windows 7 in the settings menu?",
   ];
   const [shouldShowBanner, setShouldShowBanner] = useState(false);
   const [bannerIndex, setBannerIndex] = useState("");

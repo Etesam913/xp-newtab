@@ -77,7 +77,6 @@ button{
     font-size: 1rem;
 }
 
-
 .editor-text-bold {
     font-weight: bold;
 }
@@ -132,16 +131,29 @@ button{
     margin: 0.25rem 0.2rem;
 }
 
-h1{
-    font-weight: normal;
-    font-size: 2.5em !important;
-    margin: 0 0 0.5rem 0;
+h1, h2, h3, h4, h5, h6{
+    font-weight: 600;
+    margin: 0 0 0.5rem 0 ;
+}
+
+h1{ 
+    font-size: 2.15em !important;
 }
 
 h2{
-    font-weight: normal;
-    font-size: 1.75em !important;
-    margin: 0 0 0.5rem 0;
+    font-size: 1.65em !important;
+}
+h3{
+    font-size: 1.35em !important;
+}
+h4{
+    font-size: 1.15em !important;
+}
+h5{
+    font-size: 1em !important;
+}
+h6{
+    font-size: 0.8em !important;
 }
 
 .editor-tokenComment {

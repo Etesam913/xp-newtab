@@ -20,11 +20,23 @@ function BlockOptions() {
       <option value="normal" className="item">
         Normal
       </option>
-      <option value="large-heading" className="item">
-        Large Heading
+      <option value="h1" className="item">
+        Header 1
       </option>
-      <option value="small-heading" className="item">
-        Small Heading
+      <option value="h2" className="item">
+        Header 2
+      </option>
+      <option value="h3" className="item">
+        Header 3
+      </option>
+      <option value="h4" className="item">
+        Header 4
+      </option>
+      <option value="h5" className="item">
+        Header 5
+      </option>
+      <option value="h6" className="item">
+        Header 6
       </option>
       <option value="bulleted-list" className="item">
         Bullet List
@@ -49,6 +61,20 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
 
         if ($isRangeSelection(selection)) {
           $wrapLeafNodesInElements(selection, () => $createParagraphNode());
+        }
+      });
+    }
+  };
+
+  const formatHeader = (headerTag) => {
+    if (blockType !== headerTag) {
+      editor.update(() => {
+        const selection = $getSelection();
+
+        if ($isRangeSelection(selection)) {
+          $wrapLeafNodesInElements(selection, () =>
+            $createHeadingNode(headerTag)
+          );
         }
       });
     }
@@ -124,8 +150,12 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
         ref={dropdownRef}
         onChange={(e) => {
           if (e.target.value === "normal") formatParagraph();
-          else if (e.target.value === "large-heading") formatLargeHeading();
-          else if (e.target.value === "small-heading") formatSmallHeading();
+          else if (e.target.value === "h1") formatHeader("h1");
+          else if (e.target.value === "h2") formatHeader("h2");
+          else if (e.target.value === "h3") formatHeader("h3");
+          else if (e.target.value === "h4") formatHeader("h4");
+          else if (e.target.value === "h5") formatHeader("h5");
+          else if (e.target.value === "h6") formatHeader("h6");
           else if (e.target.value === "bulleted-list") formatBulletList();
           else if (e.target.value === "numbered-list") formatNumberedList();
           else if (e.target.value === "code-block") formatCode();
@@ -140,11 +170,12 @@ export function BlockOptionsDropdownList({ editor, blockType }) {
 
 const blockTypeToBlockName = {
   code: "code-block",
-  h1: "large-heading",
-  h2: "small-heading",
-  h3: "Heading",
-  h4: "Heading",
-  h5: "Heading",
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  h5: "h5",
+  h6: "h6",
   ol: "numbered-list",
   ul: "bulleted-list",
   paragraph: "normal",

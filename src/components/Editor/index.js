@@ -16,6 +16,8 @@ import RichText from "./RichText";
 import { DeleteButton } from "../../styles/StyledComponents";
 import { handleDelete } from "../Window/helper";
 import { FlexContainer } from "../../styles/Layout";
+import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
+import { TRANSFORMERS } from "@lexical/markdown";
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -52,6 +54,7 @@ function Editor({ windowItem, windowObj }) {
         <RichText windowItem={windowItem} windowObj={windowObj} />
         <LinkPlugin />
         <ListPlugin />
+        <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
         <ReadOnlyPlugin isEditModeOn={isEditModeOn} />
         <CodeHighlightPlugin />
         <HistoryPlugin />
