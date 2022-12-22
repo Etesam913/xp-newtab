@@ -29,7 +29,7 @@ const ImageButton = styled.button`
   background: transparent !important;
   border: 0;
   box-shadow: none !important;
-  min-width: 24px;
+  min-width: 24px !important;
   min-height: 24px;
   width: 24px;
   height: 24px;

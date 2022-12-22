@@ -104,7 +104,7 @@ const SearchButton = styled.button`
   justify-content: center;
   align-items: flex-end;
   :hover {
-    background: transparent;
+    background: transparent !important;
   }
 
   :active {
@@ -116,8 +116,7 @@ const SearchButton = styled.button`
     background: transparent;
     outline: 0 !important;
   }
-
-  position: absolute;
+  margin: 0 0.25rem;
   right: 1.25rem;
   min-width: 0;
   min-height: 0;
