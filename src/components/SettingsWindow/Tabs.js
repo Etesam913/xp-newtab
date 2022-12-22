@@ -111,7 +111,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
             Set Image
           </button>
           <MarginButton
-            data-cy="set-background-image-button"
+            data-cy="reset-background-image-button"
             onClick={() => {
               updateSetting(
                 settingsData,
