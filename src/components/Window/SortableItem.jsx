@@ -34,10 +34,10 @@ function SortableItem({ children, id, height }) {
 }
 
 const DragHandle = styled.button`
-  border: 0;
-  background: transparent;
+  border: 0 !important;
+  background: transparent !important;
   display: ${(props) => (!props.isEditModeOn ? "none" : "flex")};
-  padding: 0;
+  padding: 0 !important;
   box-shadow: none;
   align-items: center;
 

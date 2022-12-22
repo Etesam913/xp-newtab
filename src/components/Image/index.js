@@ -80,7 +80,7 @@ function Image({ windowObj, windowItem }) {
             onClick={() => {
               setIsRedirectClicked(true);
             }}
-            width="95px"
+            width="105px"
           >
             Set Image Url
           </OptionsButton>

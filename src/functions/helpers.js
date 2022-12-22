@@ -35,7 +35,7 @@ export function getDefaultValue(
     defaultValue = {
       backgroundColor: "#ffffff",
       backgroundImage:
-        "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
+        "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
       draggingGrid: "0px",
       stylesheet: "https://unpkg.com/xp.css",
       // 0 -> windowsXP; 1-> windows98; 2-> windows 7

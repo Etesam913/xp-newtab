@@ -184,15 +184,13 @@ function Startbar() {
       )}
 
       {settingsData["windowsOS"] === 2 && (
-        <Fragment>
-          <Windows7StartButton
-            backgroundImage={windows7Logo}
-            ref={startButton}
-            onClick={() => {
-              setIsStartWindowShowing(!isStartWindowShowing);
-            }}
-          ></Windows7StartButton>
-        </Fragment>
+        <Windows7StartButton
+          backgroundImage={windows7Logo}
+          ref={startButton}
+          onClick={() => {
+            setIsStartWindowShowing(!isStartWindowShowing);
+          }}
+        ></Windows7StartButton>
       )}
 
       {isStartWindowShowing && (

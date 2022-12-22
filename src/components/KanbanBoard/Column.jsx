@@ -78,6 +78,12 @@ const KanbanColumn = styled.div`
       background-color: #dddddd;
     `};
 
+  ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      background-color: #cbebf6;
+    `};
+
   padding: 0 0.6rem;
   margin: ${(props) => props.margin};
 `;

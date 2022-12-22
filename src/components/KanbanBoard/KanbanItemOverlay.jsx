@@ -14,7 +14,6 @@ function KanbanItemDragOverlay({ activeId, items, width }) {
       }
     }
   }
-  console.log(settingsData["windowsOS"]);
 
   return (
     <DragOverlay>
@@ -44,6 +43,12 @@ const KanbanItemContainer = styled.div`
     props.windowsOS === 1 &&
     css`
       background-color: #bdbdbd;
+    `};
+
+  ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      background-color: #acd2e0;
     `};
   opacity: 0.6;
   padding: 0.35rem;

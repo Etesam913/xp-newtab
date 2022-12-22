@@ -50,6 +50,7 @@ function KanbanItem({
       )}
 
       <DragHandle
+        style={{ padding: 0 }}
         isEditModeOn={true}
         ref={setNodeRef}
         {...listeners}
@@ -76,6 +77,12 @@ const KanbanItemContainer = styled.div`
     css`
       background-color: #bdbdbd;
     `};
+
+  ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      background-color: #acd2e0;
+    `};
 `;
 
 const TextContainer = styled.p`
@@ -93,17 +100,13 @@ const KanbanTextArea = styled.textarea`
 `;
 
 const DragHandle = styled.button`
-  border: 0;
-  background: transparent;
+  border: 0 !important;
+  background: transparent !important;
   display: ${(props) => (!props.isEditModeOn ? "none" : "flex")};
   padding: 0;
-  box-shadow: none;
+  box-shadow: none !important;
   align-items: center;
   margin-right: 0.2rem;
-  :active {
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
 `;
 
 const DeleteButton = styled.button`

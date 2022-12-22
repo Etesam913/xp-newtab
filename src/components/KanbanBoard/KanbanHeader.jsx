@@ -49,6 +49,12 @@ const HeaderContainer = styled.div`
     css`
       background-color: #dddddd;
     `};
+
+  ${(props) =>
+    props.windowsOS === 2 &&
+    css`
+      background-color: #cbebf6;
+    `};
 `;
 
 const KanbanTitle = styled.h2`

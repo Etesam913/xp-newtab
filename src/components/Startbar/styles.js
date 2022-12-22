@@ -65,7 +65,6 @@ export const Windows98Bar = styled.div`
 export const Windows7StartButton = styled.button`
   height: 100%;
   width: 80px;
-
   background-image: url(${(props) => props.backgroundImage});
   padding: 0;
   background-position-x: 7px;
@@ -302,6 +301,8 @@ export const Windows7Tab = styled.button`
   text-overflow: ellipsis;
   text-align: center;
   border: 0;
+  border-top: 1px solid #3c7fb1;
+  border-radius: 0;
   &:hover {
     color: #343434;
   }

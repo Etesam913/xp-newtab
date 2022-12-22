@@ -41,33 +41,38 @@ export function AppearanceTab({ imageInput, colorInput }) {
     }
   }
 
+  const defaultBackgroundImages = [
+    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
+    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/windows98-homepage.png",
+    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/windows-7-homepage.jpg",
+  ];
   function handleOSChange(e) {
     const newOS = e.target.value;
+    let windowsOS = null;
+    let stylesheet = "";
+
     if (newOS === "Windows XP") {
-      const stylesheet = "https://unpkg.com/xp.css";
-      updateSetting(
-        settingsData,
-        setSettingsData,
-        ["windowsOS", "stylesheet"],
-        [0, stylesheet]
-      );
-    } else if (newOS === "Windows 98") {
-      const stylesheet = "https://unpkg.com/98.css";
-      updateSetting(
-        settingsData,
-        setSettingsData,
-        ["windowsOS", "stylesheet"],
-        [1, stylesheet]
-      );
-    } else if (newOS === "Windows 7") {
-      const stylesheet = "https://unpkg.com/7.css";
-      updateSetting(
-        settingsData,
-        setSettingsData,
-        ["windowsOS", "stylesheet"],
-        [2, stylesheet]
-      );
+      windowsOS = 0;
+      stylesheet = "https://unpkg.com/xp.css";
     }
+    if (newOS === "Windows 98") {
+      windowsOS = 1;
+      stylesheet = "https://unpkg.com/98.css";
+    }
+    if (newOS === "Windows 7") {
+      windowsOS = 2;
+      stylesheet = "https://unpkg.com/7.css";
+    }
+
+    const propertyNames = ["windowsOS", "stylesheet"];
+    const propertyValues = [windowsOS, stylesheet];
+    if (defaultBackgroundImages.includes(settingsData["backgroundImage"])) {
+      propertyNames.push("backgroundImage");
+      propertyValues.push(defaultBackgroundImages[windowsOS]);
+      imageInput.current.value = defaultBackgroundImages[windowsOS];
+    }
+    console.log(defaultBackgroundImages, settingsData["backgroundImage"]);
+    updateSetting(settingsData, setSettingsData, propertyNames, propertyValues);
   }
 
   useEffect(() => {
@@ -105,7 +110,22 @@ export function AppearanceTab({ imageInput, colorInput }) {
           >
             Set Image
           </button>
-          <RemoveButton
+          <MarginButton
+            data-cy="set-background-image-button"
+            onClick={() => {
+              updateSetting(
+                settingsData,
+                setSettingsData,
+                "backgroundImage",
+                defaultBackgroundImages[settingsData["windowsOS"]]
+              );
+              imageInput.current.value =
+                defaultBackgroundImages[settingsData["windowsOS"]];
+            }}
+          >
+            Reset to Default
+          </MarginButton>
+          <MarginButton
             data-cy="remove-background-image-button"
             onClick={() => {
               updateSetting(
@@ -117,7 +137,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
             }}
           >
             Remove Image
-          </RemoveButton>
+          </MarginButton>
         </FlexContainer>
       </FlexContainer>
       <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
@@ -163,7 +183,7 @@ const TabInput = styled.input`
     width: 80%;
   }
 `;
-const RemoveButton = styled.button`
+const MarginButton = styled.button`
   margin-top: 0.5rem;
 `;
 
