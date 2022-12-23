@@ -64,7 +64,7 @@ export const Windows98Bar = styled.div`
 
 export const Windows7StartButton = styled.button`
   height: 100%;
-  width: 80px;
+  min-width: 72px !important;
   background-image: url(${(props) => props.backgroundImage});
   padding: 0;
   background-position-x: 7px;
