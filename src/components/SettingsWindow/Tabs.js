@@ -70,13 +70,12 @@ export function AppearanceTab({ imageInput, colorInput }) {
       propertyValues.push(defaultBackgroundImages[windowsOS]);
       imageInput.current.value = defaultBackgroundImages[windowsOS];
     }
-    console.log(defaultBackgroundImages, settingsData["backgroundImage"]);
     updateSetting(settingsData, setSettingsData, propertyNames, propertyValues);
   }
 
   useEffect(() => {
     updateSetting(settingsData, setSettingsData, "backgroundColor", color);
-  }, [color, setSettingsData, settingsData]);
+  }, [color, setSettingsData]);
 
   return (
     <article role="tabpanel">

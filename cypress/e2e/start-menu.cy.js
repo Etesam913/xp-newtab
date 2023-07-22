@@ -54,7 +54,7 @@ describe("Settings Tests", () => {
       .should("have.css", "background-color")
       .and("be.colored", "#da5d5d");
 
-    cy.get("[data-cy='set-background-image-button']").click();
+    cy.get("[data-cy='reset-background-image-button']").click();
     cy.get("@documentBody").should(
       "have.css",
       "background-image",
