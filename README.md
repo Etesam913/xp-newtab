@@ -1,10 +1,7 @@
 <h1 align="center">✏️ XP-Newtab </h1>
 <h2 align="center">An extension that customizes your new-tab page in the style of Windows XP.</h2>
 
-
-
-https://user-images.githubusercontent.com/55665282/179885872-df5fe387-7831-4ecc-ae0d-a62df45affcf.mp4
-
+https://github.com/Etesam913/xp-newtab/assets/55665282/82186bc0-a41b-480b-9635-264d1260995f
 
 
 <h3>🔗 Links</h3>
