@@ -19,7 +19,7 @@ function TopBanner() {
       );
       setBannerIndex(messageIndex);
     }
-  }, []);
+  }, [messages.length]);
 
   if (shouldShowBanner) {
     return (

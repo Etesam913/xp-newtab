@@ -50,7 +50,7 @@ function Startbar() {
   const tabs = windowData.map((item, index) => {
     const windowItem = item;
     return (
-      <Fragment>
+      <Fragment key={`tab-${index}`}>
         {settingsData["windowsOS"] === 0 && (
           <WindowsXPTab
             tabBackgroundImg={tabBackgroundImg}

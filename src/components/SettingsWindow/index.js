@@ -15,7 +15,7 @@ function SettingsWindow({ settingsData }) {
       imageInput.current.value = settingsData["backgroundImage"];
       colorInput.current.value = settingsData["backgroundColor"];
     }
-  }, [imageInput, colorInput]);
+  }, [imageInput, colorInput, settingsData]);
 
   const tabData = ["Appearance", "Miscellaneous", "Information"];
   const tabs = tabData.map((tab, index) => {

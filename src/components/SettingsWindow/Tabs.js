@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Header1, Header5 } from "../../styles/Headers";
+import { Header1 } from "../../styles/Headers";
 import { FlexContainer } from "../../styles/Layout";
 import { HexColorPicker } from "react-colorful";
 import styled from "styled-components";
 import { updateSetting } from "../../functions/helpers";
 import { useStore } from "../../Store";
-import Toggle from "../Toggle";
 
 export function AppearanceTab({ imageInput, colorInput }) {
   const settingsData = useStore((state) => state.settingsData);
@@ -77,7 +76,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
 
   useEffect(() => {
     updateSetting(settingsData, setSettingsData, "backgroundColor", color);
-  }, [color]);
+  }, [color, setSettingsData, settingsData]);
 
   return (
     <article role="tabpanel">

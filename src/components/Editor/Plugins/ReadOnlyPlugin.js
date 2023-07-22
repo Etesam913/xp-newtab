@@ -6,7 +6,7 @@ function ReadOnlyPlugin({ isEditModeOn }) {
 
   useEffect(() => {
     editor.setReadOnly(!isEditModeOn);
-  }, [isEditModeOn]);
+  }, [isEditModeOn, editor]);
 
   return <Fragment />;
 }
