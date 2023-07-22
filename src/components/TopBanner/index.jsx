@@ -1,6 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
+function getBrowser() {
+  const userAgent = navigator.userAgent;
+
+  if (userAgent.indexOf("Chrome") > -1) {
+      return "chrome"
+  } else if (userAgent.indexOf("Firefox") > -1) {
+      return "firefox"
+  } else {
+      return "other"
+  }
+  
+}
+
 function TopBanner() {
   const messages = [
     "📝 Did you know that the text component supports markdown syntax?",
@@ -29,7 +42,7 @@ function TopBanner() {
           {bannerIndex === 1 && (
             <Fragment>
               {messages[1]}
-              <BannerLink href="https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke">
+              <BannerLink href={getBrowser() === "firefox" ? "https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/" :  "https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke"}>
                 here
               </BannerLink>
             </Fragment>
