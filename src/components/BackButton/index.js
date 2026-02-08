@@ -13,7 +13,7 @@ function BackButton({ margin, onClick, dataCy }) {
         onClick={handleClick}
         alt={"image of back button"}
         src={
-          "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/back.png"
+          "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/back.png"
         }
       />
     </ImageButton>

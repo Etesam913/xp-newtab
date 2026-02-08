@@ -81,7 +81,7 @@ export function WindowsXPStartbarItem({
           <StartItemIcon
             width={"32px"}
             height={"32px"}
-            src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico"
+            src="https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico"
           />
         )}
         {identifier === "Create A New Window" && (
@@ -137,7 +137,7 @@ export function Windows98StartbarItem({ identifier, setIsStartWindowShowing }) {
           <StartItemIcon
             width={"32px"}
             height={"32px"}
-            src="https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico"
+            src="https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/Windows%20XP%20Control%20Panel.ico"
           />
         )}
         {identifier === "Create A New Window" && (

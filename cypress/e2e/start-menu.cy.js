@@ -1,7 +1,7 @@
 import chaiColors from "chai-colors";
 chai.use(chaiColors);
 const blissImageUrl =
-  "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg";
+  "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/bliss.jpg";
 
 describe("Settings Tests", () => {
   it("Opens/closes menu and checks for correct menu items", () => {

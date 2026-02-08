@@ -325,41 +325,41 @@ const LanguagesDropdown = styled.select`
 `;
 
 const UnderlineIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/underline.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/underline.svg");
 `;
 
 const BoldIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/bold.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/bold.svg");
 `;
 
 const UndoIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/undo.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/undo.svg");
 `;
 
 const RedoIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/redo.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/redo.svg");
 `;
 
 const StrikethroughIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/strike-through.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/strike-through.svg");
 `;
 
 const LinkIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/link.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/link.svg");
 `;
 
 const ItalicIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/italic.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/italic.svg");
 `;
 
 const LeftAlignIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/left-align.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/left-align.svg");
 `;
 
 const RightAlignIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/right-align.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/right-align.svg");
 `;
 
 const CenterAlignIcon = styled.i`
-  background-image: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/icons/center-align.svg");
+  background-image: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/icons/center-align.svg");
 `;

@@ -1,6 +1,6 @@
 const updatedWindowTitle = "🎉 This is a modified window title";
 const blissImageUrl =
-  "https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg";
+  "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/bliss.jpg";
 
 describe("Basic Window Tests", () => {
   it("Gets the default window", () => {

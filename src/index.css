@@ -1,212 +1,218 @@
 body {
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    user-select: none;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 .selected {
-    background-color: #2267cb;
-    color: white;
+  background-color: #2267cb;
+  color: white;
 }
 
-.rich-text-editor{
-    padding: 0.25rem;
-    margin: 0.5rem 0;
+.rich-text-editor {
+  padding: 0.25rem;
+  margin: 0.5rem 0;
 }
 [contenteditable="true"] {
-    border: 1px solid #9e9e9e;
-    -webkit-user-select: text;
-    user-select: text;
-    cursor: text;
-    background-color: white;
+  border: 1px solid #9e9e9e;
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+  background-color: white;
 }
 [contenteditable="false"] {
-    cursor: url("https://etesam.nyc3.digitaloceanspaces.com/Windows-XP-Newtab/cursors/auto.cur"), auto !important;
+  cursor: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/cursors/auto.cur"),
+    auto !important;
 }
 
 .show {
-    display: flex !important;
+  display: flex !important;
 }
 
 .hide {
-    display: none !important;
+  display: none !important;
 }
 
 .list-item-options {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.4rem 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.4rem 0;
 }
 
 .strikethrough {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .list-item {
-    font-size: 13px;
-    margin: 0.15rem 0;
-    padding: 0.075rem 0;
-    cursor: text;
+  font-size: 13px;
+  margin: 0.15rem 0;
+  padding: 0.075rem 0;
+  cursor: text;
 }
 
-button{
-    min-width: 0 !important;
+button {
+  min-width: 0 !important;
 }
 
-
-.editor-underline{
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
+.editor-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
-.editor-strikethrough{
-    text-decoration: line-through;
-    text-decoration-thickness: 2px;
+.editor-strikethrough {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
 }
 .editor-text-underline-strikethrough {
-    text-decoration: underline line-through;
-    text-decoration-thickness: 2px;
+  text-decoration: underline line-through;
+  text-decoration-thickness: 2px;
 }
-.editor-paragraph{
-    font-size: 1rem;
+.editor-paragraph {
+  font-size: 1rem;
 }
 
 .editor-text-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .editor-text-italic {
-    font-style: italic;
+  font-style: italic;
 }
 
 .editor-code {
-    background-color: rgb(232, 234, 234);
-    font-family: Menlo, Consolas, Monaco, monospace;
-    display: block;
-    padding: 0.5rem 1rem;
-    line-height: 1.53;
-    font-size: 13px;
-    margin: 0.5rem 0;
-    tab-size: 2;
-    /* white-space: pre; */
-    overflow-x: auto;
-    position: relative;
+  background-color: rgb(232, 234, 234);
+  font-family: Menlo, Consolas, Monaco, monospace;
+  display: block;
+  padding: 0.5rem 1rem;
+  line-height: 1.53;
+  font-size: 13px;
+  margin: 0.5rem 0;
+  tab-size: 2;
+  /* white-space: pre; */
+  overflow-x: auto;
+  position: relative;
 }
 
-.link-editor{
-    position: absolute;
-    z-index: 999;
-    background-color: #f0f0f0;
-    padding: 0.5rem;
-    box-shadow: 10px 10px 65px 2px rgba(0, 0, 0, 0.39)
+.link-editor {
+  position: absolute;
+  z-index: 999;
+  background-color: #f0f0f0;
+  padding: 0.5rem;
+  box-shadow: 10px 10px 65px 2px rgba(0, 0, 0, 0.39);
 }
-.link-input{
-    font-size: 1.1em;
-    font-family: "MS Sans Serif", serif
+.link-input {
+  font-size: 1.1em;
+  font-family: "MS Sans Serif", serif;
 }
-.link-edit{
-    margin-left: 0.5rem;
-}
-
-.format{
-    display: block;
-    height: 23px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.toolbar{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-.toolbar-item{
-    width: 36px;
-    padding: 0;
-    margin: 0.25rem 0.2rem;
+.link-edit {
+  margin-left: 0.5rem;
 }
 
-h1, h2, h3, h4, h5, h6{
-    font-weight: 600;
-    margin: 0 0 0.5rem 0 ;
+.format {
+  display: block;
+  height: 23px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.toolbar-item {
+  width: 36px;
+  padding: 0;
+  margin: 0.25rem 0.2rem;
 }
 
-h1{ 
-    font-size: 2.15em !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
 }
 
-h2{
-    font-size: 1.65em !important;
+h1 {
+  font-size: 2.15em !important;
 }
-h3{
-    font-size: 1.35em !important;
+
+h2 {
+  font-size: 1.65em !important;
 }
-h4{
-    font-size: 1.15em !important;
+h3 {
+  font-size: 1.35em !important;
 }
-h5{
-    font-size: 1em !important;
+h4 {
+  font-size: 1.15em !important;
 }
-h6{
-    font-size: 0.8em !important;
+h5 {
+  font-size: 1em !important;
+}
+h6 {
+  font-size: 0.8em !important;
 }
 
 .editor-tokenComment {
-    color: slategray;
+  color: slategray;
 }
 
 .editor-tokenPunctuation {
-    color: #999;
+  color: #999;
 }
 
 .editor-tokenProperty {
-    color: #905;
+  color: #905;
 }
 
 .editor-tokenSelector {
-    color: #690;
+  color: #690;
 }
 
 .editor-tokenOperator {
-    color: #9a6e3a;
+  color: #9a6e3a;
 }
 
 .editor-tokenAttr {
-    color: #07a;
+  color: #07a;
 }
 
 .editor-tokenVariable {
-    color: #e90;
+  color: #e90;
 }
 
 .editor-tokenFunction {
-    color: #dd4a68;
+  color: #dd4a68;
 }
 
 .editor-list-ol {
-    padding: 0;
-    margin: 0 0 0 1.5rem;
+  padding: 0;
+  margin: 0 0 0 1.5rem;
 }
 
 .editor-list-ul {
-    padding: 0;
-    margin: 0 0 0 1.5rem;
-    list-style: disc;
+  padding: 0;
+  margin: 0 0 0 1.5rem;
+  list-style: disc;
 }
 
 .editor-listitem {
-    font-size: 0.9rem;
-    padding: 0.15rem 0;
+  font-size: 0.9rem;
+  padding: 0.15rem 0;
 }
 
 .editor-nested-listitem {
-    list-style-type: none;
+  list-style-type: none;
 }
-button.active{
-    box-shadow: inset -1px -1px #fff,inset 1px 1px #0a0a0a,inset -2px -2px #dfdfdf,inset 2px 2px grey;
+button.active {
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf, inset 2px 2px grey;
 }
