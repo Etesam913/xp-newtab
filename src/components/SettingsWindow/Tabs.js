@@ -41,9 +41,9 @@ export function AppearanceTab({ imageInput, colorInput }) {
   }
 
   const defaultBackgroundImages = [
-    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/bliss.jpg",
-    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/windows98-homepage.png",
-    "https://etesam.nyc3.cdn.digitaloceanspaces.com/Windows-XP-Newtab/images/windows-7-homepage.jpg",
+    "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/bliss.jpg",
+    "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/windows98-homepage.png",
+    "https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/images/windows-7-homepage.jpg",
   ];
   function handleOSChange(e) {
     const newOS = e.target.value;

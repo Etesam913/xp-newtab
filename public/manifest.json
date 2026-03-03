@@ -1,8 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "XP Newtab",
   "author": "Etesam Ansari",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "description": "A new tab extension that is in the style of Windows XP.",
   "chrome_url_overrides": {
     "newtab": "index.html"
@@ -10,6 +10,11 @@
   "permissions": [
     "unlimitedStorage"
   ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{4b815ed5-1647-43d9-9d6c-48c0b08a1faf}"
+    }
+  },
   "icons": {
     "16": "logo16.png",
     "48": "logo48.png",
