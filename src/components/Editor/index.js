@@ -18,6 +18,7 @@ import { handleDelete } from "../Window/helper";
 import { FlexContainer } from "../../styles/Layout";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
+import { useTranslation } from "react-i18next";
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -30,6 +31,7 @@ function Editor({ windowItem, windowObj }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
+  const { t } = useTranslation();
 
   return (
     <Fragment>
@@ -72,7 +74,7 @@ function Editor({ windowItem, windowObj }) {
               );
             }}
           >
-            Delete
+            {t("delete")}
           </DeleteButton>
         </FlexContainer>
       )}

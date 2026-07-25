@@ -7,14 +7,16 @@ import {
   convertTextAlignToJustifyContent,
 } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import { useTranslation } from "react-i18next";
 
 export function TextAlignOptions({ windowObj, windowItem, text }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
+  const { t } = useTranslation();
 
   return (
     <div>
-      <OptionTitle>{text ? "Text Align:" : "Align"} </OptionTitle>
+      <OptionTitle>{text ? t("textAlign") : t("align")}</OptionTitle>
       <select
         data-cy={`align-image-${windowItem["id"]}`}
         onChange={(e) =>
@@ -31,9 +33,9 @@ export function TextAlignOptions({ windowObj, windowItem, text }) {
           windowItem["justifyContent"]
         )}
       >
-        <option>left</option>
-        <option>center</option>
-        <option>right</option>
+        <option value="left">{t("left")}</option>
+        <option value="center">{t("center")}</option>
+        <option value="right">{t("right")}</option>
       </select>
     </div>
   );

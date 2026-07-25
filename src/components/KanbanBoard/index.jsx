@@ -15,6 +15,7 @@ import KanbanHeader from "./KanbanHeader";
 import { useStore } from "../../Store";
 import { changeItemProperty, handleDelete } from "../Window/helper";
 import KanbanItemDragOverlay from "./KanbanItemOverlay";
+import { useTranslation } from "react-i18next";
 
 function KanbanBoard({ componentObj, windowItem }) {
   const windowData = useStore((state) => state.windowData);
@@ -24,6 +25,7 @@ function KanbanBoard({ componentObj, windowItem }) {
   const [columnHeaders, setColumnHeaders] = useState(
     componentObj["columnHeaders"]
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     changeItemProperty(
@@ -121,7 +123,7 @@ function KanbanBoard({ componentObj, windowItem }) {
                 );
               }}
             >
-              Delete Board
+              {t("deleteBoard")}
             </button>
           </DeleteButtonContainer>
         )}

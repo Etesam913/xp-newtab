@@ -14,33 +14,39 @@ import startFooterImg from "../../media/start-footer.png";
 import React, { Fragment } from "react";
 import { WindowsXPStartbarItem, Windows98StartbarItem } from "./items";
 import { FlexContainer } from "../../styles/Layout";
+import { useTranslation } from "react-i18next";
 
 function StartWindow({ windowsOS, startWindow, setIsStartWindowShowing }) {
+  const { t } = useTranslation();
   return (
     <Fragment>
       {windowsOS === 0 && (
         <WindowsXPStartWindow ref={startWindow}>
           <WindowsXPStartHeader image={startHeaderImg}>
-            Administrator
+            {t("administrator")}
           </WindowsXPStartHeader>
           <WindowsXPStartBody>
             <WindowsXPStartbarItem
               identifier="Settings"
+              label={t("settings")}
               setIsStartWindowShowing={setIsStartWindowShowing}
               dataCy="settings-menu-item"
             />
             <WindowsXPStartbarItem
               identifier="Create A New Window"
+              label={t("createNewWindow")}
               dataCy="create-window-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Add Icon"
+              label={t("addIcon")}
               dataCy="add-icon-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Edit Mode"
+              label={t("editMode")}
               dataCy="edit-mode-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />
@@ -61,19 +67,23 @@ function StartWindow({ windowsOS, startWindow, setIsStartWindowShowing }) {
             <Windows98StartBody>
               <Windows98StartbarItem
                 identifier="Settings"
+                label={t("settings")}
                 setIsStartWindowShowing={setIsStartWindowShowing}
                 dataCy="settings-menu-item"
               />
               <Windows98StartbarItem
                 identifier="Create A New Window"
+                label={t("createNewWindow")}
                 dataCy="create-window-menu-item"
               />
               <Windows98StartbarItem
                 identifier="Add Icon"
+                label={t("addIcon")}
                 dataCy="add-icon-menu-item"
               />
               <Windows98StartbarItem
                 identifier="Edit Mode"
+                label={t("editMode")}
                 dataCy="edit-mode-menu-item"
               />
             </Windows98StartBody>
@@ -86,21 +96,25 @@ function StartWindow({ windowsOS, startWindow, setIsStartWindowShowing }) {
           <WindowsXPStartBody>
             <WindowsXPStartbarItem
               identifier="Settings"
+              label={t("settings")}
               setIsStartWindowShowing={setIsStartWindowShowing}
               dataCy="settings-menu-item"
             />
             <WindowsXPStartbarItem
               identifier="Create A New Window"
+              label={t("createNewWindow")}
               dataCy="create-window-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Add Icon"
+              label={t("addIcon")}
               dataCy="add-icon-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />
             <WindowsXPStartbarItem
               identifier="Edit Mode"
+              label={t("editMode")}
               dataCy="edit-mode-menu-item"
               setIsStartWindowShowing={setIsStartWindowShowing}
             />

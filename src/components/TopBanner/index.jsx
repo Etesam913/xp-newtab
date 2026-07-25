@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import { useTranslation } from "react-i18next";
 
 function getBrowser() {
   const userAgent = navigator.userAgent;
@@ -15,10 +16,11 @@ function getBrowser() {
 }
 
 function TopBanner() {
+  const { t } = useTranslation();
   const messages = [
-    "📝 Did you know that the text component supports markdown syntax?",
-    "😉 It would be greatly appreciated if you could write a review for the extension: ",
-    "✨ Did you know that you can switch the theme from Windows XP to Windows 98 or Windows 7 in the settings menu?",
+    t("bannerMarkdown"),
+    t("bannerReview"),
+    t("bannerTheme"),
   ];
   const [shouldShowBanner, setShouldShowBanner] = useState(false);
   const [bannerIndex, setBannerIndex] = useState("");
@@ -43,7 +45,7 @@ function TopBanner() {
             <Fragment>
               {messages[1]}
               <BannerLink href={getBrowser() === "firefox" ? "https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/" :  "https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke"}>
-                here
+                {t("bannerHere")}
               </BannerLink>
             </Fragment>
           )}

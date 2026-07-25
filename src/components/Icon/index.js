@@ -4,11 +4,13 @@ import Draggable from "react-draggable";
 import { setDataProperty } from "../Window/helper";
 import { deleteDataItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import { useTranslation } from "react-i18next";
 
 function Index({ iconItem, theme }) {
   const iconData = useStore((state) => state.iconData);
   const setIconData = useStore((state) => state.setIconData);
   const iconRef = useRef(null);
+  const { t } = useTranslation();
 
   const settingsData = useStore((state) => state.settingsData);
   const isEditModeOn = useStore((store) => store.isEditModeOn);
@@ -37,7 +39,7 @@ function Index({ iconItem, theme }) {
       <IconWrapper ref={iconRef} tabIndex={0} onDoubleClick={handleDoubleClick}>
         {isEditModeOn ? (
           <header>
-            <IconText>Img Url</IconText>
+            <IconText>{t("imgUrl")}</IconText>
             <IconInput
               defaultValue={iconItem["src"]}
               onBlur={(e) => {
@@ -57,7 +59,7 @@ function Index({ iconItem, theme }) {
 
         {isEditModeOn ? (
           <section>
-            <IconText>Icon Title</IconText>
+            <IconText>{t("iconTitle")}</IconText>
             <IconTextArea
               defaultValue={iconItem["title"]}
               onBlur={(e) => {
@@ -77,7 +79,7 @@ function Index({ iconItem, theme }) {
         {isEditModeOn && (
           <footer>
             <section>
-              <IconText>Redirect Url</IconText>
+              <IconText>{t("redirectUrl")}</IconText>
               <IconInput
                 defaultValue={iconItem["redirect"]}
                 onBlur={(e) => {
@@ -97,7 +99,7 @@ function Index({ iconItem, theme }) {
                   deleteDataItem(iconData, setIconData, iconItem);
                 }}
               >
-                Delete Icon
+                {t("deleteIcon")}
               </button>
             </DeleteRow>
           </footer>

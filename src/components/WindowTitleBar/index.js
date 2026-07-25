@@ -4,6 +4,7 @@ import maximizeSecond from "../../media/maximize-second.png";
 import { deleteDataItem } from "../../functions/helpers";
 import { useStore } from "../../Store";
 import styled, { css } from "styled-components";
+import { useTranslation } from "react-i18next";
 
 function WindowTitleBar({ windowItem, windowId }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
@@ -11,6 +12,7 @@ function WindowTitleBar({ windowItem, windowId }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
   const settingsData = useStore((state) => state.settingsData);
+  const { t } = useTranslation();
 
   return (
     <TitleBar
@@ -50,7 +52,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         <TitleBarButton
           windowsOS={settingsData["windowsOS"]}
           data-cy={`minimize-button-${windowId}`}
-          aria-label="Minimize"
+          aria-label={t("minimize")}
           onClick={() => {
             setDataProperty(
               windowData,
@@ -65,8 +67,8 @@ function WindowTitleBar({ windowItem, windowId }) {
           data-cy={`maximize-button-${windowId}`}
           aria-label={
             settingsData["windowsOS"] !== 0 && windowItem["isMaximized"]
-              ? "Restore"
-              : "Maximize"
+              ? t("restore")
+              : t("maximize")
           }
           windowsOS={settingsData["windowsOS"]}
           isMaximized={windowItem["isMaximized"]}
@@ -84,7 +86,7 @@ function WindowTitleBar({ windowItem, windowId }) {
         <TitleBarButton
           windowsOS={settingsData["windowsOS"]}
           data-cy={`close-button-${windowId}`}
-          aria-label="Close"
+          aria-label={t("close")}
           onClick={() => {
             deleteDataItem(windowData, setWindowData, windowItem);
           }}

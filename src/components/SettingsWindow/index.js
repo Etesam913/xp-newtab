@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { AppearanceTab, InfoTab, MiscTab } from "./Tabs";
+import { AppearanceTab, InfoTab, MiscTab, LanguageTab } from "./Tabs";
 import { useStore } from "../../Store";
 import { TitleBarButton } from "../WindowTitleBar";
+import { useTranslation } from "react-i18next";
 
 function SettingsWindow({ settingsData }) {
   const setIsSettingsShowing = useStore((state) => state.setIsSettingsShowing);
   const [currentTab, setCurrentTab] = useState("Appearance");
+  const { t } = useTranslation();
   const imageInput = useRef(null);
   const colorInput = useRef(null);
 
@@ -17,20 +19,25 @@ function SettingsWindow({ settingsData }) {
     }
   }, [imageInput, colorInput, settingsData]);
 
-  const tabData = ["Appearance", "Miscellaneous", "Information"];
+  const tabData = [
+    { key: "Appearance", label: t("tabAppearance") },
+    { key: "Language", label: t("tabLanguage") },
+    { key: "Miscellaneous", label: t("tabMiscellaneous") },
+    { key: "Information", label: t("tabInformation") },
+  ];
   const tabs = tabData.map((tab, index) => {
     return (
       <button
         key={`tab-${index}`}
         role="tab"
         data-cy={`setting-tab-${index}`}
-        aria-selected={currentTab === tab}
+        aria-selected={currentTab === tab.key}
         onClick={() => {
-          setCurrentTab(tab);
+          setCurrentTab(tab.key);
         }}
-        aria-controls={tab}
+        aria-controls={tab.key}
       >
-        {tab}
+        {tab.label}
       </button>
     );
   });
@@ -39,11 +46,11 @@ function SettingsWindow({ settingsData }) {
     <>
       <Window className="window active">
         <div className="title-bar">
-          <div className="title-bar-text"> Settings</div>
+          <div className="title-bar-text"> {t("settings")}</div>
           <div className="title-bar-controls">
             <TitleBarButton
               windowsOS={settingsData["windowsOS"]}
-              aria-label="Close"
+              aria-label={t("close")}
               onClick={() => {
                 setIsSettingsShowing(false);
               }}
@@ -63,6 +70,7 @@ function SettingsWindow({ settingsData }) {
             <AppearanceTab imageInput={imageInput} colorInput={colorInput} />
           )}
 
+          {currentTab === "Language" && <LanguageTab />}
           {currentTab === "Information" && <InfoTab />}
           {currentTab === "Miscellaneous" && <MiscTab />}
         </section>
