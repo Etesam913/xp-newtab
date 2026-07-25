@@ -6,12 +6,14 @@ import styled, { css } from "styled-components";
 import { useDroppable } from "@dnd-kit/core";
 import KanbanItem from "./KanbanItem";
 import { useStore } from "../../Store";
+import { useTranslation } from "react-i18next";
 
 function Column({ items, setItems, id, margin }) {
   const settingsData = useStore((state) => state.settingsData);
   const { setNodeRef } = useDroppable({
     id,
   });
+  const { t } = useTranslation();
 
   function addItem() {
     const copyOfItems = { ...items };
@@ -58,7 +60,7 @@ function Column({ items, setItems, id, margin }) {
       </SortableContext>
       {isEditModeOn && (
         <AddButtonContainer>
-          <button onClick={addItem}>Add Item</button>
+          <button onClick={addItem}>{t("addItem")}</button>
         </AddButtonContainer>
       )}
     </KanbanColumn>

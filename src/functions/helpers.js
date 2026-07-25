@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 export function getDefaultValue(
   localStorageProperty = "",
   lookForStoredValue = true,
@@ -8,7 +10,7 @@ export function getDefaultValue(
     defaultValue = [
       {
         id: id,
-        windowTitle: "Insert Title Here",
+        windowTitle: i18n.t("insertTitleHere"),
         xCoord: 30,
         yCoord: 30,
         hidden: false,
@@ -25,7 +27,7 @@ export function getDefaultValue(
       {
         id: id,
         src: "https://via.placeholder.com/48",
-        title: "Insert Title Here",
+        title: i18n.t("insertTitleHere"),
         xCoord: 30,
         yCoord: 30,
         redirect: "/",
@@ -40,6 +42,8 @@ export function getDefaultValue(
       stylesheet: "https://unpkg.com/xp.css",
       // 0 -> windowsXP; 1-> windows98; 2-> windows 7
       windowsOS: 0,
+      language: "ru",
+      use24HourClock: false,
     };
   }
   if (lookForStoredValue) {

@@ -13,6 +13,8 @@ import { theme } from "./styles/theme";
 import { useStore } from "./Store";
 import { toggleEditOnKeyPress } from "./functions/helpers";
 import TopBanner from "./components/TopBanner";
+import "./i18n";
+import { useTranslation } from "react-i18next";
 
 function App() {
   const isSettingsShowing = useStore((state) => state.isSettingsShowing);
@@ -21,6 +23,13 @@ function App() {
   const windowData = useStore((state) => state.windowData);
 
   const toggleEditMode = useStore((state) => state.toggleEditMode);
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    if (settingsData && settingsData.language) {
+      i18n.changeLanguage(settingsData.language);
+    }
+  }, [settingsData?.language, i18n]);
 
   useEffect(() => {
     document.addEventListener("keydown", (e) =>

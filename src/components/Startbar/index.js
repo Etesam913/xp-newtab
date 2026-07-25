@@ -34,8 +34,10 @@ import {
 import { setDataProperty } from "../Window/helper";
 import { useStore } from "../../Store";
 import StartWindow from "./StartWindow";
+import { useTranslation } from "react-i18next";
 
 function Startbar() {
+  const { t } = useTranslation();
   const [time, setTime] = useState("");
   const [day, setDay] = useState("");
   const startButton = useRef(null);
@@ -135,24 +137,28 @@ function Startbar() {
   }, []);
 
   useEffect(() => {
-    let timeUnits = getTimeUnits();
-    let timeText =
-      getTwelveHourTime(timeUnits["hour"]) +
-      ":" +
-      timeUnits["minutes"] +
-      " " +
-      getTimePeriodName(timeUnits["hour"]);
-    setTime(timeText);
+    function formatClockTime() {
+      const timeUnits = getTimeUnits();
+      if (settingsData["use24HourClock"]) {
+        const rawHour = timeUnits["hour"] < 10 ? "0" + timeUnits["hour"] : timeUnits["hour"];
+        return rawHour + ":" + timeUnits["minutes"];
+      } else {
+        return (
+          getTwelveHourTime(timeUnits["hour"]) +
+          ":" +
+          timeUnits["minutes"] +
+          " " +
+          getTimePeriodName(timeUnits["hour"])
+        );
+      }
+    }
+
+    setTime(formatClockTime());
 
     const interval = setInterval(() => {
-      timeUnits = getTimeUnits();
-      timeText =
-        getTwelveHourTime(timeUnits["hour"]) +
-        ":" +
-        timeUnits["minutes"] +
-        getTimePeriodName(timeUnits["hour"]);
-      setTime(timeText);
+      setTime(formatClockTime());
     }, 1000);
+
     let currentDate = new Date();
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
@@ -160,7 +166,7 @@ function Startbar() {
     setDay(cMonth + "/" + cDay + "/" + cYear);
 
     return () => clearInterval(interval);
-  }, [setTime, setDay]);
+  }, [setTime, setDay, settingsData]);
 
   return (
     <Bar windowsOS={settingsData["windowsOS"]}>
@@ -185,7 +191,7 @@ function Startbar() {
             }}
           >
             <Windows98Logo src={windows98Logo} alt="98-logo" />
-            Start
+            {t("start")}
           </Windows98StartButton>
           <Windows98Bar />
         </Fragment>

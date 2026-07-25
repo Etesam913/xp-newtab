@@ -6,10 +6,12 @@ import { useStore } from "../../Store";
 import WindowTitleBar from "../WindowTitleBar";
 import { Resizable } from "re-resizable";
 import RenderWindowComponents from "./RenderWindowComponents";
+import { useTranslation } from "react-i18next";
 
 function Window({ width, windowItem, windowId }) {
   const windowRef = useRef(null);
   const componentsPanel = useRef(null);
+  const { t } = useTranslation();
 
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
@@ -22,25 +24,27 @@ function Window({ width, windowItem, windowId }) {
   const isEditModeOn = useStore((state) => state.isEditModeOn);
 
   const componentData = [
-    "Text",
-    "Image",
-    "Kanban Board",
-    "YouTube Video",
-    "Search Bar",
+    { key: "Text", label: t("componentText") },
+    { key: "Image", label: t("componentImage") },
+    { key: "Kanban Board", label: t("componentKanban") },
+    { key: "YouTube Video", label: t("componentYoutube") },
+    { key: "Search Bar", label: t("componentSearch") },
   ];
-  const componentOptions = componentData.map((componentName, index) => {
+  const componentOptions = componentData.map((item, index) => {
+    const componentName = item.key;
     return (
       <div className="field-row" key={index}>
         <input
           id={componentName.toLowerCase() + windowId}
           type="radio"
           name="radio-button"
+          data-component-name={componentName}
         />
         <WindowLabel
           data-cy={`${componentName.toLowerCase()}-option-${windowId}`}
           htmlFor={componentName.toLowerCase() + windowId}
         >
-          {componentName}
+          {item.label}
         </WindowLabel>
       </div>
     );
@@ -131,7 +135,7 @@ function Window({ width, windowItem, windowId }) {
 
               {isEditModeOn && (
                 <ComponentsPanel ref={componentsPanel}>
-                  <div className="field-row">Select one component to add:</div>
+                  <div className="field-row">{t("selectOneComponent")}</div>
                   {componentOptions}
                   <AddComponent
                     as={"button"}
@@ -145,7 +149,7 @@ function Window({ width, windowItem, windowId }) {
                       );
                     }}
                   >
-                    Add Component
+                    {t("addComponent")}
                   </AddComponent>
                 </ComponentsPanel>
               )}

@@ -1,3 +1,4 @@
+import i18n from "../../i18n";
 import {
   getTranslateXY,
   replaceDesiredWindowItem,
@@ -58,16 +59,16 @@ export function addComponent(
       id: maxId + 1,
       componentName: "Kanban Board",
       columnHeaders: {
-        A: "To Do",
-        B: "Doing",
-        C: "Done",
+        A: i18n.t("kanbanToDo"),
+        B: i18n.t("kanbanDoing"),
+        C: i18n.t("kanbanDone"),
       },
       items: {
         A: [
-          { id: 1, text: "🐶 Walk the dog" },
-          { id: 2, text: "🖊 Give this app a review" },
+          { id: 1, text: i18n.t("kanbanWalkDog") },
+          { id: 2, text: i18n.t("kanbanGiveReview") },
         ],
-        B: [{ id: 3, text: "📝 Finish my homework" }],
+        B: [{ id: 3, text: i18n.t("kanbanHomework") }],
         C: [],
       },
     });
@@ -86,7 +87,7 @@ export function getSelectedComponent(componentsParent) {
     const radioInput = componentChildren[0];
     const radioLabel = componentChildren[1];
     if (radioInput.checked) {
-      return radioLabel.innerText;
+      return radioInput.getAttribute("data-component-name") || radioLabel.innerText;
     }
   }
   return null;

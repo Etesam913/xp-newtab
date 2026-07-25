@@ -5,10 +5,12 @@ import { MagnifyingGlass } from "../SvgMaster";
 import { replaceDesiredWindowItem } from "../../functions/helpers";
 import { handleDelete } from "../Window/helper";
 import { useStore } from "../../Store";
+import { useTranslation } from "react-i18next";
 
 function SearchBar({ windowItem, windowObj }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
+  const { t } = useTranslation();
 
   const isEditModeOn = useStore((store) => store.isEditModeOn);
   function handleDropdown(e) {
@@ -35,7 +37,7 @@ function SearchBar({ windowItem, windowObj }) {
         <SearchInput
           type="text"
           name="q"
-          placeholder={"Search " + windowItem["engine"]}
+          placeholder={t("searchPlaceholder", { engine: windowItem["engine"] })}
         />
         <SearchButton>
           <MagnifyingGlass />
@@ -48,7 +50,7 @@ function SearchBar({ windowItem, windowObj }) {
           margin="0.5rem 0 0"
         >
           <span>
-            <label htmlFor="search-engine">Search Engine:</label>
+            <label htmlFor="search-engine">{t("searchEngine")}</label>
 
             <SearchDropdown
               id="search-engine"
@@ -71,7 +73,7 @@ function SearchBar({ windowItem, windowObj }) {
               );
             }}
           >
-            Delete
+            {t("delete")}
           </button>
         </FlexContainer>
       )}

@@ -38,6 +38,7 @@ function handleClick(
 
 export function WindowsXPStartbarItem({
   identifier,
+  label,
   setIsStartWindowShowing,
   dataCy,
 }) {
@@ -90,13 +91,13 @@ export function WindowsXPStartbarItem({
         {identifier === "Add Icon" && (
           <StartItemIcon width={"32px"} height={"32px"} src={newIconImg} />
         )}
-        <StartItemName>{identifier}</StartItemName>
+        <StartItemName>{label || identifier}</StartItemName>
       </FlexContainer>
     </WindowsXPItemContainer>
   );
 }
 
-export function Windows98StartbarItem({ identifier, setIsStartWindowShowing }) {
+export function Windows98StartbarItem({ identifier, label, setIsStartWindowShowing }) {
   const windowData = useStore((state) => state.windowData);
   const setWindowData = useStore((state) => state.setWindowData);
 
@@ -146,7 +147,7 @@ export function Windows98StartbarItem({ identifier, setIsStartWindowShowing }) {
         {identifier === "Add Icon" && (
           <StartItemIcon width={"32px"} height={"32px"} src={newIconImg} />
         )}
-        <StartItemName>{identifier}</StartItemName>
+        <StartItemName>{label || identifier}</StartItemName>
       </FlexContainer>
     </Windows98ItemContainer>
   );

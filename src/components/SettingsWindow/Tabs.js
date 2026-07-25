@@ -5,11 +5,13 @@ import { HexColorPicker } from "react-colorful";
 import styled from "styled-components";
 import { updateSetting } from "../../functions/helpers";
 import { useStore } from "../../Store";
+import { useTranslation } from "react-i18next";
 
 export function AppearanceTab({ imageInput, colorInput }) {
   const settingsData = useStore((state) => state.settingsData);
   const setSettingsData = useStore((state) => state.setSettingsData);
   const [color, setColor] = useState(settingsData["backgroundColor"]);
+  const { t } = useTranslation();
 
   function handleColorInputEnter(e) {
     if (e.keyCode === 13) {
@@ -79,7 +81,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
 
   return (
     <article role="tabpanel">
-      <Header1 margin={"1rem 0 1rem"}>Change Background Image</Header1>
+      <Header1 margin={"1rem 0 1rem"}>{t("changeBackgroundImage")}</Header1>
       <FlexContainer
         justifyContent={"flex-start"}
         alignItems={"flex-start"}
@@ -88,7 +90,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
         <TabInput
           ref={imageInput}
           defaultValue={settingsData["backgroundImage"]}
-          placeholder={"Enter Image Url"}
+          placeholder={t("enterImageUrl")}
           width={"70%"}
           onKeyDown={(e) => {
             handleImageInputEnter(e);
@@ -106,7 +108,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
               );
             }}
           >
-            Set Image
+            {t("setImage")}
           </button>
           <MarginButton
             data-cy="reset-background-image-button"
@@ -121,7 +123,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
                 defaultBackgroundImages[settingsData["windowsOS"]];
             }}
           >
-            Reset to Default
+            {t("resetToDefault")}
           </MarginButton>
           <MarginButton
             data-cy="remove-background-image-button"
@@ -134,11 +136,11 @@ export function AppearanceTab({ imageInput, colorInput }) {
               );
             }}
           >
-            Remove Image
+            {t("removeImage")}
           </MarginButton>
         </FlexContainer>
       </FlexContainer>
-      <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
+      <Header1 margin={"1.5rem 0 1rem"}>{t("changeBackgroundColor")}</Header1>
       <FlexContainer
         tablet
         justifyContent={"flex-start"}
@@ -146,7 +148,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
       >
         <TabInput
           data-cy="background-color-input"
-          placeholder={"Enter Hex Color Code"}
+          placeholder={t("enterHexColor")}
           ref={colorInput}
           value={settingsData["backgroundColor"]}
           onKeyPress={(e) => {
@@ -161,7 +163,7 @@ export function AppearanceTab({ imageInput, colorInput }) {
         />
         <HexColorPicker color={color} onChange={setColor} />
       </FlexContainer>
-      <Header1>Change Styles</Header1>
+      <Header1>{t("changeStyles")}</Header1>
       <FlexContainer justifyContent="flex-start">
         <select onChange={handleOSChange}>
           <option selected={settingsData["windowsOS"] === 0}>Windows XP</option>
@@ -185,31 +187,91 @@ const MarginButton = styled.button`
   margin-top: 0.5rem;
 `;
 
-export function InfoTab() {
+export function LanguageTab() {
+  const settingsData = useStore((state) => state.settingsData);
+  const setSettingsData = useStore((state) => state.setSettingsData);
+  const { t } = useTranslation();
+
+  function handleLanguageChange(e) {
+    updateSetting(
+      settingsData,
+      setSettingsData,
+      "language",
+      e.target.value
+    );
+  }
+
+  function handleTimeFormatChange(e) {
+    updateSetting(
+      settingsData,
+      setSettingsData,
+      "use24HourClock",
+      e.target.value === "true"
+    );
+  }
+
   return (
     <article role="tabpanel">
-      <Header1 margin={"0 0 1rem"}>Windows XP New Tab</Header1>
+      <Header1 margin={"0 0 1rem"}>{t("languageSettings")}</Header1>
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label htmlFor="language-select" style={{ marginRight: "0.5rem" }}>
+          {t("selectLanguage")}
+        </label>
+        <select
+          id="language-select"
+          data-cy="language-select"
+          onChange={handleLanguageChange}
+          value={settingsData["language"] || "ru"}
+        >
+          <option value="ru">{t("russian")}</option>
+          <option value="en">{t("english")}</option>
+        </select>
+      </div>
+
+      <Header1 margin={"1rem 0 1rem"}>{t("timeFormatSettings")}</Header1>
+      <div style={{ marginBottom: "1rem" }}>
+        <label htmlFor="time-format-select" style={{ marginRight: "0.5rem" }}>
+          {t("timeFormat")}
+        </label>
+        <select
+          id="time-format-select"
+          data-cy="time-format-select"
+          onChange={handleTimeFormatChange}
+          value={settingsData["use24HourClock"] ? "true" : "false"}
+        >
+          <option value="false">{t("twelveHour")}</option>
+          <option value="true">{t("twentyFourHour")}</option>
+        </select>
+      </div>
+    </article>
+  );
+}
+
+export function InfoTab() {
+  const { t } = useTranslation();
+  return (
+    <article role="tabpanel">
+      <Header1 margin={"0 0 1rem"}>{t("infoTitle")}</Header1>
       <InfoParagraph>
-        This extension was created by Etesam Ansari using React.js, Styled
-        Components, and the XP.css GitHub repo.
+        {t("infoDescription")}
       </InfoParagraph>
       <InfoGrid>
         <p style={{ marginRight: "0.5rem" }} data-cy="github-text">
-          GitHub Link:{" "}
+          {t("githubLink")}{" "}
         </p>
         <a href={"https://github.com/Etesam913/xp-newtab"}>
           https://github.com/Etesam913/xp-newtab
         </a>
 
         <p style={{ marginRight: "0.5rem" }} data-cy="firefox-addon-text">
-          Firefox Addon Link:{" "}
+          {t("firefoxAddonLink")}{" "}
         </p>
         <a href={"https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/"}>
           https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/
         </a>
 
         <p style={{ marginRight: "0.5rem" }} data-cy="chrome-addon-text">
-          Chrome Addon Link:{" "}
+          {t("chromeAddonLink")}{" "}
         </p>
         <a
           href={
@@ -244,10 +306,11 @@ const InfoParagraph = styled.p`
 export function MiscTab() {
   const settingsData = useStore((state) => state.settingsData);
   const setSettingsData = useStore((state) => state.setSettingsData);
+  const { t } = useTranslation();
 
   return (
     <article role="tabpanel">
-      <Header1>Change Dragging Grid</Header1>
+      <Header1>{t("changeDraggingGrid")}</Header1>
       <select
         data-cy="dragging-grid"
         onChange={(e) => {
