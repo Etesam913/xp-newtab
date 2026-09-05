@@ -62,3 +62,16 @@ The Chrome Developer Dashboard also requires store content: a detailed descripti
 Register for the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) if needed; registration requires the developer agreement and a one-time fee. See Google's [preparation guide](https://developer.chrome.com/docs/webstore/prepare), [listing requirements](https://developer.chrome.com/docs/webstore/cws-dashboard-listing), and [privacy guidance](https://developer.chrome.com/docs/webstore/cws-dashboard-privacy) before submitting for review. The current CI workflow builds and tests the extension but does not upload it to the store.
 
 <b>I am not affiliated, associated, authorized, endorsed by, or in any way officially connected with Microsoft, or any of its subsidiaries or its affiliates.</b>
+
+### Local images
+
+Use **Change background…** in Appearance settings or **Change image…** in edit
+mode for desktop images and icons. The chooser shows the current image and offers
+**Upload file** (Browse files…) or **Image URL** (Use image). Cancel or Escape
+closes the chooser without changing the image.
+Local files are stored as blobs in IndexedDB on this device; only a small reference
+is saved with the desktop settings. They survive reloads and work in other new tabs
+in the same browser profile without uploading the file. Identical files share one
+stored copy. Clearing the extension's/site's browser data removes these images.
+Stored files are retained when removed from the desktop so references in other
+saved items remain usable.

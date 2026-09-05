@@ -9,15 +9,13 @@ import { TitleBarButton } from "../WindowTitleBar";
 function SettingsWindow({ settingsData }: { settingsData: Settings }) {
   const setIsSettingsShowing = useStore((state) => state.setIsSettingsShowing);
   const [currentTab, setCurrentTab] = useState("Appearance");
-  const imageInput = useRef<HTMLInputElement>(null);
   const colorInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (imageInput.current && colorInput.current) {
-      imageInput.current.value = settingsData["backgroundImage"];
+    if (colorInput.current) {
       colorInput.current.value = settingsData["backgroundColor"];
     }
-  }, [imageInput, colorInput, settingsData]);
+  }, [colorInput, settingsData]);
 
   const tabData = ["Appearance", "Miscellaneous", "Information"];
   const tabs = tabData.map((tab, index) => {
@@ -62,7 +60,7 @@ function SettingsWindow({ settingsData }: { settingsData: Settings }) {
           </menu>
 
           {currentTab === "Appearance" && (
-            <AppearanceTab imageInput={imageInput} colorInput={colorInput} />
+            <AppearanceTab colorInput={colorInput} />
           )}
 
           {currentTab === "Information" && <InfoTab />}

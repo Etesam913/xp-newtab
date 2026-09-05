@@ -1,3 +1,5 @@
+import { ImagePicker } from "../ImagePicker";
+import { useImageSource } from "../../hooks/useImageSource";
 import { normalizeWebsiteUrl } from "../../functions/urls";
 import type { ComponentProps, ImageItem } from "../../types";
 import type { StyleProps } from "../../types";
@@ -6,14 +8,12 @@ import styled from "styled-components";
 import { FlexContainer } from "../../styles/Layout";
 import { TextAlignOptions } from "../ComponentOptions";
 import { changeItemProperty, handleDelete } from "../Window/helper";
-import BackButton from "../BackButton/index";
 import { DeleteButton, OptionsButton } from "../../styles/StyledComponents";
 import { useStore } from "../../Store";
 
 function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
+  const image = useImageSource(windowItem.src);
   const [isImageFocused, setIsImageFocused] = useState(false);
-  const [isRedirectClicked, setIsRedirectClicked] = useState(false);
-  const srcInput = useRef<HTMLInputElement>(null);
   const redirectInput = useRef<HTMLInputElement>(null);
   const redirectButton = useRef<HTMLButtonElement>(null);
 
@@ -22,18 +22,6 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
   const isEditModeOn = useStore((store) => store.isEditModeOn);
 
   function handleOptions() {
-    function setImageUrl() {
-      changeItemProperty(
-        windowObj,
-        windowData,
-        setWindowData,
-        windowItem,
-        "src",
-        srcInput.current?.value.trim() ?? "",
-      );
-      setIsImageFocused(false);
-    }
-
     function setRedirectUrl() {
       changeItemProperty(
         windowObj,
@@ -43,7 +31,7 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
         "href",
         normalizeWebsiteUrl(redirectInput.current?.value),
       );
-      setIsRedirectClicked(false);
+      setIsImageFocused(false);
     }
 
     function convertToImgWidth(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,9 +48,9 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
       );
     }
 
-    if (!isImageFocused && !isRedirectClicked) {
+    if (!isImageFocused) {
       return (
-        <FlexContainer width={"100%"}>
+        <FlexContainer width={"100%"} flexWrap="wrap">
           <TextAlignOptions windowItem={windowItem} windowObj={windowObj} />
           <Slider className="field-row">
             <label htmlFor="range25">Size:</label>
@@ -78,20 +66,25 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
               }}
             />
           </Slider>
-          <OptionsButton
-            data-cy={`set-image-url-${windowItem["id"]}`}
-            onClick={() => {
-              setIsRedirectClicked(true);
+          <ImagePicker
+            context="desktop"
+            source={windowItem.src}
+            onSelect={(source) => {
+              changeItemProperty(
+                windowObj,
+                windowData,
+                setWindowData,
+                windowItem,
+                "src",
+                source,
+              );
             }}
-            width="105px"
-          >
-            Set Image Url
-          </OptionsButton>
+          />
         </FlexContainer>
       );
     } else if (isImageFocused) {
       return (
-        <FlexContainer width={"100%"}>
+        <FlexContainer width={"100%"} flexWrap="wrap">
           <input
             ref={redirectInput}
             style={{ width: "100%" }}
@@ -105,34 +98,6 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
             ref={redirectButton}
           >
             Set Redirect Url
-          </OptionsButton>
-        </FlexContainer>
-      );
-    } else if (isRedirectClicked) {
-      return (
-        <FlexContainer width={"100%"}>
-          <BackButton
-            dataCy={`image-back-button-${windowItem["id"]}`}
-            aria-label="back button"
-            margin={"0 0.25rem 0 0"}
-            onClick={() => {
-              setIsRedirectClicked(false);
-            }}
-          />
-          <input
-            ref={srcInput}
-            style={{ width: "87%" }}
-            placeholder={"Enter image url"}
-            defaultValue={windowItem["src"] !== null ? windowItem["src"] : ""}
-            data-cy={`image-url-input-${windowItem["id"]}`}
-            /*onBlur={handleBlur}*/
-          />
-          <OptionsButton
-            onClick={setImageUrl}
-            width="110px"
-            data-cy={`set-image-url-update-${windowItem["id"]}`}
-          >
-            Set Image Url
           </OptionsButton>
         </FlexContainer>
       );
@@ -160,6 +125,7 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
         </FlexContainer>
       )}
 
+      {image.error && <p role="alert">{image.error}</p>}
       <FlexContainer
         data-cy={`image-container-${windowItem["id"]}`}
         justifyContent={windowItem["justifyContent"]}
@@ -172,7 +138,6 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
               : (normalizeWebsiteUrl(windowItem.href) ?? undefined)
           }
           onFocus={() => {
-            setIsRedirectClicked(false);
             setIsImageFocused(true);
           }}
           onBlur={handleBlur}
@@ -181,7 +146,7 @@ function Image({ windowObj, windowItem }: ComponentProps<ImageItem>) {
         >
           <ImageComponent
             data-cy={`image-${windowItem["id"]}`}
-            src={windowItem["src"]}
+            src={image.url || undefined}
             alt="Custom desktop image"
           />
         </ImageWrapper>

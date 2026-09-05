@@ -5,6 +5,23 @@ async function menu(page: Page, item: string) {
   await page.getByRole("button", { name: "Start", exact: true }).click();
   await byCy(page, item).click();
 }
+async function imagePicker(
+  page: Page,
+  context: "background" | "desktop" | "icon",
+) {
+  if (context === "icon" && (await byCy(page, "minimize-button-0").isVisible()))
+    await byCy(page, "minimize-button-0").click();
+  const parent =
+    context === "background"
+      ? page
+      : byCy(page, context === "icon" ? "icon-0" : "window-0");
+  await parent
+    .getByRole("button", {
+      name: context === "background" ? "Change background…" : "Change image…",
+      exact: true,
+    })
+    .click();
+}
 async function editMode(page: Page) {
   await menu(page, "edit-mode-menu-item");
   await page.getByRole("button", { name: "Start", exact: true }).click();
@@ -149,11 +166,13 @@ test("image controls update alignment, URL, and size", async ({ page }) => {
     "justify-content",
     "flex-end",
   );
-  await byCy(page, "set-image-url-1").click();
-  await byCy(page, "image-url-input-1").fill("./logo128.png");
-  await byCy(page, "set-image-url-update-1").click();
+  await imagePicker(page, "desktop");
+  await page.getByText("Image URL", { exact: true }).click();
+  await page
+    .getByLabel("Desktop image URL", { exact: true })
+    .fill("./logo128.png");
+  await page.getByRole("button", { name: "Use image", exact: true }).click();
   await expect(byCy(page, "image-1")).toHaveAttribute("src", "./logo128.png");
-  await byCy(page, "image-back-button-1").click();
   await byCy(page, "image-size-slider-1").fill("15");
   await expect
     .poll(() =>
@@ -278,13 +297,18 @@ test("icon image proportions preserve position and bare hostnames navigate corre
   const icon = byCy(page, "icon-0");
   const initial = (await icon.boundingBox())!;
   await editMode(page);
-  await page.getByLabel("Icon image URL").fill("./logo128.png");
+  await imagePicker(page, "icon");
+  await page.getByText("Image URL", { exact: true }).click();
+  await page
+    .getByLabel("Icon image URL", { exact: true })
+    .fill("./logo128.png");
+  await page.getByRole("button", { name: "Use image", exact: true }).click();
   await page.getByLabel("Icon title", { exact: true }).click();
   await editMode(page);
   const updated = (await icon.boundingBox())!;
   expect(updated.x).toBe(initial.x);
   expect(updated.width).toBe(initial.width);
-  await expect(icon.locator("img")).toHaveCSS("width", "48px");
+  await expect(icon.locator("img")).toHaveCSS("width", "64px");
   const destination = page.waitForRequest("https://example.com/path");
   await icon.dblclick();
   expect((await destination).url()).toBe("https://example.com/path");
@@ -460,4 +484,160 @@ test("failed saves warn without losing edits and recover after storage becomes w
   await expect(byCy(page, "window-title-display-0")).toHaveText(
     "Recovered title",
   );
+});
+
+test("local images persist for backgrounds, desktop images, and icons across tabs", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/");
+  await menu(page, "settings-menu-item");
+  await imagePicker(page, "background");
+  await page
+    .getByLabel("Choose local background image")
+    .setInputFiles("public/logo128.png");
+  await expect(page.locator("body")).toHaveCSS("background-image", /blob:/);
+  const other = await context.newPage();
+  await other.goto("/");
+  await expect(other.locator("body")).toHaveCSS("background-image", /blob:/);
+  await imagePicker(page, "background");
+  await page
+    .getByLabel("Choose local background image")
+    .setInputFiles("public/logo48.png");
+  await expect(
+    page.getByRole("status").filter({ hasText: "Saving image" }),
+  ).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => JSON.parse(localStorage.getItem("settingsData")!).backgroundImage,
+      ),
+    )
+    .toMatch(/^local-image:/);
+  await page.reload();
+  await expect(page.locator("body")).toHaveCSS("background-image", /blob:/);
+  await editMode(page);
+  await addComponent(page, "Image");
+  await imagePicker(page, "desktop");
+  await page
+    .getByLabel("Choose local desktop image")
+    .setInputFiles("public/logo128.png");
+  await expect(byCy(page, "image-1")).toHaveAttribute("src", /^blob:/);
+  await imagePicker(page, "icon");
+  await page
+    .getByLabel("Choose local icon image")
+    .setInputFiles("public/logo128.png");
+  await expect(
+    page.getByRole("status").filter({ hasText: "Saving image" }),
+  ).toHaveCount(0);
+  await page.reload();
+  const desktopImage = byCy(page, "image-1");
+  const iconImage = byCy(page, "icon-0").locator("img");
+  for (const image of [desktopImage, iconImage]) {
+    await expect(image).toHaveAttribute("src", /^blob:/);
+    await expect
+      .poll(() =>
+        image.evaluate((element: HTMLImageElement) => element.naturalWidth),
+      )
+      .toBe(128);
+  }
+  expect(
+    await page.evaluate(
+      () =>
+        new Promise<number>((resolve, reject) => {
+          const request = indexedDB.open("xp-newtab-images", 1);
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => {
+            const db = request.result;
+            const count = db
+              .transaction("images")
+              .objectStore("images")
+              .count();
+            count.onsuccess = () => {
+              db.close();
+              resolve(count.result);
+            };
+            count.onerror = () => {
+              db.close();
+              reject(count.error);
+            };
+          };
+        }),
+    ),
+  ).toBe(2);
+  await menu(page, "settings-menu-item");
+  await byCy(page, "remove-background-image-button").click();
+  await expect(page.locator("body")).toHaveCSS("background-image", "none");
+  await expect(other.locator("body")).toHaveCSS("background-image", "none");
+  await byCy(page, "reset-background-image-button").click();
+  await expect(page.locator("body")).toHaveCSS("background-image", /bliss.jpg/);
+  await imagePicker(page, "background");
+  await page.getByText("Image URL", { exact: true }).click();
+  await page
+    .getByLabel("Background image URL", { exact: true })
+    .fill("./logo48.png");
+  await page.getByRole("button", { name: "Use image", exact: true }).click();
+  await expect(page.locator("body")).toHaveCSS(
+    "background-image",
+    /logo48.png/,
+  );
+});
+
+test("invalid local images and failed image saves preserve the previous background", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await menu(page, "settings-menu-item");
+  await imagePicker(page, "background");
+  const picker = page.getByLabel("Choose local background image");
+  await picker.setInputFiles({
+    name: "broken.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not an image"),
+  });
+  await expect(page.getByRole("alert")).toContainText(
+    "could not be opened as an image",
+  );
+  await expect(page.locator("body")).toHaveCSS("background-image", /bliss.jpg/);
+  await page.evaluate(() => {
+    IDBObjectStore.prototype.put = () => {
+      throw new DOMException("Image storage is full", "QuotaExceededError");
+    };
+  });
+  await picker.setInputFiles("public/logo128.png");
+  await expect(page.getByRole("alert")).toContainText("Image storage is full");
+  await expect(page.locator("body")).toHaveCSS("background-image", /bliss.jpg/);
+  await page.reload();
+  await expect(page.locator("body")).toHaveCSS("background-image", /bliss.jpg/);
+});
+
+test("image picker separates upload and URL choices and cancel preserves the image", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await editMode(page);
+  await imagePicker(page, "icon");
+  const dialog = page.getByRole("dialog", { name: "Change icon image" });
+  await expect(
+    dialog.getByRole("img", { name: "Current image" }),
+  ).toHaveAttribute("src", "./logo48.png");
+  await expect(
+    dialog.getByRole("button", { name: "Browse files…" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Icon image URL", { exact: true })).toHaveCount(
+    0,
+  );
+  await dialog.getByText("Image URL", { exact: true }).click();
+  await page
+    .getByLabel("Icon image URL", { exact: true })
+    .fill("./logo128.png");
+  await dialog.getByRole("button", { name: "Cancel" }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(byCy(page, "icon-0").locator("img")).toHaveAttribute(
+    "src",
+    "./logo48.png",
+  );
+  await imagePicker(page, "icon");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
 });

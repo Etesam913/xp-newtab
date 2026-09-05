@@ -1,3 +1,4 @@
+import { useImageSource } from "./hooks/useImageSource";
 import { syncDesktopFromStorage } from "./functions/sync";
 import isPropValid from "@emotion/is-prop-valid";
 import { StyleSheetManager } from "styled-components";
@@ -21,6 +22,7 @@ import TopBanner from "./components/TopBanner";
 function App() {
   const isSettingsShowing = useStore((state) => state.isSettingsShowing);
   const settingsData = useStore((state) => state.settingsData);
+  const backgroundImage = useImageSource(settingsData.backgroundImage);
   const storageError = useStore((state) => state.storageError);
 
   const toggleEditMode = useStore((state) => state.toggleEditMode);
@@ -47,11 +49,14 @@ function App() {
         <GlobalStyle
           windowsOS={settingsData["windowsOS"]}
           background={settingsData["backgroundColor"]}
-          backgroundImage={settingsData["backgroundImage"]}
+          backgroundImage={backgroundImage.url}
         />
 
         {isSettingsShowing && <SettingsWindow settingsData={settingsData} />}
         <TopBanner />
+        {backgroundImage.error && (
+          <div role="alert">{backgroundImage.error}</div>
+        )}
         {storageError && (
           <div
             role="alert"

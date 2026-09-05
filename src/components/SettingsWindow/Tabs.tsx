@@ -1,3 +1,4 @@
+import { ImagePicker } from "../ImagePicker";
 import type { WindowsOS } from "../../types";
 import { defaultBackgrounds } from "../../styles/themes";
 import type { StyleProps } from "../../types";
@@ -10,10 +11,8 @@ import { updateSetting } from "../../functions/helpers";
 import { useStore } from "../../Store";
 
 export function AppearanceTab({
-  imageInput,
   colorInput,
 }: {
-  imageInput: React.RefObject<HTMLInputElement | null>;
   colorInput: React.RefObject<HTMLInputElement | null>;
 }) {
   const settingsData = useStore((state) => state.settingsData);
@@ -28,17 +27,6 @@ export function AppearanceTab({
         settingsData,
         setSettingsData,
         "backgroundColor",
-        e.currentTarget.value,
-      );
-    }
-  }
-
-  function handleImageInputEnter(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      updateSetting(
-        settingsData,
-        setSettingsData,
-        "backgroundImage",
         e.currentTarget.value,
       );
     }
@@ -66,63 +54,44 @@ export function AppearanceTab({
     <article role="tabpanel">
       <Header1 margin={"1rem 0 1rem"}>Change Background Image</Header1>
       <FlexContainer
-        justifyContent={"flex-start"}
-        alignItems={"flex-start"}
-        tablet
+        justifyContent="flex-start"
+        flexWrap="wrap"
+        style={{ gap: "8px" }}
       >
-        <TabInput
-          ref={imageInput}
-          defaultValue={settingsData["backgroundImage"]}
-          placeholder={"Enter Image Url"}
-          width={"70%"}
-          onKeyDown={(e) => {
-            handleImageInputEnter(e);
+        <ImagePicker
+          context="background"
+          label="Change background"
+          source={settingsData.backgroundImage}
+          onSelect={(source) => {
+            updateSetting(
+              settingsData,
+              setSettingsData,
+              "backgroundImage",
+              source,
+            );
           }}
         />
-        <FlexContainer flexDirection="column" alignItems={"flex-start"}>
-          <button
-            data-cy="set-background-image-button"
-            onClick={() => {
-              updateSetting(
-                settingsData,
-                setSettingsData,
-                "backgroundImage",
-                imageInput.current?.value ?? "",
-              );
-            }}
-          >
-            Set Image
-          </button>
-          <MarginButton
-            data-cy="reset-background-image-button"
-            onClick={() => {
-              updateSetting(
-                settingsData,
-                setSettingsData,
-                "backgroundImage",
-                defaultBackgroundImages[settingsData["windowsOS"]],
-              );
-              if (imageInput.current)
-                imageInput.current.value =
-                  defaultBackgroundImages[settingsData["windowsOS"]];
-            }}
-          >
-            Reset to Default
-          </MarginButton>
-          <MarginButton
-            data-cy="remove-background-image-button"
-            onClick={() => {
-              updateSetting(
-                settingsData,
-                setSettingsData,
-                "backgroundImage",
-                "",
-              );
-            }}
-          >
-            Remove Image
-          </MarginButton>
-        </FlexContainer>
+        <button
+          data-cy="reset-background-image-button"
+          onClick={() =>
+            updateSetting(
+              settingsData,
+              setSettingsData,
+              "backgroundImage",
+              defaultBackgroundImages[settingsData.windowsOS],
+            )
+          }
+        >
+          Reset to Default
+        </button>
+        <button
+          data-cy="remove-background-image-button"
+          onClick={() =>
+            updateSetting(settingsData, setSettingsData, "backgroundImage", "")
+          }
+        >
+          Remove Image
+        </button>
       </FlexContainer>
       <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
       <FlexContainer
@@ -169,9 +138,6 @@ const TabInput = styled.input<StyleProps>`
     margin-bottom: 1rem;
     width: 80%;
   }
-`;
-const MarginButton = styled.button<StyleProps>`
-  margin-top: 0.5rem;
 `;
 
 export function InfoTab() {

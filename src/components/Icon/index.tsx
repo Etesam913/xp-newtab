@@ -1,3 +1,5 @@
+import { ImagePicker } from "../ImagePicker";
+import { useImageSource } from "../../hooks/useImageSource";
 import { theme as appTheme } from "../../styles/theme";
 import { normalizeWebsiteUrl } from "../../functions/urls";
 import type { DesktopIcon } from "../../types";
@@ -16,6 +18,7 @@ function Index({
   iconItem: DesktopIcon;
   theme: typeof appTheme;
 }) {
+  const image = useImageSource(iconItem.src);
   const iconData = useStore((state) => state.iconData);
   const setIconData = useStore((state) => state.setIconData);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -50,6 +53,7 @@ function Index({
       }}
     >
       <IconWrapper
+        $editing={isEditModeOn}
         ref={iconRef}
         tabIndex={0}
         onDoubleClick={handleDoubleClick}
@@ -59,30 +63,21 @@ function Index({
         }}
         data-cy={`icon-${iconItem.id}`}
       >
-        {isEditModeOn ? (
-          <header>
-            <IconText>Img Url</IconText>
-            <IconInput
-              aria-label="Icon image URL"
-              defaultValue={iconItem["src"]}
-              onBlur={(e) => {
-                setDataProperty(
-                  iconData,
-                  setIconData,
-                  iconItem,
-                  "src",
-                  e.target.value,
-                );
-              }}
-            />
-          </header>
-        ) : (
-          <IconImg src={iconItem["src"]} alt="" />
+        <IconImg src={image.url || undefined} alt="" />
+        {isEditModeOn && (
+          <ImagePicker
+            context="icon"
+            source={iconItem.src}
+            onSelect={(source) => {
+              setDataProperty(iconData, setIconData, iconItem, "src", source);
+            }}
+          />
         )}
 
+        {image.error && <p role="alert">{image.error}</p>}
         {isEditModeOn ? (
           <section>
-            <IconText>Icon Title</IconText>
+            <IconText>Icon title</IconText>
             <IconTextArea
               aria-label="Icon title"
               defaultValue={iconItem["title"]}
@@ -103,7 +98,7 @@ function Index({
         {isEditModeOn && (
           <footer>
             <section>
-              <IconText>Redirect Url</IconText>
+              <IconText>Opens this website</IconText>
               <IconInput
                 aria-label="Icon destination URL"
                 defaultValue={iconItem["redirect"]}
@@ -134,7 +129,7 @@ function Index({
   );
 }
 
-const IconWrapper = styled.div<StyleProps>`
+const IconWrapper = styled.div<StyleProps & { $editing: boolean }>`
   position: absolute;
   z-index: 1;
   left: 0;
@@ -144,6 +139,21 @@ const IconWrapper = styled.div<StyleProps>`
   flex-direction: column;
   align-items: center;
 
+  ${({ $editing }) =>
+    $editing &&
+    `
+    width: 190px;
+    box-sizing: border-box;
+    padding: 12px;
+    gap: 8px;
+    background: #ece9d8;
+    border: 1px solid #888;
+    border-radius: 3px;
+    box-shadow: 2px 2px 6px #0004;
+    section, footer { width: 100%; }
+    input, textarea { width: 100%; box-sizing: border-box; }
+    p { color: #222; text-shadow: none; text-align: left; max-width: none; }
+  `}
   &:focus {
     outline: 1px dotted black;
   }
@@ -160,8 +170,8 @@ const IconTextArea = styled.textarea<StyleProps>`
 `;
 
 const IconImg = styled.img<StyleProps>`
-  height: 48px;
-  width: 48px;
+  height: 64px;
+  width: 64px;
   object-fit: contain;
   pointer-events: none;
 `;
