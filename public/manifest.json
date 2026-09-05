@@ -7,9 +7,7 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": [
-    "unlimitedStorage"
-  ],
+  "permissions": ["unlimitedStorage", "declarativeNetRequestWithHostAccess"],
   "browser_specific_settings": {
     "gecko": {
       "id": "{4b815ed5-1647-43d9-9d6c-48c0b08a1faf}"
@@ -19,5 +17,9 @@
     "16": "logo16.png",
     "48": "logo48.png",
     "128": "logo128.png"
+  },
+  "host_permissions": ["https://www.youtube.com/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; frame-src https://www.youtube.com;"
   }
 }

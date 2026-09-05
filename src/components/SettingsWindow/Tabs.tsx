@@ -1,0 +1,259 @@
+import type { WindowsOS } from "../../types";
+import { defaultBackgrounds } from "../../styles/themes";
+import type { StyleProps } from "../../types";
+import type React from "react";
+import { Header1 } from "../../styles/Headers";
+import { FlexContainer } from "../../styles/Layout";
+import { HexColorPicker } from "react-colorful";
+import styled from "styled-components";
+import { updateSetting } from "../../functions/helpers";
+import { useStore } from "../../Store";
+
+export function AppearanceTab({
+  imageInput,
+  colorInput,
+}: {
+  imageInput: React.RefObject<HTMLInputElement | null>;
+  colorInput: React.RefObject<HTMLInputElement | null>;
+}) {
+  const settingsData = useStore((state) => state.settingsData);
+  const setSettingsData = useStore((state) => state.setSettingsData);
+  const color = settingsData.backgroundColor;
+  const setColor = (value: string) =>
+    updateSetting(settingsData, setSettingsData, "backgroundColor", value);
+
+  function handleColorInputEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      updateSetting(
+        settingsData,
+        setSettingsData,
+        "backgroundColor",
+        e.currentTarget.value,
+      );
+    }
+  }
+
+  function handleImageInputEnter(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      updateSetting(
+        settingsData,
+        setSettingsData,
+        "backgroundImage",
+        e.currentTarget.value,
+      );
+    }
+  }
+
+  const defaultBackgroundImages: readonly string[] = defaultBackgrounds;
+  function handleOSChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const windowsOS: WindowsOS =
+      e.currentTarget.value === "Windows 98"
+        ? 1
+        : e.currentTarget.value === "Windows 7"
+          ? 2
+          : 0;
+    setSettingsData((current) => ({
+      ...current,
+      windowsOS,
+      stylesheet: "",
+      backgroundImage: defaultBackgroundImages.includes(current.backgroundImage)
+        ? defaultBackgrounds[windowsOS]
+        : current.backgroundImage,
+    }));
+  }
+
+  return (
+    <article role="tabpanel">
+      <Header1 margin={"1rem 0 1rem"}>Change Background Image</Header1>
+      <FlexContainer
+        justifyContent={"flex-start"}
+        alignItems={"flex-start"}
+        tablet
+      >
+        <TabInput
+          ref={imageInput}
+          defaultValue={settingsData["backgroundImage"]}
+          placeholder={"Enter Image Url"}
+          width={"70%"}
+          onKeyDown={(e) => {
+            handleImageInputEnter(e);
+          }}
+        />
+        <FlexContainer flexDirection="column" alignItems={"flex-start"}>
+          <button
+            data-cy="set-background-image-button"
+            onClick={() => {
+              updateSetting(
+                settingsData,
+                setSettingsData,
+                "backgroundImage",
+                imageInput.current?.value ?? "",
+              );
+            }}
+          >
+            Set Image
+          </button>
+          <MarginButton
+            data-cy="reset-background-image-button"
+            onClick={() => {
+              updateSetting(
+                settingsData,
+                setSettingsData,
+                "backgroundImage",
+                defaultBackgroundImages[settingsData["windowsOS"]],
+              );
+              if (imageInput.current)
+                imageInput.current.value =
+                  defaultBackgroundImages[settingsData["windowsOS"]];
+            }}
+          >
+            Reset to Default
+          </MarginButton>
+          <MarginButton
+            data-cy="remove-background-image-button"
+            onClick={() => {
+              updateSetting(
+                settingsData,
+                setSettingsData,
+                "backgroundImage",
+                "",
+              );
+            }}
+          >
+            Remove Image
+          </MarginButton>
+        </FlexContainer>
+      </FlexContainer>
+      <Header1 margin={"1.5rem 0 1rem"}>Change Background Color</Header1>
+      <FlexContainer
+        tablet
+        justifyContent={"flex-start"}
+        alignItems={"flex-start"}
+      >
+        <TabInput
+          data-cy="background-color-input"
+          placeholder={"Enter Hex Color Code"}
+          ref={colorInput}
+          value={settingsData["backgroundColor"]}
+          onChange={(e) => {
+            setColor(e.currentTarget.value + "");
+          }}
+          onKeyDown={(e) => {
+            handleColorInputEnter(e);
+          }}
+        />
+        <HexColorPicker color={color} onChange={setColor} />
+      </FlexContainer>
+      <Header1>Change Styles</Header1>
+      <FlexContainer justifyContent="flex-start">
+        <select
+          aria-label="Windows theme"
+          onChange={handleOSChange}
+          value={
+            ["Windows XP", "Windows 98", "Windows 7"][settingsData.windowsOS]
+          }
+        >
+          <option>Windows XP</option>
+          <option>Windows 98</option>
+          <option>Windows 7</option>
+        </select>
+      </FlexContainer>
+    </article>
+  );
+}
+
+const TabInput = styled.input<StyleProps>`
+  margin-right: 1rem;
+  width: ${(props) => props.width};
+  @media only screen and (max-width: 768px) {
+    margin-bottom: 1rem;
+    width: 80%;
+  }
+`;
+const MarginButton = styled.button<StyleProps>`
+  margin-top: 0.5rem;
+`;
+
+export function InfoTab() {
+  return (
+    <article role="tabpanel">
+      <Header1 margin={"0 0 1rem"}>Windows XP New Tab</Header1>
+      <InfoParagraph>
+        This extension was created by Etesam Ansari using React.js, Styled
+        Components, and the XP.css GitHub repo.
+      </InfoParagraph>
+      <InfoGrid>
+        <p style={{ marginRight: "0.5rem" }} data-cy="github-text">
+          GitHub Link:{" "}
+        </p>
+        <a href={"https://github.com/Etesam913/xp-newtab"}>
+          https://github.com/Etesam913/xp-newtab
+        </a>
+
+        <p style={{ marginRight: "0.5rem" }} data-cy="firefox-addon-text">
+          Firefox Addon Link:{" "}
+        </p>
+        <a href={"https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/"}>
+          https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/
+        </a>
+
+        <p style={{ marginRight: "0.5rem" }} data-cy="chrome-addon-text">
+          Chrome Addon Link:{" "}
+        </p>
+        <a
+          href={
+            "https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke"
+          }
+        >
+          https://chrome.google.com/webstore/detail/xp-newtab/ncfmlogaelpnniflgipmnnglhfiifkke
+        </a>
+      </InfoGrid>
+    </article>
+  );
+}
+
+const InfoGrid = styled.div<StyleProps>`
+  margin-top: 0.45rem;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-auto-rows: auto auto auto;
+  align-self: center;
+  row-gap: 0.75rem;
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: auto;
+  }
+`;
+
+const InfoParagraph = styled.p<StyleProps>`
+  margin: 0.5rem 0;
+  font-size: 1.1em;
+`;
+
+// Allows user to set settings such as grid, icon size
+export function MiscTab() {
+  const settingsData = useStore((state) => state.settingsData);
+  const setSettingsData = useStore((state) => state.setSettingsData);
+
+  return (
+    <article role="tabpanel">
+      <Header1>Change Dragging Grid</Header1>
+      <select
+        data-cy="dragging-grid"
+        onChange={(e) => {
+          updateSetting(
+            settingsData,
+            setSettingsData,
+            "draggingGrid",
+            e.currentTarget.value,
+          );
+        }}
+        defaultValue={settingsData["draggingGrid"]}
+      >
+        <option>0px</option>
+        <option>15px</option>
+        <option>30px</option>
+        <option>45px</option>
+      </select>
+    </article>
+  );
+}

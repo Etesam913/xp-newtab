@@ -3,7 +3,6 @@
 
 https://github.com/Etesam913/xp-newtab/assets/55665282/82186bc0-a41b-480b-9635-264d1260995f
 
-
 <h3>🔗 Links</h3>
 <ul>
     <li>Firefox: https://addons.mozilla.org/en-US/firefox/addon/xp-newtab/</li>
@@ -18,11 +17,17 @@ https://github.com/Etesam913/xp-newtab/assets/55665282/82186bc0-a41b-480b-9635-2
     <li>Instantaneous saves</li>
 </ul>
 
-<h3>📝 Created with </h3>
-<ul>
-    <li>React.js</li>
-    <li>Styled Components</li>
-    <li><a href="https://github.com/botoxparty/XP.css"> XP.css </a></li>
-</ul>
+## Development
+
+Built with TypeScript, React 19, Vite 8, Zustand 5, Lexical, styled-components 6, and XP.css / 98.css / 7.css. Built-in wallpapers, cursors, icons, fonts, and themes are bundled for offline use.
+
+```sh
+npm ci
+npm run dev
+```
+
+Requires Node.js 22.12 or newer; Node.js 24 is the development and CI version. Open http://127.0.0.1:3000. `npm run build` produces the browser extension in `build/`.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for testing and loading the extension, and [AUDIT.md](AUDIT.md) for the modernization findings and verification results.
 
 <b>I am not affiliated, associated, authorized, endorsed by, or in any way officially connected with Microsoft, or any of its subsidiaries or its affiliates.</b>

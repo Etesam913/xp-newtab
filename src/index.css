@@ -6,8 +6,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .selected {
@@ -27,8 +27,7 @@ code {
   background-color: white;
 }
 [contenteditable="false"] {
-  cursor: url("https://storage.googleapis.com/etesam-public/Windows-XP-Newtab/cursors/auto.cur"),
-    auto !important;
+  cursor: url("/assets/cursors/auto.cur"), auto !important;
 }
 
 .show {
@@ -213,6 +212,9 @@ h6 {
   list-style-type: none;
 }
 button.active {
-  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a,
-    inset -2px -2px #dfdfdf, inset 2px 2px grey;
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px grey;
 }

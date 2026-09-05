@@ -3,54 +3,61 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dnd-kit/core": "^6.0.5",
-    "@dnd-kit/modifiers": "^6.0.0",
-    "@dnd-kit/sortable": "^7.0.1",
-    "@dnd-kit/utilities": "^3.2.0",
-    "@lexical/react": "^0.3.5",
-    "lexical": "^0.3.5",
-    "re-resizable": "^6.9.9",
-    "react": "18.2.0",
-    "react-colorful": "^5.0.0",
-    "react-dom": "18.2.0",
-    "react-draggable": "^4.4.3",
-    "react-scripts": "^5.0.0",
-    "styled-components": "^5.3.5",
-    "xp.css": "^0.2.4",
-    "zustand": "^3.7.0"
+    "@dnd-kit/core": "6.3.1",
+    "@dnd-kit/modifiers": "9.0.0",
+    "@dnd-kit/sortable": "10.0.0",
+    "@emotion/is-prop-valid": "1.4.0",
+    "@lexical/code": "0.50.0",
+    "@lexical/link": "0.50.0",
+    "@lexical/list": "0.50.0",
+    "@lexical/markdown": "0.50.0",
+    "@lexical/react": "0.50.0",
+    "@lexical/rich-text": "0.50.0",
+    "@lexical/selection": "0.50.0",
+    "@lexical/utils": "0.50.0",
+    "7.css": "0.21.1",
+    "98.css": "0.1.21",
+    "lexical": "0.50.0",
+    "re-resizable": "6.11.2",
+    "react": "19.2.8",
+    "react-colorful": "5.8.1",
+    "react-dom": "19.2.8",
+    "react-draggable": "4.7.1",
+    "styled-components": "6.5.3",
+    "valibot": "1.4.2",
+    "xp.css": "0.2.6",
+    "zustand": "5.0.15"
   },
   "prettier": {
     "bracketSpacing": true
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "test": "cypress open",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:cypress/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev": "vite",
+    "start": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm test && npm run build"
   },
   "devDependencies": {
-    "chai-colors": "^1.0.1",
-    "cypress": "^10.2.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "prettier": "^2.5.1"
+    "@playwright/test": "1.63.0",
+    "@types/chrome": "0.2.8",
+    "@types/node": "26.4.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "6.1.1",
+    "prettier": "3.9.6",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "5.0.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
