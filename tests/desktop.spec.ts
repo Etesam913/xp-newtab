@@ -344,3 +344,120 @@ test("open new tabs receive saved desktop and note edits without reload", async 
     "Synchronized title",
   );
 });
+
+for (const [engine, destination] of [
+  ["Google", "https://www.google.com/search"],
+  ["DuckDuckGo", "https://www.duckduckgo.com/"],
+  ["Bing", "https://www.bing.com/search"],
+]) {
+  test(`search persists ${engine} and submits the complete query`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await editMode(page);
+    await addComponent(page, "Search Bar");
+
+    await page.getByLabel("Search Engine:").selectOption(engine);
+    await page.reload();
+
+    const input = page.getByPlaceholder(`Search ${engine}`);
+    await expect(input).toBeVisible();
+
+    const query = "cats & dogs + 日本語";
+    await input.fill(query);
+    // Fulfill locally so the assertion exercises form submission without network access.
+    await page.route(`${destination}**`, (route) =>
+      route.fulfill({ body: "Search received" }),
+    );
+    const request = page.waitForRequest(
+      (request) =>
+        request.isNavigationRequest() && request.url().startsWith(destination),
+    );
+
+    await page.getByRole("button", { name: "Search", exact: true }).click();
+    const submitted = await request;
+    const url = new URL(submitted.url());
+
+    expect(`${url.origin}${url.pathname}`).toBe(destination);
+    expect(url.searchParams.get("q")).toBe(query);
+    expect(submitted.method()).toBe("GET");
+  });
+}
+
+test("keyboard shortcut toggles editing once while held and works after reload", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const title = byCy(page, "window-title-edit-0");
+
+  await expect(title).toHaveCount(0);
+
+  await page.keyboard.down("Control");
+  await page.keyboard.down("e");
+
+  await expect(title).toBeVisible();
+
+  await page.keyboard.down("e");
+
+  await expect(title).toBeVisible();
+
+  await page.keyboard.up("e");
+  await page.keyboard.up("Control");
+  await title.fill("Keyboard edit");
+  await page.keyboard.press("Control+e");
+
+  await expect(title).toHaveCount(0);
+
+  await page.reload();
+
+  await expect(byCy(page, "window-title-display-0")).toHaveText(
+    "Keyboard edit",
+  );
+
+  await page.keyboard.press("Control+e");
+
+  await expect(title).toBeVisible();
+});
+
+test("failed saves warn without losing edits and recover after storage becomes writable", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await editMode(page);
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === "windowData")
+        throw new DOMException("Full", "QuotaExceededError");
+      original.call(this, key, value);
+    };
+    Object.assign(window, {
+      restoreTestStorage: () => {
+        Storage.prototype.setItem = original;
+      },
+    });
+  });
+  const title = byCy(page, "window-title-edit-0");
+
+  await title.fill("Unsaved title");
+
+  await expect(title).toHaveValue("Unsaved title");
+  await expect(page.getByRole("alert")).toContainText(
+    "Your changes could not be saved",
+  );
+
+  await page.evaluate(() => {
+    (
+      window as unknown as { restoreTestStorage: () => void }
+    ).restoreTestStorage();
+  });
+  await title.fill("Recovered title");
+
+  await expect(page.getByRole("alert")).toHaveCount(0);
+
+  await page.reload();
+
+  await expect(byCy(page, "window-title-display-0")).toHaveText(
+    "Recovered title",
+  );
+});

@@ -72,7 +72,7 @@ function RenderWindowComponents({
               handleDelete(windowData, setWindowData, windowItem, componentId)
             }
           >
-            <Suspense fallback={<p>Loading component…</p>}>
+            <Suspense fallback={<p>Loading…</p>}>
               {getComponent(componentsArr[index], windowItem)}
             </Suspense>
           </ComponentBoundary>
