@@ -54,24 +54,3 @@ cd ..
 ```
 
 Before uploading, load `build/` through `chrome://extensions` with Developer mode enabled and verify the new-tab page, saved data, YouTube iframe, icons, and browser console. The generated `build/` directory is ignored by Git and is the upload artifact.
-
-The existing Chrome listing is linked above and has extension ID `ncfmlogaelpnniflgipmnnglhfiifkke`. Use that listing if the original publisher account is still available; uploading as a new item creates a different extension ID.
-
-The Chrome Developer Dashboard also requires store content: a detailed description, category and language, a 128×128 icon, at least one 1280×800 or 640×400 screenshot, a 440×280 promotional tile, and support or homepage URLs where available. Complete the Privacy tab with a single-purpose statement, permission justifications, and an accurate privacy policy. Disclose local saved data and any user-configured image, search, destination, or YouTube requests. The manifest currently requests `unlimitedStorage`, `declarativeNetRequestWithHostAccess`, and `https://www.youtube.com/*`.
-
-Register for the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) if needed; registration requires the developer agreement and a one-time fee. See Google's [preparation guide](https://developer.chrome.com/docs/webstore/prepare), [listing requirements](https://developer.chrome.com/docs/webstore/cws-dashboard-listing), and [privacy guidance](https://developer.chrome.com/docs/webstore/cws-dashboard-privacy) before submitting for review. The current CI workflow builds and tests the extension but does not upload it to the store.
-
-<b>I am not affiliated, associated, authorized, endorsed by, or in any way officially connected with Microsoft, or any of its subsidiaries or its affiliates.</b>
-
-### Local images
-
-Use **Change background…** in Appearance settings or **Change image…** in edit
-mode for desktop images and icons. The chooser shows the current image and offers
-**Upload file** (Browse files…) or **Image URL** (Use image). Cancel or Escape
-closes the chooser without changing the image.
-Local files are stored as blobs in IndexedDB on this device; only a small reference
-is saved with the desktop settings. They survive reloads and work in other new tabs
-in the same browser profile without uploading the file. Identical files share one
-stored copy. Clearing the extension's/site's browser data removes these images.
-Stored files are retained when removed from the desktop so references in other
-saved items remain usable.
